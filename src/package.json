@@ -1,0 +1,21 @@
+{
+  "name": "frontend-2k17",
+  "version": "1.0.0",
+  "description": "Technopark Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "start": "/app.js"
+  },
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "handlebars": "^4.0.10",
+    "mustache-express": "^1.2.5",
+    "semantic-ui": "^2.2.13"
+  }
+}

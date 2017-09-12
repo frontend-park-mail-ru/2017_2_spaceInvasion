@@ -1,6 +1,5 @@
 # Space Invasion the browser multiplayer MMORTS-shooter game
 
-[![GitHub Version](https://badge.fury.io/gh/Nikita-Boyarskikh/SpaceInvasionBackend.svg?file=swagger.json)](https://badge.fury.io/gh/Nikita-Boyarskikh/SpaceInvasionBackend?file=swagger.json)
 [![Build Status](http://img.shields.io/travis/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://travis-ci.org/Nikita-Boyarskikh/SpaceInvasionBackend)
 [![Dependency Status](http://img.shields.io/gemnasium/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://gemnasium.com/Nikita-Boyarskikh/SpaceInvasionBackend)
 [![Coverage Status](http://img.shields.io/coveralls/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://coveralls.io/r/Nikita-Boyarskikh/SpaceInvasionBackend)
