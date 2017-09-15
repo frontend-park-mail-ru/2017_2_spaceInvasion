@@ -1,0 +1,16 @@
+dist: trusty
+language: node-js
+node:
+  - "node"
+  - "8"
+install:
+  - "npm publish"
+  - "npm install"
+deploy:
+  provider: releases
+  api_token:
+    secure: 211a9c505c943490d48087809e46ce3d15a95ea0
+  on:
+    branch: master
+    tags: true
+
