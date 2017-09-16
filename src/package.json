@@ -1,15 +1,15 @@
 {
-  "name": "frontend-2k17",
+  "name": "space-invasion-frontend",
   "version": "1.0.0",
-  "description": "Technopark Project",
+  "description": "SpaceInvasion frontend",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "SpaceInvasionLab",
+  "license": "MIT",
   "bin": {
-    "start": "/app.js"
+    "start": "./app.js"
   },
   "dependencies": {
     "ejs": "^2.5.7",
