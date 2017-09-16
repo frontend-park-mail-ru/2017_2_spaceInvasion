@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <title>Space Invasion</title>
+</head>
+
+<body>
+        <? include navbar.html ?>
+        <section id="login-section" style="display: undefined">
+                <? include forms/login.html ?>
+        </section>
+        <section id="registration-section" style="display: none">
+                <? include forms/registration.html ?>
+        </section>
+        <section id="about-section" style="display: none">
+                <? include about.html ?>
+        </section>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="/scripts/selectDeveloper.js"></script>
+    
+<script src="semantic/dist/semantic.min.js"></script>
+<script src="/scripts/navigation.js"></script>
+<script src="/scripts/validation/valid.js"></script>
+</html>
