@@ -1,27 +1,33 @@
 $(".ui.circular.image").click(function(){
+
+
+    var title = document.getElementById("title");
+    var avatar = document.getElementById("developer-avatar");
+    var workOn = document.getElementById("workOn");
+
     switch(this.id){
         case "1":
-        $("div[class='header']").text("Ольга Сурикова")
-        $("div[class='ui medium image'] img").attr("src","/images/olga_surikova.jpg")
-        $("div[class='ui header']").text("Frontend")
+        title.innerText = "Ольга Сурикова"
+        avatar.src = "/images/olga_surikova.jpg"
+        workOn.innerText = "Frontend"
         break;
         
         case "2":
-        $("div[class='header']").text("Василий Дмитриев")
-        $("div[class='ui medium image'] img").attr("src","/images/vasiliy_dmitriev.jpg")
-        $("div[class='ui header']").text("Frontend")
+        title.innerText = "Василий Дмитриев"
+        avatar.src = "/images/vasiliy_dmitriev.jpg"
+        workOn.innerText = "Frontend"
         break;
 
         case "3":
-        $("div[class='header']").text("Никита Боярских")
-        $("div[class='ui medium image'] img").attr("src","/images/nikita_boyarskikh.jpg")
-        $("div[class='ui header']").text("Backend")
+        title.innerText = "Никита Боярских"
+        avatar.src = "/images/nikita_boyarskikh.jpg"
+        workOn.innerText = "Backend"
         break;
 
         case "4":
-        $("div[class='header']").text("Егор")
-        $("div[class='ui medium image'] img").attr("src","/images/none.png")
-        $("div[class='ui header']").text("Backend")
+        title.innerText = "Егор Кураков"
+        avatar.src = "/images/egor_kurakov.jpg"
+        workOn.innerText = "Backend"
         break;
     }
     $('.ui.modal')

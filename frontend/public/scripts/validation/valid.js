@@ -122,6 +122,7 @@ const removeErrors = function () {
 // Обработчик формы.
 loginForm.addEventListener('submit', function (event) {
 
+    debugger
     event.preventDefault();
     removeErrors();
 

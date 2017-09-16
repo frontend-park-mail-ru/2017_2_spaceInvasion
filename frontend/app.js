@@ -53,14 +53,6 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
-app.get('/registration', function (req, res) {
-    res.render('registration');
-});
-
-app.get('/about', function (req, res) {
-    res.render('about');
-});
-
 app.get('*', function (req, res) {
     res.send('404');
 });
