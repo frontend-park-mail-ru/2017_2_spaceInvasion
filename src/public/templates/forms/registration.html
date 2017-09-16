@@ -1,9 +1,10 @@
+<div class="ui one column centered grid registration">    
 <div class="ui card registration">
     <div class="content left aligned">
         <div class="header">Registration</div>
         <div class="description">
 
-            <form class="ui form">
+            <form class="ui form formWithValidation">
                 <div class="field">
                     <label>Email</label>
                     <input type="text" name="email" placeholder="Email">
@@ -18,18 +19,19 @@
                 </div>
                 <div class="field">
                         <label>Repeat password</label>
-                        <input type="password" name="password2" placeholder="Repeat password">
+                        <input type="password" name="repeatedPassword" placeholder="Repeat password">
                       </div>
                 <div class="field">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="agree" tabindex="0">
+                        <input type="checkbox" name="conditions" tabindex="0">
                         <label>I agree to the Terms and Conditions</label>
                     </div>
                 </div>
-                <button class="ui positive button" type="submit">Register</button>
-                <div class="ui error message"></div>
+                <button class="ui positive button validateBtn" type="submit">Register</button>
+                
             </form>
 
         </div>
     </div>
+</div>
 </div>

@@ -9,18 +9,22 @@
 </head>
 
 <body>
-    <?- include('navbar.html');?>
-        <div class="ui center aligned login container">
-            <div class="ui one column centered login grid">
-                <?- include('forms/login.html')?>
-                    <?- include('stats/likes.html');?>
-                        <!-- <?- include('stats/users.html');?> -->
-            </div>
-        </div>
+        <? include navbar.html ?>
+        <section id="login-section" style="display: undefined">
+                <? include forms/login.html ?>
+        </section>
+        <section id="registration-section" style="display: none">
+                <? include forms/registration.html ?>
+        </section>
+        <section id="about-section" style="display: none">
+                <? include about.html ?>
+        </section>
 </body>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
+    <script src="/scripts/selectDeveloper.js"></script>
+    
 <script src="semantic/dist/semantic.min.js"></script>
-<script src="/scripts/validation/login.js"></script>
-
+<script src="/scripts/navigation.js"></script>
+<script src="/scripts/validation/valid.js"></script>
 </html>

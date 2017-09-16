@@ -1,12 +1,12 @@
 'use strict';
 
-// Дописать переменные email, login,...
+// TODO: Дописать переменные email, login,...
 
 const loginForm = document.querySelector('.formWithValidation');
 const validateBtn = loginForm.querySelector('.validateBtn');
 const password = loginForm.password;
 const repeatedPassword = loginForm.repeatedPassword;
-let isError = false;  // Надо убрать!!!!
+let isError = false;  // TODO: Надо убрать!!!!
 
 //=================================================================
 
@@ -91,7 +91,7 @@ const generateRedBorder = (element) =>
 //Создание сообщения об ошибке.
 const generateErrorMessage = function (arrayOfErrors) {
     for (let i in arrayOfErrors) {
-        isError = true; // Надо убрать!!!!
+        isError = true; // TODO: Надо убрать!!!!
         const error = document.createElement('div');
         error.className = 'error';
         error.style.color = 'red';
@@ -101,7 +101,7 @@ const generateErrorMessage = function (arrayOfErrors) {
 };
 
 //Удаление красных рамок.
-const removeRedBorders = function (){  // Переписать!!!!
+const removeRedBorders = function (){  // TODO: Переписать!!!!
 loginForm.email.style.borderColor = "";
 loginForm.login.style.borderColor ="";
 loginForm.password.style.borderColor ="";
@@ -111,10 +111,10 @@ loginForm.repeatedPassword.style.borderColor ="";
 // Удаление ненужных ошибок.
 const removeErrors = function () {
     removeRedBorders();
-    // Нет удаления красных рамок!
+    // TODO: Нет удаления красных рамок!
         const errors = loginForm.querySelectorAll('.error');
         for (let i = 0; i < errors.length; i++) {
-            isError = false; // Надо убрать!!!
+            isError = false; // TODO: Надо убрать!!!
             errors[i].remove();
         }
 };
@@ -128,7 +128,7 @@ loginForm.addEventListener('submit', function (event) {
 
     // Проверки валидности.
     generateError(loginForm.conditions, validate(loginForm.conditions.checked, rulesForConditions));
-// По другому сделать проверку пароля!!!
+// TODO: По другому сделать проверку пароля!!!
     loginForm.password = deleteStartEndSpaces(loginForm.password.value);
     loginForm.repeatedPassword = deleteStartEndSpaces(loginForm.repeatedPassword.value);
     if (password.value !== repeatedPassword.value){ 
