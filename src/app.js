@@ -14,13 +14,11 @@ app.use(cookie());
 var port = process.env.PORT || 8080;
 app.use('/', express.static(__dirname + '/public'));
 
-var ejs = require('ejs');
 var url = require('url');
 
-ejs.delimiter = '?';
 app.set('views', path.join(__dirname, '/public/templates'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+app.engine('html', require('pug').renderFile);
+app.set('view engine', 'pug');
 
 const users = {};
 const ids = {};
@@ -50,7 +48,7 @@ app.post('/auth', function (req, res) {
 
 
 app.get('/', function (req, res) {
-    res.render('index');
+    res.render('index.pug');
 });
 
 app.get('*', function (req, res) {

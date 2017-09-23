@@ -14,11 +14,11 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "cookie-parser": "^1.4.3",
-    "ejs": "^2.5.7",
     "express": "^4.15.4",
     "handlebars": "^4.0.10",
     "morgan": "^1.8.2",
     "mustache-express": "^1.2.5",
+    "pug": "^2.0.0-rc.4",
     "semantic-ui": "^2.2.13"
   }
 }

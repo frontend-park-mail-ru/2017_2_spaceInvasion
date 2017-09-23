@@ -1,0 +1,25 @@
+html
+body
+    .ui.one.column.centered.grid.registration
+        .ui.card.registration
+            .content.left.aligned
+                .header Registration
+                .description
+                    form.ui.form.formWithValidation
+                        .field
+                            label Email
+                            input(type="text", name="email", placeholder="Email")
+                        .field
+                            label Login
+                            input(type="text", name="login", placeholder="Login")
+                        .field
+                            label Password
+                            input(type="password", name="password", placeholder="Password")
+                        .field
+                            label Repeat password
+                            input(type="password", name="repeatedPassword", placeholder="Repeat password")
+                        .field
+                            .ui.checkbox
+                                input(type="checkbox", name="conditions", tabindex="0")
+                                label I agree to the Terms and Conditions
+                        button.ui.positive.button.validateBtn(type="submit") Register

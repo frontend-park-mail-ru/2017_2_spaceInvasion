@@ -1,0 +1,27 @@
+html
+body
+    .ui.one.column.centered.grid
+        .ui.card.login
+            .content.left.aligned
+                .header Welcome
+                .description
+                    form.ui.form
+                        .field
+                            label Login
+                            .ui.left.icon.input
+                                input(type="text", name="login", placeholder="Login")
+                                i.user.icon
+                        .field
+                            label Password
+                            .ui.left.icon.input
+                                input(type="password", name="password", placeholder="Password")
+                                i.lock.icon
+                        button.ui.submit.button(type="submit") Log in
+                        .ui.error.message
+            .extra.content.left.aligned
+                button.ui.vk.button
+                    i.vk.icon
+                    |             VK
+                button.ui.twitter.button
+                    i.twitter.icon
+                    |               Twitter
