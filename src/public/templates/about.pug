@@ -3,10 +3,9 @@ body
     .ui.one.column.centered.grid.about
         h2(style="color: #FFF") Developers
     .ui.one.column.centered.grid.about
-        img#1.ui.circular.image(src="/images/olga_surikova.jpg")
-        img#2.ui.circular.image(src="/images/vasiliy_dmitriev.jpg")
-        img#3.ui.circular.image(src="/images/nikita_boyarskikh.jpg")
-        img#4.ui.circular.image(src="/images/egor_kurakov.jpg")
+        - var developers = ['olga_surikova','vasiliy_dmitriev','nikita_boyarskikh','egor_kurakov']
+            each developer in developers
+                img.ui.circular.image(src="/images/"+developer+".jpg")
     .ui.modal
         i.close.icon
         #title.ui.header

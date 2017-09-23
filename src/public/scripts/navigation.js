@@ -14,7 +14,6 @@ homeBtn.onclick = function(){
 }
 
 aboutBtn.onclick = function(){
-    debugger
     NavLoginForm.style.display = "none"
     registrationForm.style.display = "none"
     aboutForm.style.display = "initial"

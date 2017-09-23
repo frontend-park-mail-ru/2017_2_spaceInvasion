@@ -24,7 +24,6 @@ const users = {};
 const ids = {};
 
 app.post('/auth', function (req, res) {
-	console.log("pooost");
 	const username = req.body.login;
 	const email = req.body.email;
 	const password = req.body.password;
