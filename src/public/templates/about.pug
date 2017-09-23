@@ -4,8 +4,10 @@ body
         h2(style="color: #FFF") Developers
     .ui.one.column.centered.grid.about
         - var developers = ['olga_surikova','vasiliy_dmitriev','nikita_boyarskikh','egor_kurakov']
+        - var id = 0
             each developer in developers
-                img.ui.circular.image(src="/images/"+developer+".jpg")
+                img#devAvatar.ui.circular.image(name=id,src="/images/"+developer+".jpg")
+                -id++
     .ui.modal
         i.close.icon
         #title.ui.header
