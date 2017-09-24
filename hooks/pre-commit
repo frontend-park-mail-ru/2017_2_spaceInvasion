@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ ! `bin/linter lint > /dev/null` ]
+then
+    echo "Linter's check failed"
+    echo "Run \`bin/linter lint\` to get verbose report"
+    exit 1
+fi

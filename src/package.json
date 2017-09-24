@@ -4,7 +4,8 @@
   "description": "SpaceInvasion frontend",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'Error: no test specified' && exit 1",
+    "start": "../bin/linter"
   },
   "author": "SpaceInvasionLab",
   "license": "MIT",
@@ -17,5 +18,8 @@
     "handlebars": "^4.0.10",
     "mustache-express": "^1.2.5",
     "semantic-ui": "^2.2.13"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.5"
   }
 }
