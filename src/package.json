@@ -4,16 +4,16 @@
   "description": "Technopark Project",
   "main": "app.js",
   "scripts": {
+    "start": "npm run compile-pug && node app.js",
+    "compile-pug": "pug -c --extension 'pug.js' --name-after-file ./public/blocks/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "bin": {
-    "start": "/app.js"
-  },
   "dependencies": {
     "body-parser": "^1.18.1",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "express": "^4.15.4",
     "handlebars": "^4.0.10",
     "morgan": "^1.8.2",

@@ -7,14 +7,21 @@ html(lang="en")
         title Space Invasion
     body
         include navbar.pug
-        section#login-section(style="display: undefined")
-            include forms/login.pug
-        section#registration-section(style="display: none")
-            include forms/registration.pug
-        section#about-section(style="display: none")
-            include about.pug
-        include developerDialog.pug
-        script(src="/scripts/navigation.js")
+        #application
+        
         script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
-        script(src="semantic/dist/semantic.min.js")
+        script(src="/blocks/block/index.js")
+
+        script(src="/blocks/about/about.pug.js")
+        script(src="/blocks/about/index.js")
+        
+        script(src="/blocks/login/login.pug.js")
+        script(src="/blocks/login/index.js")
+
+        script(src="/blocks/registration/registration.pug.js")
+        script(src="/blocks/registration/index.js")
+
+        script(src="/main.js")
+        script(src="/scripts/navbar.js")
         script(src="/scripts/aboutAlertDialog.js")
+        script(src="semantic/dist/semantic.min.js")

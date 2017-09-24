@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 
-var express = require('express');
-var path = require('path');
-var app = express();
+const express = require('express');
+const path = require('path');
+const app = express();
+const cors = require('cors');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid/v4');
+
+app.use(cors({
+	origin: true,
+	credentials: true,
+}));
 
 app.use(body.json());
 app.use(cookie());
