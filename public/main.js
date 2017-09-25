@@ -1,12 +1,12 @@
 (function () {
 	'use strict';
 
-	const Http = window.Http;
+	// const Http = window.Http;
 
-	if (window.location.host === 'space-invasion.herokuapp.com') {
-		// enable CORS TO-DO edit backend url
-		Http.BaseUrl = 'https://super-frontend-backend.herokuapp.com';
-	}
+	// if (window.location.host === 'space-invasion.herokuapp.com') {
+	// 	// enable CORS TO-DO edit backend url
+	// 	Http.BaseUrl = 'https://super-frontend-backend.herokuapp.com';
+	// }
 
     const Block = window.Block;
 	const Login = window.Login;
