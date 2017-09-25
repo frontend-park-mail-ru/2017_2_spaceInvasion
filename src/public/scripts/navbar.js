@@ -1,9 +1,9 @@
 const menu_items = document.querySelectorAll(".item");
 
 menu_items.forEach(function(el) {
-    el.addEventListener("click",kek);
+    el.addEventListener("click",navigate);
 }, this);
-function kek(){
+function navigate(){
     switch(this.id){
         case "homeBtn":
         debugger

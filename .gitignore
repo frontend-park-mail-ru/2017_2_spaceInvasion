@@ -62,3 +62,8 @@ secrets.json
 
 # IDE's specials
 .vscode
+
+# pug auto-generated files
+about.pug.js
+login.pug.js
+registration.pug.js
