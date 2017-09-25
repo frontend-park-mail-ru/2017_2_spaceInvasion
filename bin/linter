@@ -1,8 +1,0 @@
-#!/bin/bash
-if [ "$1" == 'lint' ]
-then
-    jshint . --verbose --show-non-errors --extract=auto --exclude='**/node_modules/'
-else
-    echo "Command '$1' is not available."
-    exit 1
-fi
