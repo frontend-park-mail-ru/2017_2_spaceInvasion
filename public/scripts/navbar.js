@@ -6,7 +6,6 @@ menu_items.forEach(function(el) {
 function navigate(){
     switch(this.id){
         case "homeBtn":
-        debugger
             window.showHome();
         break;
         case "aboutBtn":
