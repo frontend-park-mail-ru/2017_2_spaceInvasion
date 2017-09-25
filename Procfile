@@ -1,1 +1,1 @@
-web: node app.js
+web: npm run compile-pug && node app.js
