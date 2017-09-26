@@ -6,20 +6,19 @@ var homeBtn = document.getElementById("homeBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var signUpBtn = document.getElementById("signUpBtn");
 
-
-homeBtn.onclick = function(){
+homeBtn.onclick = function() {
     NavLoginForm.style.display = "initial"
     registrationForm.style.display = "none"
     aboutForm.style.display = "none"
 }
 
-aboutBtn.onclick = function(){
+aboutBtn.onclick = function() {
     NavLoginForm.style.display = "none"
     registrationForm.style.display = "none"
     aboutForm.style.display = "initial"
 }
 
-signUpBtn.onclick = function(){
+signUpBtn.onclick = function() {
     NavLoginForm.style.display = "none"
     registrationForm.style.display = "initial"
     aboutForm.style.display = "none"
