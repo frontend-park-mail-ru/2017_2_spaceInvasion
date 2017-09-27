@@ -13,15 +13,15 @@
     "start": "./app.js"
   },
   "scripts": {
-    "test": "echo 'Error: no test specified' && exit 1",
-    "lint": "node_modules/.bin/eslint",
-    "fix-lint": "node_modules/.bin/eslint --fix"
+    "test": "node_modules/.bin/eslint .",
+    "fix-lint": "node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "handlebars": "^4.0.10",
-    "mustache-express": "^1.2.5"
+    "mustache-express": "^1.2.5",
+    "semantic-ui": "^2.2.13"
   },
   "devDependencies": {
     "eslint": "^4.7.2",

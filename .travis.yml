@@ -11,7 +11,7 @@ addons:
 install:
   - "npm install"
 script:
-  - "npm run lint"
+  - "npm test"
 cache:
   directories:
     - src/node_modules
