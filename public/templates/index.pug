@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css")
+        link(rel="stylesheet", type="text/css", href="/css/main.css")
+        title Space Invasion
+    body
+        include navbar.pug
+        #application
+        
+        script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
+        script(src="/blocks/block/index.js")
+
+        script(src="/blocks/about/about.pug.js")
+        script(src="/blocks/about/index.js")
+        
+        script(src="/blocks/login/login.pug.js")
+        script(src="/blocks/login/index.js")
+
+        script(src="/blocks/registration/registration.pug.js")
+        script(src="/blocks/registration/index.js")
+
+        script(src="/blocks/scoreboard/scoreboard.pug.js")
+        script(src="/blocks/scoreboard/index.js")
+
+        script(src="/main.js")
+        script(src="/scripts/navbar.js")
+        script(src="/scripts/aboutAlertDialog.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js")
