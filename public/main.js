@@ -8,11 +8,13 @@
     const Block = window.Block;
     const Login = window.Login;
     const About = window.About;
+    const Scoreboard = window.Scoreboard
     const Registration = window.Registration;
 
     window.showHome = openLogin;
     window.showAbout = openAbout;
     window.showRegistration = openRegistration;
+    window.showScoreboard = openScoreboard;
 
     const app = new Block(document.getElementById('application'));
 
@@ -21,6 +23,7 @@
         login: Block.Create('section', {}, ['login-section']),
         signup: Block.Create('section', {}, ['signup-section']),
         about: Block.Create('section', {}, ['about-section']),
+        scoreboard: Block.Create('section', {}, ['scoreboard-section']),
 
         hide() {
             this
@@ -32,6 +35,9 @@
             this
                 .about
                 .hide();
+            this
+                .scoreboard
+                .hide();
         }
     };
 
@@ -41,6 +47,7 @@
         .append(sections.login)
         .append(sections.signup)
         .append(sections.about)
+        .append(sections.scoreboard)
 
     function openLogin() {
         sections.hide();
@@ -65,6 +72,19 @@
         }
         sections
             .signup
+            .show();
+    }
+
+    function openScoreboard() {
+        sections.hide();
+        if (!sections.scoreboard.ready) {
+            sections
+                .scoreboard
+                .append(new Scoreboard());
+            sections.scoreboard.ready = true;
+        }
+        sections
+            .scoreboard
             .show();
     }
 

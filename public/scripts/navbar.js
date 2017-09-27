@@ -18,6 +18,9 @@ function navigate() {
             clearSelection();
             window.showRegistration();
             break;
+        case "scoreboardBtn":
+            window.showScoreboard();
+            break;
     }
 }
 
@@ -26,7 +29,7 @@ function setSelection(el) {
 }
 
 function clearSelection() {
-    const tabs = ["homeBtn", "aboutBtn", "signUpBtn"];
+    const tabs = ["homeBtn", "aboutBtn", "signUpBtn","scoreboardBtn"];
     tabs.forEach(function(el) {
         document.querySelector("#" + el).setAttribute("class", "item");
     }, this);
