@@ -10,8 +10,8 @@ const morgan = require('morgan');
 const uuid = require('uuid/v4');
 
 app.use(cors({
-	origin: true,
-	credentials: true,
+    origin: true,
+    credentials: true,
 }));
 
 app.use(body.json());
@@ -29,34 +29,34 @@ app.set('view engine', 'pug');
 const users = {};
 const ids = {};
 
-app.post('/auth', function (req, res) {
-	const username = req.body.login;
-	const email = req.body.email;
-	const password = req.body.password;
-	if (!username || !email || !password) {
-		return res.status(400).end();
-	}
-	if (!users[email]) {
-		users[email] = {
-			username,
-			email,
-			password,
-		};
-	}
-	console.log(users[email]);
-	const id = uuid();
-	ids[id] = email;
+app.post('/auth', function(req, res) {
+    const username = req.body.login;
+    const email = req.body.email;
+    const password = req.body.password;
+    if (!username || !email || !password) {
+        return res.status(400).end();
+    }
+    if (!users[email]) {
+        users[email] = {
+            username,
+            email,
+            password,
+        };
+    }
+    console.log(users[email]);
+    const id = uuid();
+    ids[id] = email;
 
-	res.cookie('podvorot', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
-	res.json({id});
+    res.cookie('podvorot', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
+    res.json({ id });
 });
 
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
     res.render('index.pug');
 });
 
-app.get('*', function (req, res) {
+app.get('*', function(req, res) {
     res.send('404');
 });
 

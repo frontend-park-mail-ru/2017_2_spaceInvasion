@@ -1,4 +1,5 @@
 window.alertDialog = alertDialog;
+window.closeAlertDialog = closeDialog;
 
 function alertDialog() {
     var developerAvatar = document.querySelectorAll("img#devAvatar");
@@ -24,7 +25,22 @@ function alertDialog() {
             avatar.setAttribute("src", developersInfo.avatars[+id]);
             title.innerText = "" + developersInfo.names[+id];
             workOn.innerText = "" + developersInfo.workOn[+id];
-            $('div.ui.modal').modal('show');
+            initDialog();
         };
     }, this);
+}
+
+function initDialog() {
+    const dialog = document.querySelector("div.ui.modal");
+    const closeDialogBtn = document.querySelector(".closeBtn");
+
+    window.devDialog = dialog;
+    closeDialogBtn.setAttribute("style", "color:#ffffff");
+    closeDialogBtn.addEventListener("click", closeDialog);
+    dialog.setAttribute("style", "display: block !important; top: 265px;");
+    dialog.classList.add("scrolling", "transition", "visible", "active", "animating", "scale", "in");
+}
+
+function closeDialog() {
+    devDialog.setAttribute("class", "ui modal scrolling transition hidden");
 }

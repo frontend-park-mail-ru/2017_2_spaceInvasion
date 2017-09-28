@@ -1,20 +1,16 @@
 (function() {
     'use strict';
 
-    // const Http = window.Http; if (window.location.host ===
-    // 'space-invasion.herokuapp.com') { 	// enable CORS TO-DO edit backend url
-    // 	Http.BaseUrl = 'https://super-frontend-backend.herokuapp.com'; }
-
     const Block = window.Block;
     const Login = window.Login;
     const About = window.About;
-    const Scoreboard = window.Scoreboard
+    const Leaderboard = window.Leaderboard
     const Registration = window.Registration;
 
     window.showHome = openLogin;
     window.showAbout = openAbout;
     window.showRegistration = openRegistration;
-    window.showScoreboard = openScoreboard;
+    window.showLeaderboard = openLeaderboard;
 
     const app = new Block(document.getElementById('application'));
 
@@ -23,7 +19,7 @@
         login: Block.Create('section', {}, ['login-section']),
         signup: Block.Create('section', {}, ['signup-section']),
         about: Block.Create('section', {}, ['about-section']),
-        scoreboard: Block.Create('section', {}, ['scoreboard-section']),
+        leaderboard: Block.Create('section', {}, ['leaderboard-section']),
 
         hide() {
             this
@@ -36,7 +32,7 @@
                 .about
                 .hide();
             this
-                .scoreboard
+                .leaderboard
                 .hide();
         }
     };
@@ -47,7 +43,7 @@
         .append(sections.login)
         .append(sections.signup)
         .append(sections.about)
-        .append(sections.scoreboard)
+        .append(sections.leaderboard)
 
     function openLogin() {
         sections.hide();
@@ -75,16 +71,16 @@
             .show();
     }
 
-    function openScoreboard() {
+    function openLeaderboard() {
         sections.hide();
-        if (!sections.scoreboard.ready) {
+        if (!sections.leaderboard.ready) {
             sections
-                .scoreboard
-                .append(new Scoreboard());
-            sections.scoreboard.ready = true;
+                .leaderboard
+                .append(new Leaderboard());
+            sections.leaderboard.ready = true;
         }
         sections
-            .scoreboard
+            .leaderboard
             .show();
     }
 
