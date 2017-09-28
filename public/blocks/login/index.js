@@ -1,16 +1,14 @@
-(function() {
-    'use strict';
+(function loginIndex() {
+  const { Form } = window;
+  const LoginTemplate = window.loginTemplate;
 
-	const LoginTemplate = window.loginTemplate;
-	const Form = window.Form;
+  class Login extends Form {
+    constructor() {
+      const el = document.createElement('div');
+      el.innerHTML = LoginTemplate();
+      super(el);
+    }
+  }
 
-	class Login extends Form {
-		constructor() {
-			const el = document.createElement("div");
-			el.innerHTML = LoginTemplate();
-			super(el);
-		}
-	}
-	window.Login = Login;
-
-})();
+  window.Login = Login;
+}());

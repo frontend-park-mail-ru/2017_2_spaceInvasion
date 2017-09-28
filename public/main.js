@@ -1,101 +1,86 @@
-(function () {
-	'use strict';
-    const UserService = window.UserService;
-    const userService = new UserService();
+(function main() {
+  const {
+    UserService, Block, Login, About, Scoreboard, Registration,
+  } = window;
+  const userService = new UserService();
 
-    // const Http = window.Http; if (window.location.host ===
-    // 'space-invasion.herokuapp.com') { 	// enable CORS TO-DO edit backend url
-    // 	Http.BaseUrl = 'https://super-frontend-backend.herokuapp.com'; }
+  const app = new Block(document.getElementById('application'));
 
-    const Block = window.Block;
-    const Login = window.Login;
-    const About = window.About;
-    const Scoreboard = window.Scoreboard
-    const Registration = window.Registration;
+  const sections = {
 
-    window.showHome = openLogin;
-    window.showAbout = openAbout;
-    window.showRegistration = openRegistration;
-    window.showScoreboard = openScoreboard;
+    login: Block.Create('section', {}, ['login-section']),
+    signup: Block.Create('section', {}, ['signup-section']),
+    about: Block.Create('section', {}, ['about-section']),
+    scoreboard: Block.Create('section', {}, ['scoreboard-section']),
 
-    const app = new Block(document.getElementById('application'));
+    hide() {
+      this
+        .login
+        .hide();
+      this
+        .signup
+        .hide();
+      this
+        .about
+        .hide();
+      this
+        .scoreboard
+        .hide();
+    },
+  };
 
-    const sections = {
+  sections.hide();
 
-        login: Block.Create('section', {}, ['login-section']),
-        signup: Block.Create('section', {}, ['signup-section']),
-        about: Block.Create('section', {}, ['about-section']),
-        scoreboard: Block.Create('section', {}, ['scoreboard-section']),
+  app
+    .append(sections.login)
+    .append(sections.signup)
+    .append(sections.about)
+    .append(sections.scoreboard);
 
-        hide() {
-            this
-                .login
-                .hide();
-            this
-                .signup
-                .hide();
-            this
-                .about
-                .hide();
-            this
-                .scoreboard
-                .hide();
-        }
-    };
+  // Отправка формы логина.
+  function onSubmitLoginForm(formdata) {
+    return UserService.login(UserService.login, formdata.password)
+      .then(() => userService.getData(true))
+      .then(() => {
+        sections.login.loginform.reset();
+        // openGamePage();
+      })
+      .catch();
+  }
 
+  // Отправка формы регистрации.
+  function onSubmitRegistrationForm(formdata) {
+    return UserService.register(formdata.email, UserService.login, formdata.password)
+      .then(() => userService.getData(true))
+      .then(() => {
+        sections.signup.signupform.reset();
+        // openGamePage();
+      })
+      .catch();
+  }
+  function openLogin() {
     sections.hide();
-
-    app
-        .append(sections.login)
-        .append(sections.signup)
-      .append(sections.scoreboard)
-      .append(sections.about);
-
-
-
-    // Отправка формы логина.
-    function onSubmitLoginForm(formdata) {
-         return userService.login(formdata.login, formdata.password)
-             .then(function () { return userService.getData(true); })
-             .then(function () { sections.login.loginform.reset();
-                 //openGamePage();
-             })
-             .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
+    if (!sections.login.ready) {
+      sections.login.loginform = new Login();
+      sections.login.append(sections.login.loginform);
+      sections.login.loginform.onSubmit(onSubmitLoginForm);
+      sections.login.ready = true;
     }
+    sections.login.loginform.reset();
+    sections.login.show();
+  }
 
-    // Отправка формы регистрации.
-    function onSubmitRegistrationForm(formdata) {
-        return userService.register(formdata.email, formdata.login,formdata.password)
-            .then(function () { return userService.getData(true); })
-            .then(function () { sections.signup.signupform.reset();
-                //openGamePage();
-            })
-            .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
+  function openRegistration() {
+    sections.hide();
+    if (!sections.signup.ready) {
+      sections.signup.signupform = new Registration();
+      sections.signup.append(sections.signup.signupform);
+      sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
+      sections.signup.ready = true;
     }
-
-    function openLogin() {
-		sections.hide();
-            if (!sections.login.ready) {
-                sections.login.loginform = new Login();
-				sections.login.append(sections.login.loginform);
-                sections.login.loginform.onSubmit(onSubmitLoginForm);
-				sections.login.ready = true;
-			}
-      sections.login.loginform.reset();
-			sections.login.show();
-		}
-
-		function openRegistration() {
-			sections.hide();
-            if (!sections.signup.ready) {
-                sections.signup.signupform = new Registration();
-                sections.signup.append(sections.signup.signupform);
-                sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
-				sections.signup.ready = true;
-			}
-			sections.signup.signupform.reset();
-			sections.signup.show();
-		}
+    sections.signup.signupform.reset();
+    sections.signup.show();
+  }
 
 
   function openScoreboard() {
@@ -111,14 +96,19 @@
       .show();
   }
 
-		function openAbout() {
-			sections.hide();
-            if (!sections.about.ready) {
-                sections.about.append(new About());
-				sections.about.ready = true;
-			}
-			sections.about.show();
-			window.alertDialog();
+  function openAbout() {
+    sections.hide();
+    if (!sections.about.ready) {
+      sections.about.append(new About());
+      sections.about.ready = true;
     }
-    openLogin();
-})();
+    sections.about.show();
+  }
+
+  window.showHome = openLogin;
+  window.showAbout = openAbout;
+  window.showRegistration = openRegistration;
+  window.showScoreboard = openScoreboard;
+
+  openLogin();
+}());
