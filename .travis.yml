@@ -15,11 +15,12 @@ script:
 cache:
   directories:
     - node_modules
+    - public/semantic
 deploy:
   provider: heroku
   api_key:
     secure: X1Ub6Kn8tFzxn+pPNnGSh5CraVl3H5Qy2UHFaYLKYgPtMnMBOPA34ua/6MvzUPDkRCaV/7ytp8owKbcztYsqBfJvbrKBXG3cSz+rTy0vX+ce9Ls0tH+po3Gx/i/T30D/7nKOrzDy7+meHufYaQqExjQwkJ9NFF+nNoVHQTTNlnQpoOTw23e+YtiM2JM18IqMq3CncGspWqgy019lC/K/ytbckzHyvX2pzpPrFaABSq7B/FhJ2XuzLgFuY5DfhUSsmEzgwozR8GOFL7podZhE8O7k59oz2n2hxpnnoVlJlc1cdHvrMyXlfJOa0qCYoVQcFq35r5eCvQU70zbyWld9xNoFl6vswFqK7txOrC0AoCKmXdV3Xw/xGqMgPhzUzG1y4GzHb9+u2Aa2zWdRLiqBIrICWIb7xiaFAOaec9QG5vANpr0NAfD8Al3caJu6lqp+FvGTZS7GDyoIwFMPfM9tG7sdfGRkoGBqYq5/TQBEQnyZTUWUGyzzVY+ewSu7RGe6kgeFKTkzUQmnkNdwpq4OmkJcdPMt6rfeczyDIVq171SbU+zoFIStehEqUfVSikoBTrMPBL3r8tJIov7pLozLltx99kWT90OV81ZBegIsejQ08W52DX/92NYy+earvcTuheRbW6FYAsbxk4nc/7roCOebWoR5j/+/404go77R2AI=
-  app: space-invasion
+  app: space-invasion-frontend
   on:
     tags: true
     repo: Nikita-Boyarskikh/SpaceInvasionFrontend

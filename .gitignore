@@ -74,3 +74,6 @@ login.pug.js
 registration.pug.js
 scoreboard.pug.js
 *.html
+
+# Semantic cache
+**/semantic/**

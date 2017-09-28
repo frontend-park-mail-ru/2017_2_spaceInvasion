@@ -5,6 +5,7 @@
   const userService = new UserService();
 
   const app = new Block(document.getElementById('application'));
+  const curUser = document.querySelector('#signUpBtn.ui.primary.button');
 
   const sections = {
 
@@ -43,9 +44,10 @@
       .then(() => userService.getData(true))
       .then(() => {
         sections.login.loginform.reset();
+        curUser.innerText = userService.user.username;
         // openGamePage();
       })
-      .catch();
+      .catch((err) => { curUser.innerText = `err: ${err.status}; ${err.message}`; });
   }
 
   // Отправка формы регистрации.
@@ -54,9 +56,11 @@
       .then(() => userService.getData(true))
       .then(() => {
         sections.signup.signupform.reset();
+        curUser.innerText = userService.user.username;
+
         // openGamePage();
       })
-      .catch();
+      .catch((err) => { curUser.innerText = `err: ${err.status}; ${err.message}`; });
   }
   function openLogin() {
     sections.hide();
@@ -111,4 +115,10 @@
   window.showScoreboard = openScoreboard;
 
   openLogin();
+
+  if (userService.isLoggedIn()) {
+    curUser.innerText = userService.user.username;
+  } else {
+    curUser.innerText = 'Sign up';
+  }
 }());

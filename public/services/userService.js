@@ -8,13 +8,13 @@
     }
 
     // Регистрация пользователя
-    static register(email, login, password) {
-      return Http.Fetch('POST', '/user/signup', { email, login, password });
+    static register(email, username, password) {
+      return Http.Fetch('POST', '/user/signup', { email, username, password });
     }
 
     // Авторизация пользователя
-    static login(login, password) {
-      return Http.Fetch('POST', '/user/signin', { login, password });
+    static login(username, password) {
+      return Http.Fetch('POST', '/user/signin', { username, password });
     }
 
     // Залогинен ли пользователь
