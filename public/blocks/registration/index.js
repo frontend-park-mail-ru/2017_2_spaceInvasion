@@ -1,16 +1,17 @@
 (function () {
 	'use strict';
 
-	const Block = window.Block;
+	const Form = window.Form;
 	const RegistrationTemplate = window.registrationTemplate;
 
-	class Registration extends Block {
-		constructor() {
-			const el = document.createElement("div");
-			el.innerHTML = RegistrationTemplate();
-			super(el);
-		}
-	}
+	class Registration extends Form {
+        constructor() {
+            const el = document.createElement("div");
+            el.innerHTML = RegistrationTemplate();
+            super(el);
+        }
+    }
+
 
 	window.Registration = Registration;
 

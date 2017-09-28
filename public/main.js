@@ -41,6 +41,8 @@
         .append(sections.signup)
         .append(sections.about);
 
+
+
     // Отправка формы логина.
     function onSubmitLoginForm(formdata) {
          return userService.login(formdata.login, formdata.password)
@@ -51,8 +53,17 @@
              .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`)); // текст ошибки не работает
     }
 
+    // Отправка формы регистрации.
+    function onSubmitRegistrationForm(formdata) {
+        return userService.register(formdata.email, formdata.login,formdata.password)
+            .then(function () { return userService.getData(true); })
+            .then(function () { sections.signup.signupform.reset();
+                //openGamePage();
+            })
+            .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`)); // текст ошибки не работает
+    }
+
     function openLogin() {
-    	console.log("openLogin");
 		sections.hide();						
             if (!sections.login.ready) {
                 sections.login.loginform = new Login();
@@ -64,9 +75,12 @@
 		}
 
 		function openRegistration() {
+    	console.log("openRegistration");
 			sections.hide();							
             if (!sections.signup.ready) {
-                sections.signup.append(new Registration());
+                sections.signup.signupform = new Registration();
+                sections.signup.append(sections.signup.signupform);
+                sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
 				sections.signup.ready = true;
 			}
 			sections.signup.show();			
