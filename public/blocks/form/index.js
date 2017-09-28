@@ -16,11 +16,11 @@
         if (errors.length !== 0) {
           Form.appendErrors(errors, this);
         } else {
-          elements.forEach((el) => {
-            if (el.name !== 'ValidateBtn') {
-              formData[el.name] = el.value;
+          for (let i = 0; i < elements.length; i += 1) {
+            if (elements[i].name !== 'ValidateBtn') {
+              formData[elements[i].name] = elements[i].value;
             }
-          });
+          }
           callback(formData);
         }
       });
@@ -28,30 +28,31 @@
 
     reset() {
       const form = this.el.querySelector('.formWithValidation');
-      form.elements.forEach((element) => {
-        if (element.name !== 'ValidateBtn') {
-          element.value = ''; // eslint-disable-line no-param-reassign
+      const { elements } = form;
+      for (let i = 0; i < elements.length; i += 1) {
+        if (elements[i].name !== 'ValidateBtn') {
+          elements[i].value = ''; // eslint-disable-line no-param-reassign
           this.resetErrors();
         }
-      });
+      }
     }
 
     static validation(arr) {
       const arrInvalidateFields = [];
-      arr.forEach((element) => {
-        if (element.value === '' && element.name !== 'ValidateBtn') {
-          arrInvalidateFields.push(element);
+      for (let i = 0; i < arr.length; i += 1) {
+        if (arr[i].value === '' && arr[i].name !== 'ValidateBtn') {
+          arrInvalidateFields.push(arr[i]);
         }
-      });
+      }
       return arrInvalidateFields;
     }
 
     resetErrors() {
       const errors = this.el.querySelectorAll('.message');
-      errors.forEach((err) => {
-        err.hidden = true; // eslint-disable-line no-param-reassign
-        err.parentNode.querySelector('input').classList.remove('errorBorder');
-      });
+      for (let i = 0; i < errors.length; i += 1) {
+        errors[i].hidden = true; // eslint-disable-line no-param-reassign
+        errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
+      }
     }
 
     static appendErrors(arr, form) {

@@ -36,6 +36,6 @@ function navigate() {
   }
 }
 
-menuItems.forEach((el) => {
-  el.addEventListener('click', navigate.bind(el));
-});
+for (let i = 0; i < menuItems.length; i += 1) {
+  menuItems[i].addEventListener('click', navigate.bind(menuItems[i]));
+}
