@@ -14,7 +14,8 @@ script:
   - "npm test"
 cache:
   directories:
-    - src/node_modules
+    - node_modules
+    - public/semantic
 deploy:
   provider: heroku
   api_key:
