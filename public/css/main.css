@@ -16,7 +16,15 @@ body{
     width: 400px;
 }
 
+.table.ui.leaderboard{
+    margin-top: 40px;
+}
+
 .ui.grid.about{
+    margin-top: 100px;
+}
+
+.ui.grid.leaderboard{
     margin-top: 100px;
 }
 
@@ -52,4 +60,8 @@ body{
 
 .displayClass {
     display: block;
+}
+
+.table.ui.selectable.celled.table{
+    width: 300px;
 }

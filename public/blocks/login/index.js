@@ -1,5 +1,5 @@
-(function () {
-	'use strict';
+(function() {
+    'use strict';
 
 	const LoginTemplate = window.loginTemplate;
 	const Form = window.Form;

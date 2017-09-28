@@ -1,5 +1,5 @@
-(function () {
-	'use strict';
+(function() {
+    'use strict';
 
 	const Form = window.Form;
 	const RegistrationTemplate = window.registrationTemplate;
@@ -11,8 +11,6 @@
             super(el);
         }
     }
-
-
-	window.Registration = Registration;
+    window.Registration = Registration;
 
 })();

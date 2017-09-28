@@ -2,16 +2,16 @@
     'use strict';
 
     const Block = window.Block;
-    const AboutTemplate = window.aboutTemplate;
+    const ScoreboardTemplate = window.scoreboardTemplate;
 
-    class About extends Block {
+    class Scoreboard extends Block {
         constructor() {
             const el = document.createElement("div");
-            el.innerHTML = AboutTemplate();
+            el.innerHTML = ScoreboardTemplate({count:10});
             super(el);
         }
     }
 
-    window.About = About;
+    window.Scoreboard = Scoreboard;
 
 })();
