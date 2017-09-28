@@ -42,3 +42,14 @@ body{
 .ui.container.labeled.button.user.likes{
     margin-bottom: 20px;
 }
+
+.errorBorder {
+    border-color: red !important;
+}
+.message {
+    color: red;
+}
+
+.displayClass {
+    display: block;
+}
