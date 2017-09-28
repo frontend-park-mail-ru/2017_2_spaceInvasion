@@ -9,12 +9,12 @@
 
     // Регистрация пользователя
     static register(email, login, password) {
-      return Http.FetchPost('/user/signup', { email, login, password });
+      return Http.Fetch('POST', '/user/signup', { email, login, password });
     }
 
     // Авторизация пользователя
     static login(login, password) {
-      return Http.FetchPost('/user/signin', { login, password });
+      return Http.Fetch('POST', '/user/signin', { login, password });
     }
 
     // Залогинен ли пользователь
@@ -27,7 +27,7 @@
         return Promise.resolve(this.user);
       }
 
-      return Http.FetchGet('/me')
+      return Http.Fetch('GET', '/me')
         .then((userdata) => {
           this.user = userdata;
           return userdata;
