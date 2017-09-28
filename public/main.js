@@ -1,7 +1,8 @@
 (function main() {
   const {
-    Block, Login, About, Scoreboard, Registration,
+    UserService, Block, Login, About, Scoreboard, Registration,
   } = window;
+  const userService = new UserService();
 
   const app = new Block(document.getElementById('application'));
 
@@ -36,31 +37,51 @@
     .append(sections.about)
     .append(sections.scoreboard);
 
+  // Отправка формы логина.
+  function onSubmitLoginForm(formdata) {
+    return UserService.login(UserService.login, formdata.password)
+      .then(() => userService.getData(true))
+      .then(() => {
+        sections.login.loginform.reset();
+        // openGamePage();
+      })
+      .catch();
+  }
+
+  // Отправка формы регистрации.
+  function onSubmitRegistrationForm(formdata) {
+    return UserService.register(formdata.email, UserService.login, formdata.password)
+      .then(() => userService.getData(true))
+      .then(() => {
+        sections.signup.signupform.reset();
+        // openGamePage();
+      })
+      .catch();
+  }
   function openLogin() {
     sections.hide();
     if (!sections.login.ready) {
-      sections
-        .login
-        .append(new Login());
+      sections.login.loginform = new Login();
+      sections.login.append(sections.login.loginform);
+      sections.login.loginform.onSubmit(onSubmitLoginForm);
       sections.login.ready = true;
     }
-    sections
-      .login
-      .show();
+    sections.login.loginform.reset();
+    sections.login.show();
   }
 
   function openRegistration() {
     sections.hide();
     if (!sections.signup.ready) {
-      sections
-        .signup
-        .append(new Registration());
+      sections.signup.signupform = new Registration();
+      sections.signup.append(sections.signup.signupform);
+      sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
       sections.signup.ready = true;
     }
-    sections
-      .signup
-      .show();
+    sections.signup.signupform.reset();
+    sections.signup.show();
   }
+
 
   function openScoreboard() {
     sections.hide();
@@ -78,14 +99,10 @@
   function openAbout() {
     sections.hide();
     if (!sections.about.ready) {
-      sections
-        .about
-        .append(new About());
+      sections.about.append(new About());
       sections.about.ready = true;
     }
-    sections
-      .about
-      .show();
+    sections.about.show();
   }
 
   window.showHome = openLogin;

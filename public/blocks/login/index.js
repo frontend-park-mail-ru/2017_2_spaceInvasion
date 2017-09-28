@@ -1,8 +1,8 @@
 (function loginIndex() {
-  const { Block } = window;
+  const { Form } = window;
   const LoginTemplate = window.loginTemplate;
 
-  class Login extends Block {
+  class Login extends Form {
     constructor() {
       const el = document.createElement('div');
       el.innerHTML = LoginTemplate();

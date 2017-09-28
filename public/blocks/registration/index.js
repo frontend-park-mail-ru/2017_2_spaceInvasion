@@ -1,8 +1,8 @@
 (function registrationIndex() {
-  const { Block } = window;
+  const { Form } = window;
   const RegistrationTemplate = window.registrationTemplate;
 
-  class Registration extends Block {
+  class Registration extends Form {
     constructor() {
       const el = document.createElement('div');
       el.innerHTML = RegistrationTemplate();
