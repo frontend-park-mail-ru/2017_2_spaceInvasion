@@ -1,2 +1,5 @@
 # Node package manager cache
 node_modules
+
+# Compiled pug files
+*.pug.js

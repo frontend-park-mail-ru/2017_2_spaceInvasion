@@ -73,3 +73,4 @@ about.pug.js
 login.pug.js
 registration.pug.js
 scoreboard.pug.js
+public/templates/*.html

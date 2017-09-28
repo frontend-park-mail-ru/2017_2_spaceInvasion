@@ -1,17 +1,14 @@
-(function() {
-    'use strict';
+(function scoreboardIndex() {
+  const { Block } = window;
+  const ScoreboardTemplate = window.scoreboardTemplate;
 
-    const Block = window.Block;
-    const ScoreboardTemplate = window.scoreboardTemplate;
-
-    class Scoreboard extends Block {
-        constructor() {
-            const el = document.createElement("div");
-            el.innerHTML = ScoreboardTemplate({count:10});
-            super(el);
-        }
+  class Scoreboard extends Block {
+    constructor() {
+      const el = document.createElement('div');
+      el.innerHTML = ScoreboardTemplate({ count: 10 });
+      super(el);
     }
+  }
 
-    window.Scoreboard = Scoreboard;
-
-})();
+  window.Scoreboard = Scoreboard;
+}());
