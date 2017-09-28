@@ -50,7 +50,7 @@
              .then(function () { sections.login.loginform.reset();
                  //openGamePage();
              })
-             .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`)); // текст ошибки не работает
+             .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
     }
 
     // Отправка формы регистрации.
@@ -60,7 +60,7 @@
             .then(function () { sections.signup.signupform.reset();
                 //openGamePage();
             })
-            .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`)); // текст ошибки не работает
+            .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
     }
 
     function openLogin() {

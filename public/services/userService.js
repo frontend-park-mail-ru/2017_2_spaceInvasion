@@ -10,20 +10,8 @@
         }
 
         // Регистрация пользователя
-        register(email, login, password, callback) {
-            return new Promise(function(resolve, reject) {
-                Http.Post('/register', {email, login, password}, function(err, resp) {
-                    if (callback) {
-                        callback(err, resp);
-                    }
-
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(resp);
-                    }
-                });
-            });
+        register(email, login, password) {
+          return Http.FetchPost('/user/signup', {email, login, password});
         }
 
         // Авторизация пользователя
