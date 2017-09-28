@@ -15,7 +15,6 @@ script:
 cache:
   directories:
     - node_modules
-    - public/semantic
 deploy:
   provider: heroku
   api_key:
