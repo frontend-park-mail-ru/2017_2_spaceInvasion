@@ -11,6 +11,7 @@
             super(el);
         }
     }
+
     window.Registration = Registration;
 
 })();

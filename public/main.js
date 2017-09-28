@@ -74,7 +74,7 @@
     }
 
     function openLogin() {
-		sections.hide();						
+		sections.hide();
             if (!sections.login.ready) {
                 sections.login.loginform = new Login();
 				sections.login.append(sections.login.loginform);
@@ -86,7 +86,7 @@
 		}
 
 		function openRegistration() {
-			sections.hide();							
+			sections.hide();
             if (!sections.signup.ready) {
                 sections.signup.signupform = new Registration();
                 sections.signup.append(sections.signup.signupform);
@@ -94,7 +94,7 @@
 				sections.signup.ready = true;
 			}
 			sections.signup.signupform.reset();
-			sections.signup.show();			
+			sections.signup.show();
 		}
 
 
@@ -114,7 +114,7 @@
 		function openAbout() {
 			sections.hide();
             if (!sections.about.ready) {
-                sections.about.append(new About());				
+                sections.about.append(new About());
 				sections.about.ready = true;
 			}
 			sections.about.show();
