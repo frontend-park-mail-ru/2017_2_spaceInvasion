@@ -3,3 +3,5 @@ node_modules
 
 # Compiled pug files
 *.pug.js
+
+**/semantic/**
