@@ -1,10 +1,10 @@
 (function() {
     'use strict';
 
-    const Block = window.Block;
-    const RegistrationTemplate = window.registrationTemplate;
+	const Form = window.Form;
+	const RegistrationTemplate = window.registrationTemplate;
 
-    class Registration extends Block {
+	class Registration extends Form {
         constructor() {
             const el = document.createElement("div");
             el.innerHTML = RegistrationTemplate();

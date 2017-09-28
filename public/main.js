@@ -1,5 +1,7 @@
-(function() {
-    'use strict';
+(function () {
+	'use strict';
+    const UserService = window.UserService;
+    const userService = new UserService();
 
     // const Http = window.Http; if (window.location.host ===
     // 'space-invasion.herokuapp.com') { 	// enable CORS TO-DO edit backend url
@@ -46,60 +48,77 @@
     app
         .append(sections.login)
         .append(sections.signup)
-        .append(sections.about)
-        .append(sections.scoreboard)
+      .append(sections.scoreboard)
+      .append(sections.about);
+
+
+
+    // Отправка формы логина.
+    function onSubmitLoginForm(formdata) {
+         return userService.login(formdata.login, formdata.password)
+             .then(function () { return userService.getData(true); })
+             .then(function () { sections.login.loginform.reset();
+                 //openGamePage();
+             })
+             .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
+    }
+
+    // Отправка формы регистрации.
+    function onSubmitRegistrationForm(formdata) {
+        return userService.register(formdata.email, formdata.login,formdata.password)
+            .then(function () { return userService.getData(true); })
+            .then(function () { sections.signup.signupform.reset();
+                //openGamePage();
+            })
+            .catch((err) => alert(`Some error ${err.status}: ${err.responseText}`));
+    }
 
     function openLogin() {
-        sections.hide();
-        if (!sections.login.ready) {
-            sections
-                .login
-                .append(new Login());
-            sections.login.ready = true;
-        }
-        sections
-            .login
-            .show();
-    }
+		sections.hide();
+            if (!sections.login.ready) {
+                sections.login.loginform = new Login();
+				sections.login.append(sections.login.loginform);
+                sections.login.loginform.onSubmit(onSubmitLoginForm);
+				sections.login.ready = true;
+			}
+      sections.login.loginform.reset();
+			sections.login.show();
+		}
 
-    function openRegistration() {
-        sections.hide();
-        if (!sections.signup.ready) {
-            sections
-                .signup
-                .append(new Registration());
-            sections.signup.ready = true;
-        }
-        sections
-            .signup
-            .show();
-    }
+		function openRegistration() {
+			sections.hide();
+            if (!sections.signup.ready) {
+                sections.signup.signupform = new Registration();
+                sections.signup.append(sections.signup.signupform);
+                sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
+				sections.signup.ready = true;
+			}
+			sections.signup.signupform.reset();
+			sections.signup.show();
+		}
 
-    function openScoreboard() {
-        sections.hide();
-        if (!sections.scoreboard.ready) {
-            sections
-                .scoreboard
-                .append(new Scoreboard());
-            sections.scoreboard.ready = true;
-        }
-        sections
-            .scoreboard
-            .show();
-    }
 
-    function openAbout() {
-        sections.hide();
-        if (!sections.about.ready) {
-            sections
-                .about
-                .append(new About());
-            sections.about.ready = true;
-        }
-        sections
-            .about
-            .show();
-        window.alertDialog();
+  function openScoreboard() {
+    sections.hide();
+    if (!sections.scoreboard.ready) {
+      sections
+        .scoreboard
+        .append(new Scoreboard());
+      sections.scoreboard.ready = true;
+    }
+    sections
+      .scoreboard
+      .show();
+  }
+
+		function openAbout() {
+			sections.hide();
+            if (!sections.about.ready) {
+                sections.about.append(new About());
+				sections.about.ready = true;
+			}
+			sections.about.show();
+			window.alertDialog();
     }
     openLogin();
 })();

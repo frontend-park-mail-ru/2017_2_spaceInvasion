@@ -51,6 +51,17 @@ body{
     margin-bottom: 20px;
 }
 
+.errorBorder {
+    border-color: red !important;
+}
+.message {
+    color: red;
+}
+
+.displayClass {
+    display: block;
+}
+
 .table.ui.selectable.celled.table{
     width: 300px;
 }

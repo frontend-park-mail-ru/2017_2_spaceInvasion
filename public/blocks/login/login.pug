@@ -5,18 +5,20 @@ body
             .content.left.aligned
                 .header Welcome
                 .description
-                    form.ui.form
-                        .field
+                    form.ui.form.formWithValidation
+                        .field(name = "loginField")
+                            span(class = "message", hidden=true) This field can't be empty
                             label Login
                             .ui.left.icon.input
                                 input(type="text", name="login", placeholder="Login")
                                 i.user.icon
-                        .field
+                        .field(name = "passwordField")
+                            span(class = "message", hidden=true) This field can't be empty
                             label Password
                             .ui.left.icon.input
                                 input(type="password", name="password", placeholder="Password")
                                 i.lock.icon
-                        button.ui.submit.button(type="submit") Log in
+                        button.ui.submit.button(type="submit", name="ValidateBtn") Log in
                         .ui.error.message
             .extra.content.left.aligned
                 button.ui.vk.button

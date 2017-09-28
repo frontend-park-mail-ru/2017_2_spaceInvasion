@@ -1,17 +1,16 @@
 (function() {
     'use strict';
 
-    const Block = window.Block;
-    const LoginTemplate = window.loginTemplate;
+	const LoginTemplate = window.loginTemplate;
+	const Form = window.Form;
 
-    class Login extends Block {
-        constructor() {
-            const el = document.createElement("div");
-            el.innerHTML = LoginTemplate();
-            super(el);
-        }
-    }
-
-    window.Login = Login;
+	class Login extends Form {
+		constructor() {
+			const el = document.createElement("div");
+			el.innerHTML = LoginTemplate();
+			super(el);
+		}
+	}
+	window.Login = Login;
 
 })();
