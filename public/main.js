@@ -71,11 +71,11 @@
                 sections.login.loginform.onSubmit(onSubmitLoginForm);
 				sections.login.ready = true;
 			}
+      sections.login.loginform.reset();
 			sections.login.show();
 		}
 
 		function openRegistration() {
-    	console.log("openRegistration");
 			sections.hide();							
             if (!sections.signup.ready) {
                 sections.signup.signupform = new Registration();
@@ -83,6 +83,7 @@
                 sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
 				sections.signup.ready = true;
 			}
+			sections.signup.signupform.reset();
 			sections.signup.show();			
 		}
 		

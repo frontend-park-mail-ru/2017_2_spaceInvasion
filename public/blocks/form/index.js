@@ -17,7 +17,7 @@
 
                 const elements = form.elements;
 
-                const errors = Form.validationLogin(elements);
+                const errors = Form.validation(elements);
 
                 if (errors.length !== 0){
                     Form.appendErrors(errors,this);
@@ -32,12 +32,23 @@
             }.bind(this));
         }
 
-        static validationLogin (arr){
+      reset() {
+        const form = this.el.querySelector(`.formWithValidation`);
+        for (let element of form.elements) {
+          if (element.name!=="ValidateBtn"){
+            element.value = "";
+            this.resetErrors();
+          }
+        }
+
+      }
+
+        static validation (arr){
             let arrInvalidateFields =[];
-            for (let element of arr){
-                if (element.value === "" && element.name!=="ValidateBtn"){
-                    arrInvalidateFields.push(element);
-                }
+            for (let element of arr) {
+              if (element.value === "" && element.name!=="ValidateBtn"){
+                arrInvalidateFields.push(element);
+              }
             }
             return arrInvalidateFields;
         }
@@ -50,10 +61,10 @@
             }
         }
 
-        static appendErrors (arr, f) {
+        static appendErrors (arr, form) {
             arr.forEach(function (element) {
                 element.classList.add('errorBorder');
-                const message = f.el.querySelector(`div[name="${element.name}Field"] .message`);
+                const message = form.el.querySelector(`div[name="${element.name}Field"] .message`);
                 message.hidden = false;
             })
         }
