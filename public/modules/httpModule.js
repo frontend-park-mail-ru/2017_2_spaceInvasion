@@ -1,4 +1,5 @@
 (function httpModule() {
+
     const baseUrl = 'https://space-invasion-backend.herokuapp.com/v1';
 
     class Http {
@@ -7,13 +8,12 @@
             return fetch(url, {
                     method: 'GET',
                     mode: 'cors',
-                    credentials: 'include',
+                    credentials: 'include'
                 })
-                .then((response) => {
+                .then(function(response) {
                     if (response.status >= 400) {
                         throw response;
                     }
-
                     return response.json();
                 });
         }
