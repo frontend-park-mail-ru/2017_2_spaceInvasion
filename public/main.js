@@ -1,6 +1,6 @@
 (function main() {
   const {
-    UserService, Block, Login, About, Scoreboard, Registration,
+    UserService, Block, Login, About, Leaderboard, Registration,
   } = window;
   const userService = new UserService();
 
@@ -11,7 +11,7 @@
     login: Block.Create('section', {}, ['login-section']),
     signup: Block.Create('section', {}, ['signup-section']),
     about: Block.Create('section', {}, ['about-section']),
-    scoreboard: Block.Create('section', {}, ['scoreboard-section']),
+    leaderboard: Block.Create('section', {}, ['leaderboard-section']),
 
     hide() {
       this
@@ -24,7 +24,7 @@
         .about
         .hide();
       this
-        .scoreboard
+        .leaderboard
         .hide();
     },
   };
@@ -35,7 +35,7 @@
     .append(sections.login)
     .append(sections.signup)
     .append(sections.about)
-    .append(sections.scoreboard);
+    .append(sections.leaderboard);
 
   // Отправка формы логина.
   function onSubmitLoginForm(formdata) {
@@ -82,17 +82,16 @@
     sections.signup.show();
   }
 
-
-  function openScoreboard() {
+  function openLeaderboard() {
     sections.hide();
-    if (!sections.scoreboard.ready) {
+    if (!sections.leaderboard.ready) {
       sections
-        .scoreboard
-        .append(new Scoreboard());
-      sections.scoreboard.ready = true;
+        .leaderboard
+        .append(new Leaderboard());
+      sections.leaderboard.ready = true;
     }
     sections
-      .scoreboard
+      .leaderboard
       .show();
   }
 
@@ -108,7 +107,7 @@
   window.showHome = openLogin;
   window.showAbout = openAbout;
   window.showRegistration = openRegistration;
-  window.showScoreboard = openScoreboard;
+  window.showLeaderboard = openLeaderboard;
 
   openLogin();
 }());

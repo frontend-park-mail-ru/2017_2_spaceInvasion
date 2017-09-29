@@ -72,5 +72,5 @@ secrets.json
 about.pug.js
 login.pug.js
 registration.pug.js
-scoreboard.pug.js
+leaderboard.pug.js
 *.html
