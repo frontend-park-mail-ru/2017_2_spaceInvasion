@@ -47,7 +47,7 @@
         curUser.innerText = userService.user.username;
         // openGamePage();
       })
-      .catch((err) => { curUser.innerText = `err: ${err.status}; ${err.message}`; });
+      .catch((err) => { alert(curUser.innerText = `err: ${err.status}; ${err.message}`); });
   }
 
   // Отправка формы регистрации.
