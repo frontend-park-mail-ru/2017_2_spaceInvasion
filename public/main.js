@@ -1,14 +1,6 @@
 (function() {
     'use strict';
 
-    const Http = window.Http;
-
-    if (window.location.host === 'space-invasion.herokuapp.com') {
-        // enable CORS
-        Http.BaseUrl = 'https://space-invasion-backend.herokuapp.com';
-    }
-
-
     const Block = window.Block;
     const Login = window.Login;
     const About = window.About;
