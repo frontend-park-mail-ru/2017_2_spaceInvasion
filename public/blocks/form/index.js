@@ -31,7 +31,7 @@
       const { elements } = form;
       for (let i = 0; i < elements.length; i += 1) {
         if (elements[i].name !== 'ValidateBtn') {
-          elements[i].value = ''; // eslint-disable-line no-param-reassign
+          elements[i].value = '';
           this.resetErrors();
         }
       }
@@ -50,7 +50,7 @@
     resetErrors() {
       const errors = this.el.querySelectorAll('.message');
       for (let i = 0; i < errors.length; i += 1) {
-        errors[i].hidden = true; // eslint-disable-line no-param-reassign
+        errors[i].hidden = true;
         errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
       }
     }
