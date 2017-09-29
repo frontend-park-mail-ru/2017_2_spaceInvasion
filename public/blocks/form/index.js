@@ -31,11 +31,9 @@
       const form = this.el.querySelector('.formWithValidation');
       const { elements } = form;
       for (let i = 0; i < elements.length; i += 1) {
-        if (elements[i].name !== 'ValidateBtn') {
-          elements[i].value = ''; // eslint-disable-line no-param-reassign
-          this.resetErrors();
-        }
+        elements[i].value = ''; // eslint-disable-line no-param-reassign
       }
+      this.resetErrors();
     }
 
     static validation(arr, form, rules) {
@@ -47,12 +45,12 @@
         } else if (arr[i].name === 'login') {
           errorMessages = Form.validateField(arr[i].value, rules.rulesForLogin);
         } else if (arr[i].name === 'password') {
-          if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value){
+          if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value) {
             errorMessages = ['Password doesn\'t match'];
+            arr.repeatedPassword.classList.add('errorBorder');
           } else {
             errorMessages = Form.validateField(arr[i].value, rules.rulesForPassword);
           }
-          arr[i + 1].classList.add('errorBorder');
         }
         if (errorMessages.length !== 0) {
           Form.appendErrors(errorMessages, arr[i], form );
@@ -69,8 +67,6 @@
         errors[i].hidden = true; // eslint-disable-line no-param-reassign
         errors[i].innerText = '';
         errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
-        console.log(errors[i].parentNode.querySelector('input').classList);
-
       }
     }
 
@@ -78,8 +74,8 @@
       htmlElement.classList.add('errorBorder');
       arrOfErrors.forEach((element) => {
         const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message`);
-        if (message !== null){
-          message.innerText += element+'\n';
+        if (message !== null) {
+          message.innerText += `${element}\n`;
           message.hidden = false;
         }
       });
