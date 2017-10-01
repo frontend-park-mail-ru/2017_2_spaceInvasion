@@ -2,22 +2,23 @@
   const { Block } = window;
 
   class Form extends Block {
+    constructor(el, rules) {
+      super(el);
+      this.rules = rules;
+    }
     onSubmit(callback) {
       this.el.addEventListener('submit', (e) => {
         e.preventDefault();
         this.resetErrors();
         const formData = {};
         const form = this.el.querySelector('.formWithValidation');
-
         const { elements } = form;
 
-        const errors = Form.validation(elements);
+        const errors = Form.validation(elements, this.el, this.rules);
 
-        if (errors.length !== 0) {
-          Form.appendErrors(errors, this);
-        } else {
+        if (!errors) {
           for (let i = 0; i < elements.length; i += 1) {
-            if (elements[i].name !== 'ValidateBtn') {
+            if (elements[i].name !== 'ValidateBtn' && elements[i].name !== 'repeatedPassword') {
               formData[elements[i].name] = elements[i].value;
             }
           }
@@ -31,36 +32,60 @@
       const { elements } = form;
       for (let i = 0; i < elements.length; i += 1) {
         if (elements[i].name !== 'ValidateBtn') {
-          elements[i].value = '';
+          elements[i].value = '';// eslint-disable-line no-param-reassign
           this.resetErrors();
         }
       }
     }
 
-    static validation(arr) {
-      const arrInvalidateFields = [];
+    static validation(arr, form, rules) {
+      let errCount = 0;
+      let errorMessages = [];
       for (let i = 0; i < arr.length; i += 1) {
-        if (arr[i].value === '' && arr[i].name !== 'ValidateBtn') {
-          arrInvalidateFields.push(arr[i]);
+        if (arr[i].name === 'email') {
+          errorMessages = Form.validateField(arr[i].value, rules.rulesForEmail);
+        } else if (arr[i].name === 'login') {
+          errorMessages = Form.validateField(arr[i].value, rules.rulesForLogin);
+        } else if (arr[i].name === 'password') {
+          if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value) {
+            errorMessages = ['Password doesn\'t match'];
+            arr.repeatedPassword.classList.add('errorBorder');
+          } else {
+            errorMessages = Form.validateField(arr[i].value, rules.rulesForPassword);
+          }
+        }
+        if (errorMessages.length !== 0) {
+          Form.appendErrors(errorMessages, arr[i], form);
+          errCount += errorMessages.length;
         }
       }
-      return arrInvalidateFields;
+
+      return errCount;
     }
 
     resetErrors() {
       const errors = this.el.querySelectorAll('.message');
       for (let i = 0; i < errors.length; i += 1) {
         errors[i].hidden = true;
+        errors[i].innerText = '';
         errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
       }
     }
 
-    static appendErrors(arr, form) {
-      arr.forEach((element) => {
-        element.classList.add('errorBorder');
-        const message = form.el.querySelector(`div[name="${element.name}Field"] .message`);
-        message.hidden = false;
+    static appendErrors(arrOfErrors, htmlElement, form) {
+      htmlElement.classList.add('errorBorder');
+      arrOfErrors.forEach((element) => {
+        const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message`);
+        if (message !== null) {
+          message.innerText += `${element}\n`;
+          message.hidden = false;
+        }
       });
+    }
+
+    // Функция валидации данных.
+    static validateField(target, rules) {
+      return rules.filter(rule => !rule.predicate(target)).map(rule => rule.message);
     }
   }
 

@@ -40,19 +40,21 @@
 
   // Отправка формы логина.
   function onSubmitLoginForm(formdata) {
-    return userService.login(UserService.login, formdata.password)
+    return UserService.login(formdata.login, formdata.password)
+      .then((response) => { curUser.innerText = `Ваш никнейм: ${response.username}`; })
       .then(() => userService.getData(true))
       .then(() => {
         sections.login.loginform.reset();
         curUser.innerText = userService.user.username;
         // openGamePage();
-      })
-      .catch((err) => { curUser.innerText = `err: ${err.status}; ${err.message}`; });
+      });
   }
+
 
   // Отправка формы регистрации.
   function onSubmitRegistrationForm(formdata) {
-    return userService.register(formdata.email, UserService.login, formdata.password)
+    return UserService.register(formdata.email, formdata.login, formdata.password)
+
       .then(() => userService.getData(true))
       .then(() => {
         sections.signup.signupform.reset();

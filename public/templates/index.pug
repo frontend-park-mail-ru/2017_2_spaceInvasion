@@ -8,11 +8,12 @@ html(lang="en")
     body
         include navbar.pug
         #application
-        
+        script(src="../utils/validationRules.js")
         script(src="/blocks/block/index.js")
         script(src="/blocks/form/index.js")
         script(src="/modules/httpModule.js")
         script(src="/services/userService.js")
+
 
 
         script(src="/blocks/about/about.pug.js")
