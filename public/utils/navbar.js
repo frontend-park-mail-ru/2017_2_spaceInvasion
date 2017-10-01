@@ -1,11 +1,12 @@
 const menuItems = document.querySelectorAll('.item');
+window.currentTab = 'home';
 
 function setSelection(el) {
   document.getElementById(el).setAttribute('class', 'active item');
 }
 
 function clearSelection() {
-  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'scoreboardBtn'];
+  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'leaderboardBtn'];
   tabs.forEach((el) => {
     document.getElementById(el).setAttribute('class', 'item');
   }, this);
@@ -16,20 +17,27 @@ function navigate() {
     return;
   }
   clearSelection();
+  if (window.currentTab === 'about' && typeof window.devDialog !== 'undefined') {
+    window.closeDialog();
+  }
   setSelection(this.id);
   switch (this.id) {
     case 'homeBtn':
+      window.currentTab = 'home';
       window.showHome();
       break;
     case 'aboutBtn':
+      window.currentTab = 'about';
       window.showAbout();
       break;
     case 'signUpBtn':
+      window.currentTab = 'signUp';
       clearSelection();
       window.showRegistration();
       break;
-    case 'scoreboardBtn':
-      window.showScoreboard();
+    case 'leaderboardBtn':
+      window.currentTab = 'leaderboard';
+      window.showLeaderboard();
       break;
     default:
       break;
