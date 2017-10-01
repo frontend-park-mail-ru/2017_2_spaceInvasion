@@ -2,7 +2,7 @@
   const baseUrl = 'http://space-invasion-backend.herokuapp.com/v1';
 
   class Http {
-    static Fetch(method = 'GET', address, body = {}) {
+    static Fetch(method = 'GET', address, body) {
       const url = (Http.BaseUrl || baseUrl) + address;
       return fetch(url, {
         method,

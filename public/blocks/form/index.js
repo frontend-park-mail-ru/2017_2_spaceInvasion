@@ -31,9 +31,11 @@
       const form = this.el.querySelector('.formWithValidation');
       const { elements } = form;
       for (let i = 0; i < elements.length; i += 1) {
-        elements[i].value = ''; // eslint-disable-line no-param-reassign
+        if (elements[i].name !== 'ValidateBtn') {
+          elements[i].value = '';// eslint-disable-line no-param-reassign
+          this.resetErrors();
+        }
       }
-      this.resetErrors();
     }
 
     static validation(arr, form, rules) {
@@ -64,7 +66,7 @@
     resetErrors() {
       const errors = this.el.querySelectorAll('.message');
       for (let i = 0; i < errors.length; i += 1) {
-        errors[i].hidden = true; // eslint-disable-line no-param-reassign
+        errors[i].hidden = true;
         errors[i].innerText = '';
         errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
       }

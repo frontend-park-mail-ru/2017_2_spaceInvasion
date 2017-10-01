@@ -1,5 +1,5 @@
 .ui.one.column.centered.grid.leaderboard
-  h2(style="color: #FFF") Scoreboard
+  h2(style="color: #FFF") Leaderboard
 .ui.one.column.centered.grid
     .content.left.aligned
       table.ui.selectable.celled.table.leaderboard
@@ -8,7 +8,8 @@
             th Player
             th Rating
         tbody
-        - for (var player = 0; player < count; ++player) 
+        - var index = 0
+        each player in data
           tr
-            td Vasiliy Dmitriev
-            td 100500
+            td #{++index}. #{player.username}
+            td #{player.score}
