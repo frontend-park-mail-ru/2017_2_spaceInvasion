@@ -41,13 +41,14 @@
   // Отправка формы логина.
   function onSubmitLoginForm(formdata) {
     return UserService.login(formdata.login, formdata.password)
-      .then(() => userService.getData(true))
-      .then(() => {
-        sections.login.loginform.reset();
-        curUser.innerText = userService.user.username;
-        // openGamePage();
-      })
-      .catch((err) => { console.log(curUser.innerText = `err: ${err.status}; ${err.message}`); });
+      .then(response => curUser.innerText = `Ваш никнейм: ${response.username}`)
+      // .then(() => userService.getData(true))
+      // .then(() => {
+      //   sections.login.loginform.reset();
+      //   curUser.innerText = userService.user.username;
+      //   // openGamePage();
+      // })
+      .catch((err) => { });
   }
 
   // Отправка формы регистрации.
