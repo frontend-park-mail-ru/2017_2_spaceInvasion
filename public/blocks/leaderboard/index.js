@@ -1,14 +1,14 @@
 (function leaderboardIndex() {
-  const { Block, Http, LeaderboardTemplate } = window;
+  const { Block, Http, leaderboardTemplate } = window;
 
-  function fetchLeaderboard() {
-    return Http.FetchGet('/leaderboard').then(res => res);
+  function fetchLeaderboard(el) {
+    Http.Fetch('GET', '/leaderboard').then((res) => { el.innerHTML = leaderboardTemplate({ data: res }); });
   }
 
   class Leaderboard extends Block {
     constructor() {
       const el = document.createElement('div');
-      el.innerHTML = LeaderboardTemplate({ data: fetchLeaderboard() });
+      fetchLeaderboard(el);
       super(el);
     }
   }
