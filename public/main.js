@@ -47,8 +47,7 @@
         sections.login.loginform.reset();
         curUser.innerText = userService.user.username;
         // openGamePage();
-      })
-      .catch(() => { });
+      });
   }
 
 
