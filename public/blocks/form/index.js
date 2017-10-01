@@ -53,7 +53,7 @@
           }
         }
         if (errorMessages.length !== 0) {
-          Form.appendErrors(errorMessages, arr[i], form );
+          Form.appendErrors(errorMessages, arr[i], form);
           errCount += errorMessages.length;
         }
       }
