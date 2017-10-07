@@ -59,27 +59,48 @@
         loginBtn.classList.add("loading");
         userService.login(formdata.login, formdata.password).then(data => data.json())
             .then((data) => {
-                userService.user = data;
-                loginBtn.classList.remove("loading");
-                sections.login.loginform.reset();
-                hideSignUp();
-                openPlayerPage();
+                if (data.result != "Singning in failed") {
+                    userService.user = data;
+                    loginBtn.classList.remove("loading");
+                    sections.login.loginform.reset();
+                    hideSignUp();
+                    openPlayerPage();
+                } else {
+                    loginBtn.classList.remove("loading");
+                    showError(data.result);
+                }
             });
     }
 
+    function dismissAllMessages() {
+        PNotify.removeAll();
+    }
+
+    function showError(message) {
+        new PNotify({
+            title: 'Error',
+            text: message,
+            type: 'error'
+        });
+    }
 
     // Отправка формы регистрации.
     function onSubmitRegistrationForm(formdata) {
         const regBtn = document.querySelector(".validateBtn");
         regBtn.classList.add("loading");
-        return userService.register(formdata.email, formdata.login, formdata.password).then(data => data.json())
+        userService.register(formdata.email, formdata.login, formdata.password).then(data => data.json())
             .then((data) => {
                 debugger
-                userService.user = data;
-                regBtn.classList.remove("loading");
-                sections.signup.signupform.reset();
-                hideSignUp();
-                openPlayerPage();
+                if (data.result != "Username already used") {
+                    userService.user = data;
+                    regBtn.classList.remove("loading");
+                    sections.signup.signupform.reset();
+                    hideSignUp();
+                    openPlayerPage();
+                } else {
+                    regBtn.classList.remove("loading");
+                    showError(data.result);
+                }
             })
     }
 
@@ -101,6 +122,7 @@
     }
 
     function openRegistration() {
+        dismissAllMessages();
         sections.hide();
         if (!sections.signup.ready) {
             sections.signup.signupform = new Registration();
@@ -113,6 +135,7 @@
     }
 
     function openLeaderboard() {
+        dismissAllMessages();
         sections.hide();
         if (!sections.leaderboard.ready) {
             sections
@@ -126,6 +149,7 @@
     }
 
     function openAbout() {
+        dismissAllMessages();
         sections.hide();
         if (!sections.about.ready) {
             sections.about.append(new About());
@@ -135,6 +159,7 @@
     }
 
     function openPlayerPage() {
+        dismissAllMessages();
         signUpBtn.setAttribute("style", "display:none");
         sections.hide();
         if (!sections.playerpage.ready) {
