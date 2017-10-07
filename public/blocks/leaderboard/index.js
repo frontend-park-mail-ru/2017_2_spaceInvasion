@@ -5,7 +5,6 @@
         Http.Fetch('GET', '/leaderboard').then(res => res.json())
             .then((res) => {
                 el.classList.remove("ui", "active", "loader");
-                debugger
                 el.innerHTML = leaderboardTemplate({ data: res });
             });
     }

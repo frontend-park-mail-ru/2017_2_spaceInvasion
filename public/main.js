@@ -90,7 +90,6 @@
         regBtn.classList.add("loading");
         userService.register(formdata.email, formdata.login, formdata.password).then(data => data.json())
             .then((data) => {
-                debugger
                 if (data.result != "Username already used") {
                     userService.user = data;
                     regBtn.classList.remove("loading");
@@ -165,6 +164,9 @@
         if (!sections.playerpage.ready) {
             sections.playerpage.append(new PlayerPage());
             sections.playerpage.ready = true;
+        } else {
+            sections.playerpage.el.removeChild(sections.playerpage.el.firstChild);
+            sections.playerpage.append(new PlayerPage());
         }
         sections.playerpage.show();
     }
