@@ -1,5 +1,5 @@
 (function httpModule() {
-    const baseUrl = 'http://space-invasion-backend.herokuapp.com/v1';
+    const baseUrl = 'https://space-invasion-backend.herokuapp.com/v1';
 
     class Http {
         static Fetch(method, path, body = undefined) {
