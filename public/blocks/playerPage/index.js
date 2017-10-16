@@ -1,22 +1,22 @@
-(function playerPageIndex() {
-    const { Block, playerpageTemplate } = window;
+import Block from '../block/index';
+import userService from '../../services/userService';
+import { showHome } from '../../main';
 
-    class PlayerPage extends Block {
-        constructor() {
-            const el = document.createElement('div');
-            el.innerHTML = playerpageTemplate({ "user": userService.user });
-            onLogoutBtnClick(el);
-            super(el);
-        }
-    }
+function onLogoutBtnClick(el) {
+  el.querySelector('.ui.logout').addEventListener('click', () => {
+    userService.logout().then(() => {
+      showHome();
+    });
+  });
+}
 
-    function onLogoutBtnClick(el) {
-        el.querySelector(".ui.logout").addEventListener("click", () => {
-            userService.logout().then(() => {
-                showHome();
-            })
-        });
-    }
+class PlayerPage extends Block {
+  constructor() {
+    const el = document.createElement('div');
+    el.innerHTML = window.playerpageTemplate({ user: userService.user });
+    onLogoutBtnClick(el);
+    super(el);
+  }
+}
 
-    window.PlayerPage = PlayerPage;
-}());
+export default PlayerPage;

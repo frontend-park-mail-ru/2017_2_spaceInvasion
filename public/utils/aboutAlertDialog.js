@@ -42,5 +42,4 @@ function alertDialog() {
   }, this);
 }
 
-window.alertDialog = alertDialog;
-window.closeAlertDialog = closeDialog;
+export { alertDialog, closeDialog };

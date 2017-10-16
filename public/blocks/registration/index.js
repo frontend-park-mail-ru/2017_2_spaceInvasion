@@ -1,15 +1,12 @@
-(function registrationIndex() {
-  const { Form } = window;
-  const RegistrationTemplate = window.registrationTemplate;
-  const validationRules = window.validationRulesForRegistration;
+import Form from '../form/index';
+import { validationRulesForRegistration as validationRules } from '../../utils/validationRules';
 
-  class Registration extends Form {
-    constructor() {
-      const el = document.createElement('div');
-      el.innerHTML = RegistrationTemplate();
-      super(el, validationRules);
-    }
+class Registration extends Form {
+  constructor() {
+    const el = document.createElement('div');
+    el.innerHTML = window.registrationTemplate();
+    super(el, validationRules);
   }
+}
 
-  window.Registration = Registration;
-}());
+export default Registration;

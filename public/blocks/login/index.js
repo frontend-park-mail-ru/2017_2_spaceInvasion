@@ -1,15 +1,12 @@
-(function loginIndex() {
-  const { Form } = window;
-  const LoginTemplate = window.loginTemplate;
-  const validationRules = window.validationRulesForLogin;
+import Form from '../form/index';
+import { validationRulesForLogin as validationRules } from '../../utils/validationRules';
 
-  class Login extends Form {
-    constructor() {
-      const el = document.createElement('div');
-      el.innerHTML = LoginTemplate();
-      super(el, validationRules);
-    }
+class Login extends Form {
+  constructor() {
+    const el = document.createElement('div');
+    el.innerHTML = window.loginTemplate();
+    super(el, validationRules);
   }
+}
 
-  window.Login = Login;
-}());
+export default Login;
