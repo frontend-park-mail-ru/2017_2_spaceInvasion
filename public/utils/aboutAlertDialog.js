@@ -1,5 +1,7 @@
 function closeDialog() {
-  window.devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
+  if (window.devDialog) {
+    window.devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
+  }
 }
 
 function initDialog() {

@@ -1,11 +1,10 @@
 import Block from '../block/index';
-
-const AboutTemplate = window.aboutTemplate;
+import aboutTemplate from './about.pug';
 
 class About extends Block {
   constructor() {
     const el = document.createElement('div');
-    el.innerHTML = AboutTemplate();
+    el.innerHTML = aboutTemplate();
     super(el);
   }
 }

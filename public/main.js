@@ -1,14 +1,14 @@
-import UserService from './services/userService';
+import PNotify from 'pnotify';
+import userService from './services/userService';
 import Block from './blocks/block/index';
 import Login from './blocks/login/index';
 import About from './blocks/about/index';
 import Leaderboard from './blocks/leaderboard/index';
 import Registration from './blocks/registration/index';
 import PlayerPage from './blocks/playerPage/index';
+import { alertDialog } from './utils/aboutAlertDialog';
 
-const userService = new UserService();
 const app = new Block(document.getElementById('application'));
-console.log(app);
 const signUpBtn = document.querySelector('.item#signUpBtn');
 
 const sections = {
@@ -51,7 +51,7 @@ function dismissAllMessages() {
 }
 
 function showError(message) {
-  PNotify({
+  return new PNotify({
     title: 'Error',
     text: message,
     type: 'error',
@@ -162,6 +162,7 @@ function openAbout() {
   if (!sections.about.ready) {
     sections.about.append(new About());
     sections.about.ready = true;
+    alertDialog();
   }
   sections.about.show();
 }

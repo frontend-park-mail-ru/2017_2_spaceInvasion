@@ -1,5 +1,9 @@
+import { closeDialog } from './aboutAlertDialog';
+import { showHome, showAbout, showLeaderboard, showRegistration } from '../main';
+
 const menuItems = document.querySelectorAll('.item');
-window.currentTab = 'home';
+const menu = document.querySelector('div.ui.huge.menu');
+menu.setAttribute('data-tab', 'home');
 
 function setSelection(el) {
   document.getElementById(el).setAttribute('class', 'active item');
@@ -17,27 +21,27 @@ function navigate() {
     return;
   }
   clearSelection();
-  if (window.currentTab === 'about' && typeof window.devDialog !== 'undefined') {
-    window.closeDialog();
+  if (menu.getAttribute('data-tab') === 'about' && typeof menu.getAttribute('data-dev-dialog') !== 'undefined') {
+    closeDialog();
   }
   setSelection(this.id);
   switch (this.id) {
     case 'homeBtn':
-      window.currentTab = 'home';
-      window.showHome();
+      menu.setAttribute('data-tab', 'home');
+      showHome();
       break;
     case 'aboutBtn':
-      window.currentTab = 'about';
-      window.showAbout();
+      menu.setAttribute('data-tab', 'about');
+      showAbout();
       break;
     case 'signUpBtn':
-      window.currentTab = 'signUp';
+      menu.setAttribute('data-tab', 'signUp');
       clearSelection();
-      window.showRegistration();
+      showRegistration();
       break;
     case 'leaderboardBtn':
-      window.currentTab = 'leaderboard';
-      window.showLeaderboard();
+      menu.setAttribute('data-tab', 'leaderboard');
+      showLeaderboard();
       break;
     default:
       break;

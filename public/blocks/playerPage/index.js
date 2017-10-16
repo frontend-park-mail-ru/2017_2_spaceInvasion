@@ -1,6 +1,7 @@
 import Block from '../block/index';
 import userService from '../../services/userService';
 import { showHome } from '../../main';
+import playerpageTemplate from './playerPage.pug';
 
 function onLogoutBtnClick(el) {
   el.querySelector('.ui.logout').addEventListener('click', () => {
@@ -13,7 +14,7 @@ function onLogoutBtnClick(el) {
 class PlayerPage extends Block {
   constructor() {
     const el = document.createElement('div');
-    el.innerHTML = window.playerpageTemplate({ user: userService.user });
+    el.innerHTML = playerpageTemplate({ user: userService.user });
     onLogoutBtnClick(el);
     super(el);
   }

@@ -1,10 +1,11 @@
 import Form from '../form/index';
 import { validationRulesForRegistration as validationRules } from '../../utils/validationRules';
+import registrationTemplate from './registration.pug';
 
 class Registration extends Form {
   constructor() {
     const el = document.createElement('div');
-    el.innerHTML = window.registrationTemplate();
+    el.innerHTML = registrationTemplate();
     super(el, validationRules);
   }
 }
