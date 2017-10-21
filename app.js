@@ -15,8 +15,8 @@ app.engine('html', require('pug').renderFile);
 
 app.set('view engine', 'pug');
 
-app.get('/', (req, res) => {
-  res.render('index.pug');
+app.get('*', (req, res) => {
+    res.render('index.pug');
 });
 
 app.use(express.static('public'));
