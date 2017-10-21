@@ -32,7 +32,7 @@ class UserService {
 
   // Залогинен ли пользователь
   isLoggedIn() {
-    return !!this.user;
+    return Boolean(this.user);
   }
 
   getData() {

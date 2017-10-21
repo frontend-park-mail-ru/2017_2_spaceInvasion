@@ -41,17 +41,23 @@ class Form extends Block {
     let errCount = 0;
     let errorMessages = [];
     for (let i = 0; i < arr.length; i += 1) {
-      if (arr[i].name === 'email') {
-        errorMessages = Form.validateField(arr[i].value, rules.rulesForEmail);
-      } else if (arr[i].name === 'login') {
-        errorMessages = Form.validateField(arr[i].value, rules.rulesForLogin);
-      } else if (arr[i].name === 'password') {
-        if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value) {
-          errorMessages = ['Password doesn\'t match'];
-          arr.repeatedPassword.classList.add('errorBorder');
-        } else {
-          errorMessages = Form.validateField(arr[i].value, rules.rulesForPassword);
-        }
+      switch (arr[i].name) {
+        case 'email':
+          errorMessages = Form.validateField(arr[i].value, rules.rulesForEmail);
+          break;
+        case 'login':
+          errorMessages = Form.validateField(arr[i].value, rules.rulesForLogin);
+          break;
+        case 'password':
+          if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value) {
+            errorMessages = ['Password doesn\'t match'];
+            arr.repeatedPassword.classList.add('errorBorder');
+          } else {
+            errorMessages = Form.validateField(arr[i].value, rules.rulesForPassword);
+          }
+          break;
+        default:
+          return 0;
       }
       if (errorMessages.length !== 0) {
         Form.appendErrors(errorMessages, arr[i], form);
