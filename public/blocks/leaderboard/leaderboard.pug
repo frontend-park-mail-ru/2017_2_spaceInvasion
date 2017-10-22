@@ -1,0 +1,15 @@
+.ui.one.column.centered.grid.leaderboard
+  h2(style="color: #FFF") Leaderboard
+.ui.one.column.centered.grid
+    .content.left.aligned
+      table.ui.selectable.celled.table.leaderboard
+        thead
+          tr
+            th Player
+            th Rating
+        tbody
+        - var index = 0
+        each player in data
+          tr
+            td #{++index}. #{player.username}
+            td #{player.score}

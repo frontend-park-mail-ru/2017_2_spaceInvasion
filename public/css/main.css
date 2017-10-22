@@ -1,0 +1,67 @@
+body{
+    background: url(/images/background2.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ui.card.login{
+    width: 400px;
+    margin-top: 100px;
+}
+
+.ui.card.registration{
+    margin-top: 100px;
+    width: 400px;
+}
+
+.table.ui.leaderboard{
+    margin-top: 40px;
+}
+
+.ui.grid.about{
+    margin-top: 100px;
+}
+
+.ui.grid.leaderboard{
+    margin-top: 100px;
+}
+
+.ui.circular.image{
+    width: 280px;
+    height: 280px;
+}
+
+.users.online.count, .users.online.title{
+    color: #FFF;
+    /* margin-left: 100px; */
+}
+
+.login.container{
+    width: 400px;
+}
+
+.one.column.login.grid{
+    margin: 0px;
+    width: 400px;
+}
+
+.ui.container.labeled.button.user.likes{
+    margin-bottom: 20px;
+}
+
+.errorBorder {
+    border-color: red !important;
+}
+.message {
+    color: red;
+}
+
+.displayClass {
+    display: block;
+}
+
+.table.ui.selectable.celled.table{
+    width: 300px;
+}
