@@ -85,7 +85,7 @@ matchesTable.pug.js
 **/semantic/**
 
 # PNotify
-**/pnotify*
+#**/pnotify*
 
 # Bundle
 **/dist/**
