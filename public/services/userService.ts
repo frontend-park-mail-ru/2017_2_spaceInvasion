@@ -1,7 +1,12 @@
 import Http from '../modules/httpModule';
+import User from '../models/user';
+
 import { showPlayerPage, showHome, showError } from '../main';
 
 class UserService {
+  user : User;
+  users : Array<User>;
+
   constructor() {
     this.user = null;
     this.users = [];
@@ -17,17 +22,25 @@ class UserService {
 
   // Регистрация пользователя
   register(email, username, password) {
-    this.user = Http.Fetch('POST', '/user/signup', { email, username, password });
-    if (this.user && !this.users.find(el => el.username === this.user.username)) {
+    const result = Http.Fetch('POST', '/user/signup', { email, username, password })
+      .then(data => data.json());
+
+    this.user.fromPromise(result);
+    if (this.user.username && !this.users.find(el => el.username === this.user.username)) {
       this.users.push(this.user);
     }
-    return this.user;
+
+    return result;
   }
 
   // Авторизация пользователя
   login(username, password) {
-    this.user = Http.Fetch('POST', '/user/signin', { username, password });
-    return this.user;
+    const result = Http.Fetch('POST', '/user/signin', { username, password })
+      .then(data => data.json());
+
+    this.user.fromPromise(result);
+
+    return result;
   }
 
   // Залогинен ли пользователь

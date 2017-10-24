@@ -8,5 +8,5 @@ require('./pnotify.custom.min.js');
 require('./common/semantic/dist/semantic.min.js');
 
 // Entrypoint
-require('./main.js');
-require('./utils/navbar.js');
+require('./main.ts');
+require('./utils/navbar.ts');

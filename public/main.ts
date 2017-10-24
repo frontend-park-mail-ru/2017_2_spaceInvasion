@@ -1,5 +1,6 @@
 import userService from './services/userService';
 import Block from './blocks/block/index';
+import Section from './blocks/block/section';
 import Login from './blocks/login/index';
 import About from './blocks/about/index';
 import Leaderboard from './blocks/leaderboard/index';
@@ -12,14 +13,12 @@ const app = new Block(document.getElementById('application'));
 const signUpBtn = document.querySelector('.item#signUpBtn');
 const PNotify = require('./pnotify.custom.min.js');
 
-window.router = router;
-
 const sections = {
-  login: Block.Create('section', {}, ['login-section']),
-  signup: Block.Create('section', {}, ['signup-section']),
-  about: Block.Create('section', {}, ['about-section']),
-  leaderboard: Block.Create('section', {}, ['leaderboard-section']),
-  playerpage: Block.Create('section', {}, ['playerpage-section']),
+  login: new Section(Block.Create('section', {}, ['login-section'])),
+  signup: new Section(Block.Create('section', {}, ['signup-section'])),
+  about: new Section(Block.Create('section', {}, ['about-section'])),
+  leaderboard: new Section(Block.Create('section', {}, ['leaderboard-section'])),
+  playerpage: new Section(Block.Create('section', {}, ['playerpage-section'])),
 
   hide() {
     this
@@ -86,17 +85,16 @@ function openPlayerPage() {
 function onSubmitLoginForm(formdata) {
   const loginBtn = document.querySelector('.ui.submit.button');
   loginBtn.classList.add('loading');
-  userService.login(formdata.login, formdata.password).then(data => data.json())
+  userService.login(formdata.login, formdata.password)
     .then((data) => {
-      if (data.result !== 'Singning in failed') {
-        userService.user = data;
+      if (data['result'] !== 'Singning in failed') {
         loginBtn.classList.remove('loading');
-        sections.login.loginform.reset();
+        sections.login['loginform'].reset();
         hideSignUp();
         openPlayerPage();
       } else {
         loginBtn.classList.remove('loading');
-        showError(data.result);
+        showError(data['result']);
       }
     });
 }
@@ -105,12 +103,11 @@ function onSubmitLoginForm(formdata) {
 function onSubmitRegistrationForm(formdata) {
   const regBtn = document.querySelector('.validateBtn');
   regBtn.classList.add('loading');
-  userService.register(formdata.email, formdata.login, formdata.password).then(data => data.json())
+  userService.register(formdata.email, formdata.login, formdata.password)
     .then((data) => {
       if (data.result !== 'Username already used') {
-        userService.user = data;
         regBtn.classList.remove('loading');
-        sections.signup.signupform.reset();
+        sections.signup['signupform'].reset();
         hideSignUp();
         openPlayerPage();
       } else {
@@ -125,12 +122,12 @@ function openLogin() {
     signUpBtn.setAttribute('style', '');
     sections.hide();
     if (!sections.login.ready) {
-      sections.login.loginform = new Login();
-      sections.login.append(sections.login.loginform);
-      sections.login.loginform.onSubmit(onSubmitLoginForm);
+      sections.login['loginform'] = new Login();
+      sections.login.append(sections.login['loginform']);
+      sections.login['loginform'].onSubmit(onSubmitLoginForm);
       sections.login.ready = true;
     }
-    sections.login.loginform.reset();
+    sections.login['loginform'].reset();
     router.setPath('/');
     sections.login.show();
   } else if (sections.playerpage.isHidden()) {
@@ -143,12 +140,12 @@ function openRegistration() {
   dismissAllMessages();
   sections.hide();
   if (!sections.signup.ready) {
-    sections.signup.signupform = new Registration();
-    sections.signup.append(sections.signup.signupform);
-    sections.signup.signupform.onSubmit(onSubmitRegistrationForm);
+    sections.signup['signupform'] = new Registration();
+    sections.signup.append(sections.signup['signupform']);
+    sections.signup['signupform'].onSubmit(onSubmitRegistrationForm);
     sections.signup.ready = true;
   }
-  sections.signup.signupform.reset();
+  sections.signup['signupform'].reset();
   router.setPath('/signup');
   sections.signup.show();
 }

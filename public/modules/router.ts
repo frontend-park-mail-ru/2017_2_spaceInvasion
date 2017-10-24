@@ -1,6 +1,9 @@
 import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard } from '../main';
 
 class Router {
+  private path: string;
+  private tabs: Array<string>;
+
   constructor() {
     this.path = '';
     this.tabs = [];
@@ -40,17 +43,18 @@ class Router {
       default:
         showHome();
     }
+
     window.onpopstate = () => {
       let path = '';
-      const historyTabs = window.router.tabs;
+      const historyTabs = router.tabs;
       const menu = document.querySelector('div.ui.huge.menu');
-      const menutabs = [menu.children.homeBtn, menu.children.aboutBtn,
-        menu.children.leaderboardBtn,
+      const menutabs = [menu.children['homeBtn'], menu.children['aboutBtn'],
+        menu.children['leaderboardBtn'],
       ];
       menutabs.forEach((el) => {
         el.setAttribute('class', 'item');
       }, this);
-      if (window.router.tabs.length > 0) {
+      if (router.tabs.length > 0) {
         historyTabs.shift();
         [path] = historyTabs;
       } else {
@@ -59,28 +63,28 @@ class Router {
 
       if (path === '/' || path === undefined) {
         showHome();
-        menu.children.homeBtn.setAttribute('class', 'active item');
+        menu.children['homeBtn'].setAttribute('class', 'active item');
         return;
       }
       if (path === '/profile') {
         showPlayerPage();
-        menu.children.homeBtn.setAttribute('class', 'active item');
+        menu.children['homeBtn'].setAttribute('class', 'active item');
         return;
       }
       if (path === '/login') {
         showHome();
-        menu.children.homeBtn.setAttribute('class', 'active item');
+        menu.children['homeBtn'].setAttribute('class', 'active item');
         return;
       }
       if (path === '/signup') { showRegistration(); return; }
       if (path === '/about') {
         showAbout();
-        menu.children.aboutBtn.setAttribute('class', 'active item');
+        menu.children['aboutBtn'].setAttribute('class', 'active item');
         return;
       }
       if (path === '/leaderboard') {
         showLeaderboard();
-        menu.children.leaderboardBtn.setAttribute('class', 'active item');
+        menu.children['leaderboardBtn'].setAttribute('class', 'active item');
       }
     };
   }

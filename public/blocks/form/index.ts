@@ -1,6 +1,8 @@
 import Block from '../block/index';
 
 class Form extends Block {
+  private rules: Object;
+
   constructor(el, rules) {
     super(el);
     this.rules = rules;
@@ -10,15 +12,15 @@ class Form extends Block {
       e.preventDefault();
       this.resetErrors();
       const formData = {};
-      const form = this.el.querySelector('.formWithValidation');
-      const { elements } = form;
+      const form = <HTMLFormElement> this.el.querySelector('.formWithValidation');
+      const elements = form['elements'];
 
       const errors = Form.validation(elements, this.el, this.rules);
 
       if (!errors) {
         for (let i = 0; i < elements.length; i += 1) {
-          if (elements[i].name !== 'ValidateBtn' && elements[i].name !== 'repeatedPassword') {
-            formData[elements[i].name] = elements[i].value;
+          if (elements[i]['name'] !== 'ValidateBtn' && elements[i]['name'] !== 'repeatedPassword') {
+            formData[elements[i]['name']] = elements[i]['value'];
           }
         }
         callback(formData);
@@ -27,11 +29,11 @@ class Form extends Block {
   }
 
   reset() {
-    const form = this.el.querySelector('.formWithValidation');
-    const { elements } = form;
+    const form = <HTMLFormElement> this.el.querySelector('.formWithValidation');
+    const elements = form.elements;
     for (let i = 0; i < elements.length; i += 1) {
-      if (elements[i].name !== 'ValidateBtn') {
-        elements[i].value = '';// eslint-disable-line no-param-reassign
+      if (elements[i]['name'] !== 'ValidateBtn') {
+        elements[i]['value'] = '';// eslint-disable-line no-param-reassign
         this.resetErrors();
       }
     }
@@ -69,12 +71,12 @@ class Form extends Block {
   }
 
   resetErrors() {
-    const errors = this.el.querySelectorAll('.message');
-    for (let i = 0; i < errors.length; i += 1) {
-      errors[i].hidden = true;
-      errors[i].innerText = '';
-      errors[i].parentNode.querySelector('input').classList.remove('errorBorder');
-    }
+    this.el.querySelectorAll('.message').forEach((err) => {
+      const error = err as HTMLElement;
+      error.hidden = true;
+      error.innerText = '';
+      (err.parentNode as Element).querySelector('input').classList.remove('errorBorder');
+    });
   }
 
   static appendErrors(arrOfErrors, htmlElement, form) {
