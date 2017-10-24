@@ -38,12 +38,11 @@ class UserService {
   getData() {
     Http.Fetch('GET', '/user').then(userdata => userdata.json())
       .then((userdata) => {
+        const path = window.location.pathname;
         if (userdata.result !== 'Unauthorized') {
           this.user = userdata;
-          showPlayerPage();
-        } else {
-          showHome();
-        }
+          if (path === '/login' || path === '/profile' || path === '/') { showPlayerPage(); }
+        } else if (path === '/login' || path === '/profile') { showHome(); }
       }).catch(() => {
         showError('Oops, try again!');
       });

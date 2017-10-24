@@ -53,6 +53,7 @@ function dismissAllMessages() {
   PNotify.removeAll();
 }
 
+userService.getData();
 router.start();
 
 function showError(message) {
@@ -180,7 +181,6 @@ function openAbout() {
   sections.about.show();
 }
 
-userService.getData();
 export {
   openLogin as showHome,
   openAbout as showAbout,
