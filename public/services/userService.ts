@@ -25,7 +25,12 @@ class UserService {
     const result = Http.Fetch('POST', '/user/signup', { email, username, password })
       .then(data => data.json());
 
-    this.user.fromPromise(result);
+    if (!this.user) {
+      this.user = new User();
+    }
+    if (result) {
+      this.user.fromPromise(result);
+    }
     if (this.user.username && !this.users.find(el => el.username === this.user.username)) {
       this.users.push(this.user);
     }
@@ -38,7 +43,12 @@ class UserService {
     const result = Http.Fetch('POST', '/user/signin', { username, password })
       .then(data => data.json());
 
-    this.user.fromPromise(result);
+    if (!this.user) {
+      this.user = new User();
+    }
+    if (result) {
+      this.user.fromPromise(result);
+    }
 
     return result;
   }
