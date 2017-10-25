@@ -1,11 +1,12 @@
 import Block from '../block/index';
 import userService from '../../services/userService';
-import { showHome } from '../../main';
+import { showHome, router } from '../../main';
 import playerpageTemplate from './playerPage.pug';
 
 function onLogoutBtnClick(el) {
   el.querySelector('.ui.logout').addEventListener('click', () => {
     userService.logout().then(() => {
+      router.setPath('/');
       showHome();
     });
   });

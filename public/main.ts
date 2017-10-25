@@ -52,6 +52,7 @@ function dismissAllMessages() {
   PNotify.removeAll();
 }
 
+userService.getData();
 router.start();
 
 function showError(message) {
@@ -131,7 +132,6 @@ function openLogin() {
     router.setPath('/');
     sections.login.show();
   } else if (sections.playerpage.isHidden()) {
-    router.setPath('/profile');
     openPlayerPage();
   }
 }
@@ -177,7 +177,6 @@ function openAbout() {
   sections.about.show();
 }
 
-userService.getData();
 export {
   openLogin as showHome,
   openAbout as showAbout,
@@ -185,4 +184,5 @@ export {
   openLeaderboard as showLeaderboard,
   openPlayerPage as showPlayerPage,
   showError,
+  router,
 };
