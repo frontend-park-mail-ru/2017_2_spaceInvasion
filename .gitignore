@@ -32,6 +32,9 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+# Dependency cache
+package-lock.json
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -61,4 +64,28 @@ typings/
 secrets.json
 
 # IDE's specials
+.idea
 .vscode
+.brackets.json
+
+# pug auto-generated files
+about.pug.js
+login.pug.js
+registration.pug.js
+leaderboard.pug.js
+
+playerPage.pug.js
+playerStats.pug.js
+friendList.pug.js
+matchesTable.pug.js
+
+*.html
+
+# Semantic cache
+**/semantic/**
+
+# PNotify
+#**/pnotify*
+
+# Bundle
+**/dist/**
