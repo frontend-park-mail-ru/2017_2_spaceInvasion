@@ -31,7 +31,6 @@ The moon is inhabited by two warring races: Humans and Aliens.
 In this game you have to choose a side and fight for the right to live in this world.
 Only one will survive. Capture the enemy base or your race will be defeated...
 
-
 ## Quick start
 
 ```
@@ -117,7 +116,7 @@ SpaceInvasionFrontend
 
 ## Bugs and feature requests
 
-Have a bug or a feature request? Please first read the [issue guidelines](https://github.com/Nikita-Boyarskikh/SpaceInvasionBackend/blob/master/CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues/new).
+Have a bug or a feature request? Please first read the [issue guidelines](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/blob/master/CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues/new).
 
 
 ## Documentation
