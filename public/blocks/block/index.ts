@@ -3,6 +3,8 @@
  * @module Block
  */
 class Block {
+
+  el: HTMLElement;
   /**
    * @param {HTMLElement} el - корневой элемент блока
    * @constructor
@@ -20,7 +22,7 @@ class Block {
    * @return {Block}
    * @constructor
    */
-  static Create(tagName = 'div', attrs = {}, classes = [], text = null) {
+  static Create(tagName = 'div', attrs = {}, classes = [], text = null): Block {
     const el = document.createElement(tagName);
     classes.forEach((className) => {
       el.classList.add(className);

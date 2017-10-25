@@ -1,6 +1,8 @@
 const baseUrl = 'https://space-invasion-backend.herokuapp.com/v1';
 
 class Http {
+  static BaseUrl = baseUrl;
+
   static Fetch(method, path, body = undefined) {
     const url = (Http.BaseUrl || baseUrl) + path;
     return fetch(url, {
@@ -14,7 +16,5 @@ class Http {
     });
   }
 }
-
-Http.BaseUrl = null;
 
 export default Http;

@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "baseUrl": "./public",
+    "outDir": "./dist/",
+    "diagnostics": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "module": "es6",
+    "target": "es6",
+    "allowJs": false
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
