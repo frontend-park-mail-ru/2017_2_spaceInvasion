@@ -13,7 +13,7 @@ class Form extends Block {
       this.resetErrors();
       const formData = {};
       const form = <HTMLFormElement> this.el.querySelector('.formWithValidation');
-      const elements = form['elements'];
+      const elements = form.elements;
 
       const errors = Form.validation(elements, this.el, this.rules);
 
@@ -39,23 +39,23 @@ class Form extends Block {
     }
   }
 
-  static validation(arr, form, rules) {
+  static validation(arr: HTMLFormControlsCollection, form: HTMLElement, rules) {
     let errCount = 0;
     let errorMessages = [];
     for (let i = 0; i < arr.length; i += 1) {
-      switch (arr[i].name) {
+      switch (arr[i]['name']) {
         case 'email':
-          errorMessages = Form.validateField(arr[i].value, rules.rulesForEmail);
+          errorMessages = Form.validateField(arr[i]['value'], rules.rulesForEmail);
           break;
         case 'login':
-          errorMessages = Form.validateField(arr[i].value, rules.rulesForLogin);
+          errorMessages = Form.validateField(arr[i]['value'], rules.rulesForLogin);
           break;
         case 'password':
-          if (arr.repeatedPassword !== undefined && arr[i].value !== arr[i + 1].value) {
+          if (arr['repeatedPassword'] !== undefined && arr[i]['value'] !== arr[i + 1]['value']) {
             errorMessages = ['Password doesn\'t match'];
-            arr.repeatedPassword.classList.add('errorBorder');
+            arr['repeatedPassword'].classList.add('errorBorder');
           } else {
-            errorMessages = Form.validateField(arr[i].value, rules.rulesForPassword);
+            errorMessages = Form.validateField(arr[i]['value'], rules.rulesForPassword);
           }
           break;
         default:
