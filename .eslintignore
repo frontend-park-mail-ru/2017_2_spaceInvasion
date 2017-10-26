@@ -4,4 +4,11 @@ node_modules
 # Compiled pug files
 *.pug.js
 
+# Bundle
+**/dist/**
+
+# Semantic
 **/semantic/**
+
+# PNotify
+**/pnotify*

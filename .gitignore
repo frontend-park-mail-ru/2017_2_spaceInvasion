@@ -72,8 +72,24 @@ secrets.json
 about.pug.js
 login.pug.js
 registration.pug.js
-scoreboard.pug.js
+leaderboard.pug.js
+
+playerPage.pug.js
+playerStats.pug.js
+friendList.pug.js
+matchesTable.pug.js
+
 *.html
 
 # Semantic cache
 **/semantic/**
+
+# PNotify
+#**/pnotify*
+
+# Bundle
+**/dist/**
+tests/**/*.js
+mocks/**/*.js
+public/**/*.js
+!public/pnotify.custom.min.js

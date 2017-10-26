@@ -3,10 +3,11 @@ body
     .ui.huge.menu
         a#homeBtn.active.item
             | Home
+        a#leaderboardBtn.item
+            | Leaderboard
         a#aboutBtn.item
             | About
-        a#scoreboardBtn.item
-            | Scoreboard
+        include chooserace.pug
         .right.menu
             .ui.simple.dropdown.item
                 | Language 

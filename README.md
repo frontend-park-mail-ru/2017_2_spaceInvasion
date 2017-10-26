@@ -1,12 +1,13 @@
 # Space Invasion the browser multiplayer MMORTS-shooter game
 
-[![Build Status](http://img.shields.io/travis/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://travis-ci.org/Nikita-Boyarskikh/SpaceInvasionBackend)
-[![Dependency Status](http://img.shields.io/gemnasium/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://gemnasium.com/Nikita-Boyarskikh/SpaceInvasionBackend)
-[![Coverage Status](http://img.shields.io/coveralls/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://coveralls.io/r/Nikita-Boyarskikh/SpaceInvasionBackend)
-[![Code Climate](http://img.shields.io/codeclimate/github/Nikita-Boyarskikh/SpaceInvasionBackend.svg?style=flat-square)](https://codeclimate.com/github/Nikita-Boyarskikh/SpaceInvasionBackend)
-[![Github Issues](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionBackend/issues.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionBackend/issues)
-[![Pending Pull-Requests](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionBackend/pulls.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionBackend/pulls)
+[![Build Status](http://img.shields.io/travis/Nikita-Boyarskikh/SpaceInvasionFrontend.svg?style=flat-square)](https://travis-ci.org/Nikita-Boyarskikh/SpaceInvasionFrontend)
+[![Coverage Status](https://coveralls.io/repos/github/Nikita-Boyarskikh/SpaceInvasionFrontend/badge.svg?branch=master)](https://coveralls.io/github/Nikita-Boyarskikh/SpaceInvasionFrontend?branch=master)
+[![Code Climate](http://img.shields.io/codeclimate/github/Nikita-Boyarskikh/SpaceInvasionFrontend.svg?style=flat-square)](https://codeclimate.com/github/Nikita-Boyarskikh/SpaceInvasionFrontend)
+[![Github Issues](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues)
+[![Pending Pull-Requests](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionFrontend/pulls.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/pulls)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+# [SpaceInvasion](http://space-invasion-frontend.herokuapp.com)
 
 ## Table of contents
 
@@ -30,26 +31,98 @@ The moon is inhabited by two warring races: Humans and Aliens.
 In this game you have to choose a side and fight for the right to live in this world.
 Only one will survive. Capture the enemy base or your race will be defeated...
 
-
 ## Quick start
 
-TODO
-
+```
+git clone git@github.com:Nikita-Boyarskikh/SpaceInvasionFrontend.git
+cd SpaceInvasionFrontend
+npm install
+npm test && npm start
+```
 
 ## What's included
 
-TODO
-
+```
+SpaceInvasionFrontend
+├── LICENSE
+├── Procfile
+├── README.md
+├── app.js
+├── bin
+├── hooks
+│   └── pre-commit
+├── mocks
+├── package-lock.json
+├── package.json
+├── public
+│   ├── blocks
+│   │   ├── about
+│   │   │   ├── about.pug
+│   │   │   └── index.js
+│   │   ├── block
+│   │   │   └── index.js
+│   │   ├── form
+│   │   │   └── index.js
+│   │   ├── leaderboard
+│   │   │   ├── index.js
+│   │   │   └── leaderboard.pug
+│   │   ├── login
+│   │   │   ├── index.js
+│   │   │   └── login.pug
+│   │   ├── playerPage
+│   │   │   ├── index.js
+│   │   │   ├── playerPage.pug
+│   │   │   └── templates
+│   │   │       ├── friendList.pug
+│   │   │       ├── matchesTable.pug
+│   │   │       └── playerStats.pug
+│   │   └── registration
+│   │       ├── index.js
+│   │       └── registration.pug
+│   ├── css
+│   │   ├── main.css
+│   │   └── pnotify.custom.min.css
+│   ├── images
+│   │   ├── background.jpg
+│   │   ├── background2.jpg
+│   │   ├── egor_kurakov.jpg
+│   │   ├── nikita_boyarskikh.jpg
+│   │   ├── none.png
+│   │   ├── olga_surikova.jpg
+│   │   └── vasiliy_dmitriev.jpg
+│   ├── index.js
+│   ├── main.js
+│   ├── modules
+│   │   ├── emitter.js
+│   │   ├── httpModule.js
+│   │   ├── mediator.js
+│   │   └── router.js
+│   ├── pnotify.custom.min.js
+│   ├── services
+│   │   └── userService.js
+│   ├── templates
+│   │   ├── index.pug
+│   │   ├── navbar.pug
+│   │   └── tests.pug
+│   ├── test
+│   │   └── unit
+│   │       └── userServiceTest.js
+│   └── utils
+│       ├── aboutAlertDialog.js
+│       ├── navbar.js
+│       └── validationRules.js
+├── semantic.json
+└── webpack.config.js
+```
 
 ## Bugs and feature requests
 
-Have a bug or a feature request? Please first read the [issue guidelines](https://github.com/Nikita-Boyarskikh/SpaceInvasionBackend/blob/master/CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/Nikita-Boyarskikh/SpaceInvasionBackend/issues/new).
+Have a bug or a feature request? Please first read the [issue guidelines](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/blob/master/CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues/new).
 
 
 ## Documentation
 
-TODO
-
+[Wiki](https://github.com/java-park-mail-ru/SpaceInvasion-09-2017/wiki)
 
 ## Contributing
 
