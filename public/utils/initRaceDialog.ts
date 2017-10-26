@@ -1,6 +1,3 @@
-$('.ui.dropdown')
-  .dropdown();
-
 const body = document.querySelector('body');
 const signUpBtn = document.querySelector('.ui.button#signUpBtn');
 
@@ -44,13 +41,14 @@ function changeThemeForAlien() {
 }
 
 function getThemeTag() {
-  return document.querySelector('.menu .item.active.selected').innerText;
+  const tag: HTMLElement = <HTMLElement> document.querySelector('.menu .item.active.selected')
+  return tag.innerText;
 }
 
 const races = document.querySelectorAll('.compact.menu .dropdown.item .item');
 races.forEach((el) => {
   el.addEventListener('click', () => {
-    switch (el.innerText) {
+    switch ((el as HTMLElement).innerText) {
       case 'Man':
         changeThemeForMan();
         break;
