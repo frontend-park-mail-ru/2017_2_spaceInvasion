@@ -81,9 +81,6 @@ matchesTable.pug.js
 
 *.html
 
-# Semantic cache
-**/semantic/**
-
 # PNotify
 #**/pnotify*
 
