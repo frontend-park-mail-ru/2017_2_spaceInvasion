@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": "./public",
-    "outDir": "./dist/",
+    "outDir": "./public/dist/",
     "diagnostics": true,
     "removeComments": true,
     "sourceMap": true,

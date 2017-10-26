@@ -53,7 +53,7 @@
       "<rootDir>/public"
     ],
     "globals": {
-        "NODE_ENV": "test"
+      "NODE_ENV": "test"
     },
     "verbose": true,
     "transform": {
