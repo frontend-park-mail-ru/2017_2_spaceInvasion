@@ -1,25 +1,25 @@
 html
 body
-    .ui.one.column.centered.grid
-        .ui.card.login
+    .ui.one.column.centered.grid.one__column__login__grid
+        .ui.card.ui__card__login
             .content.left.aligned
                 .header Welcome
                 .description
                     form.ui.form.formWithValidation
                         .field(name = "loginField")
-                            span(class = "message", hidden=true)
+                            span(class = "message message__error_message", hidden=true)
                             label Login
                             .ui.left.icon.input
                                 input(type="text", name="login", placeholder="Login")
                                 i.user.icon
                         .field(name = "passwordField")
-                            span(class = "message", hidden=true)
+                            span(class = "message message__error_message", hidden=true)
                             label Password
                             .ui.left.icon.input
                                 input(type="password", name="password", placeholder="Password")
                                 i.lock.icon
                         button.ui.submit.button(type="submit", name="ValidateBtn") Log in
-                        .ui.error.message
+                        .ui.error.message.message__error_message
             .extra.content.left.aligned
                 button.ui.vk.button
                     i.vk.icon
