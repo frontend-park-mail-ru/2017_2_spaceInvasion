@@ -1,5 +1,4 @@
 import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard } from '../main';
-
 class Router {
   private path: string;
   private tabs: Array<string>;
@@ -20,6 +19,18 @@ class Router {
   }
 
   start() {
+    const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
+    const themeID = sessionStorage.getItem("theme");
+    if(themeID != null){
+      if (themeID.includes("man")){
+        menuItems[1].classList.remove('active','selected');
+        menuItems[0].classList.add('active','selected');
+      }else{
+        menuItems[0].classList.remove('active','selected');
+        menuItems[1].classList.add('active','selected');
+      }
+    }
+
     this.path = window.location.pathname;
     switch (this.path) {
       case '/':

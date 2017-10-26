@@ -8,10 +8,16 @@ function changeThemeForMan() {
   signUpBtn.classList.add('man');
 
   const loginBtn = document.querySelector('.ui.submit.login.button');
+  const registerBtn = document.querySelector('.ui.button.register');
 
   if (loginBtn != null) {
     loginBtn.classList.remove('alien');
     loginBtn.classList.add('man');
+  }
+
+  if(registerBtn != null){
+    registerBtn.classList.remove('alien');
+    registerBtn.classList.add('man');
   }
 
   const leaderboard = document.querySelector('.ui.table.leaderboard');
@@ -28,6 +34,7 @@ function changeThemeForAlien() {
   signUpBtn.classList.add('alien');
 
   const loginBtn = document.querySelector('.ui.submit.login.button');
+
   if (loginBtn != null) {
     loginBtn.classList.remove('man');
     loginBtn.classList.add('alien');
@@ -38,6 +45,13 @@ function changeThemeForAlien() {
     leaderboard.classList.remove('man');
     leaderboard.classList.add('alien');
   }
+
+  const registerBtn = document.querySelector('.ui.button.register');
+  if(registerBtn != null){
+    registerBtn.classList.remove('man');
+    registerBtn.classList.add('alien');
+  }
+
 }
 
 function getThemeTag() {
@@ -48,11 +62,16 @@ function getThemeTag() {
 const races = document.querySelectorAll('.compact.menu .dropdown.item .item');
 races.forEach((el) => {
   el.addEventListener('click', () => {
+    const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
     switch ((el as HTMLElement).innerText) {
       case 'Man':
+      menuItems[1].classList.remove('active','selected');
+      menuItems[0].classList.add('active','selected');
         changeThemeForMan();
         break;
       case 'Alien':
+      menuItems[0].classList.remove('active','selected');
+      menuItems[1].classList.add('active','selected');
         changeThemeForAlien();
         break;
       default:

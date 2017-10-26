@@ -15,3 +15,7 @@ body.man {
 }
 
 .ui.table.leaderboard {}
+
+.ui.button.register.man {
+    background-color: #2185d0;
+}

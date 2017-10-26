@@ -8,6 +8,8 @@ import Registration from './blocks/registration/index';
 import PlayerPage from './blocks/playerPage/index';
 import { alertDialog } from './utils/aboutAlertDialog';
 import router from './modules/router';
+import { changeThemeForAlien, changeThemeForMan, getThemeTag } from './utils/initRaceDialog';
+
 
 const app = new Block(document.getElementById('application'));
 const signUpBtn = document.querySelector('.item#signUpBtn');
@@ -148,6 +150,19 @@ function openRegistration() {
   sections.signup['signupform'].reset();
   router.setPath('/signup');
   sections.signup.show();
+
+  switch (getThemeTag()) {
+    case 'Alien':
+      changeThemeForAlien();
+      break;
+    case 'Man':
+      changeThemeForMan();
+      break;
+    default:
+      window.console.log('error');
+      break;
+  }
+
 }
 
 function openLeaderboard() {

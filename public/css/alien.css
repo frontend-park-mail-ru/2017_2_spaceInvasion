@@ -19,3 +19,7 @@ body.alien {
     background-color: #00b5ad;
     color: white;
 }
+
+.ui.button.register.alien {
+    background-color: #00b5ad;
+}
