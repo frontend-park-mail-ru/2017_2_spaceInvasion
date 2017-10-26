@@ -4,10 +4,6 @@ language: node_js
 node_js:
 - node
 - '8'
-addons:
-  apt:
-    packages:
-    - nginx
 install:
 - npm install
 script:
@@ -15,7 +11,7 @@ script:
 cache:
   directories:
   - node_modules
-  - public/semantic
+  - public/common/semantic
 deploy:
   provider: heroku
   api_key:
