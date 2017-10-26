@@ -5,8 +5,7 @@
     },
     "env": {
         "browser": true,
-        "node": true,
-        "jquery": true
+        "node": true
     },
     "rules": {
         "no-param-reassign": "off"

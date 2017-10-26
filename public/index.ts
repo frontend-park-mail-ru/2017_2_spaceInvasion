@@ -8,8 +8,8 @@ require('./css/alien.css');
 require('./pnotify.custom.min.js');
 // Semantic
 require('./common/semantic/dist/semantic.min.js');
-require('./utils/initRaceDialog.js');
 
 // Entrypoint
 require('./main.ts');
 require('./utils/navbar.ts');
+require('./utils/initRaceDialog.ts');
