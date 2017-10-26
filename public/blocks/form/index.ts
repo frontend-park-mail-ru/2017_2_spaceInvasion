@@ -7,6 +7,7 @@ class Form extends Block {
     super(el);
     this.rules = rules;
   }
+
   onSubmit(callback) {
     this.el.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -25,6 +26,8 @@ class Form extends Block {
         }
         callback(formData);
       }
+
+      return !errors;
     });
   }
 
@@ -59,7 +62,7 @@ class Form extends Block {
           }
           break;
         default:
-          return 0;
+          break;
       }
       if (errorMessages.length !== 0) {
         Form.appendErrors(errorMessages, arr[i], form);
