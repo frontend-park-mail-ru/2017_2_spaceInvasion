@@ -1,0 +1,21 @@
+body.man {
+    background: url(/images/background2.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ui.button.man#signUpBtn {
+    background-color: #2185d0;
+}
+
+.ui.submit.login.button.man {
+    background-color: #e0e1e2 none;
+}
+
+.ui.table.leaderboard {}
+
+.ui.button.register.man {
+    background-color: #2185d0;
+}

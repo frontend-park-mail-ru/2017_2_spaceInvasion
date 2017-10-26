@@ -1,12 +1,4 @@
-body{
-    background: url(/images/background2.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.ui.card.ui__card__login{
+.ui.submit.ui__submit__login, .ui.card.ui__card__login{
     width: 400px;
     margin-top: 100px;
 }
@@ -48,4 +40,8 @@ body{
 
 .message.message__error_message {
     color: red;
+}
+
+.ui.dropdown.ui__dropdown {
+    font-size: initial;
 }

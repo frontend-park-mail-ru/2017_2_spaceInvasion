@@ -1,0 +1,25 @@
+body.alien {
+    background: url(/images/background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ui.button.alien#signUpBtn {
+    background-color: #00b5ad;
+}
+
+.ui.submit.login.button.alien {
+    background-color: #00b5ad;
+    color: white;
+}
+
+.ui.table.leaderboard.alien {
+    background-color: #00b5ad;
+    color: white;
+}
+
+.ui.button.register.alien {
+    background-color: #00b5ad;
+}
