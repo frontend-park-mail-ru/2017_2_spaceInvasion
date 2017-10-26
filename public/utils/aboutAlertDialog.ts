@@ -1,6 +1,8 @@
+let devDialog: HTMLElement;
+
 function closeDialog() {
-  if (window.devDialog) {
-    window.devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
+  if (devDialog) {
+    devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
   }
 }
 
@@ -8,7 +10,7 @@ function initDialog() {
   const dialog = document.querySelector('div.ui.modal');
   const closeDialogBtn = document.querySelector('.closeBtn');
 
-  window.devDialog = dialog;
+  devDialog = <HTMLElement> dialog;
   closeDialogBtn.setAttribute('style', 'color:#ffffff');
   closeDialogBtn.addEventListener('click', closeDialog);
   dialog.setAttribute('style', 'display: block !important; top: 265px;');
@@ -29,12 +31,12 @@ function alertDialog() {
     workOn: ['Frontend', 'Frontend', 'Backend', 'Backend'],
   };
 
-  const avatar = dialog.querySelector('img#developer-avatar');
-  const title = dialog.querySelector('.ui.header');
-  const workOn = dialog.querySelector('.ui.header#workOn');
+  const avatar = <HTMLElement> dialog.querySelector('img#developer-avatar');
+  const title = <HTMLElement> dialog.querySelector('.ui.header');
+  const workOn = <HTMLElement> dialog.querySelector('.ui.header#workOn');
 
   developerAvatar.forEach((element) => {
-    element.onclick = function clickHandler() { // eslint-disable-line no-param-reassign
+    (element as HTMLElement).onclick = function clickHandler() { // eslint-disable-line no-param-reassign
       const id = element.getAttribute('name');
       avatar.setAttribute('src', developersInfo.avatars[+id]);
       title.innerText = `${developersInfo.names[+id]}`;
