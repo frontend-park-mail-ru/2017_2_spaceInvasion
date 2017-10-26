@@ -2,20 +2,20 @@ dist: trusty
 sudo: required
 language: node_js
 node_js:
-  - "node"
-  - "8"
+- node
+- '8'
 addons:
   apt:
     packages:
-      - nginx
+    - nginx
 install:
-  - "npm install"
+- npm install
 script:
-  - "npm test"
+- npm test
 cache:
   directories:
-    - node_modules
-    - public/semantic
+  - node_modules
+  - public/semantic
 deploy:
   provider: heroku
   api_key:
@@ -24,3 +24,6 @@ deploy:
   on:
     tags: true
     repo: Nikita-Boyarskikh/SpaceInvasionFrontend
+notifications:
+  slack:
+    secure: ri5anqydfDPSp6v9q+eDoQeMfyJu89TNyhSMuJ/tptif6MQMwOcwNzLfpq0kfMi80TP/5kRMRu8d1U+ofJxZT+TK3T+/qblEO4X581XEaOZjAUiBTfnxusk2TuO8jc+dHeC1gk8L4X64YwOr3+hKmKx/bNXXpN3hCTh3fOf30i8GbFekIC8cy2N4A3Q/xZu7YlscVzv2L9IkNQNXVzeN64nw8Dt9QR3pTUe6GczaaiYf2u+2VuwDY5KytT9z0cgm9dQxfzsPmoaApe+TyQxbAcVdIZpo3x4r6fAUKaF9Dkjm9M3QvCA2/rELHymlub4m4a9uCBcEkbTxFIEWWvV/W1HIoZ+Hf0zV5Q0gwcLLUm2UZHsF1VXtPz6vntcrJAMr3FiBQE+UozBY72ESLGfsnxjZgLVPgHTVGjznDByD2ZTVfaYCxuM8fTBUD/2otVzgzGZqk/WblcdaxN+j6REU9L72l4NADIQbQ6uBt/HvpktJebBcQoUjHko6Ei7eqCv+x7k0xXZgHs7twb8VRL8jpTB3JQ0zc3BgJbULct59PMi2OT6dfMu/Nogi2PJars6+FqXx/dsrBjovUJAus7hOIsBIcsgoDX3LkaU6Qs3HuB0xiqaJ6Ol13V+vCxpdjLQrG2N2JDAcQyo7gW3qnAwFqcyx7Dm1EPH6VksscKFUji4=
