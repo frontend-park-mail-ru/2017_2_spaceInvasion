@@ -71,7 +71,7 @@ class Form extends Block {
   }
 
   resetErrors() {
-    this.el.querySelectorAll('.message').forEach((err) => {
+    this.el.querySelectorAll('.message__error_message').forEach((err) => {
       const error = err as HTMLElement;
       error.hidden = true;
       error.innerText = '';
@@ -82,7 +82,7 @@ class Form extends Block {
   static appendErrors(arrOfErrors, htmlElement, form) {
     htmlElement.classList.add('errorBorder');
     arrOfErrors.forEach((element) => {
-      const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message`);
+      const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message__error_message`);
       if (message !== null) {
         message.innerText += `${element}\n`;
         message.hidden = false;
