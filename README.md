@@ -36,6 +36,7 @@ Only one will survive. Capture the enemy base or your race will be defeated...
 ```
 git clone git@github.com:Nikita-Boyarskikh/SpaceInvasionFrontend.git
 cd SpaceInvasionFrontend
+npm install
 npm test && npm start
 ```
 
