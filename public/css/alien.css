@@ -10,16 +10,16 @@ body.alien {
     background-color: #00b5ad;
 }
 
-.ui.submit.login.button.alien {
+.ui.submit.ui__submit__login.ui__submit__login__button.button.alien {
     background-color: #00b5ad;
     color: white;
 }
 
-.ui.table.leaderboard.alien {
+.ui.table.ui__selectable__celled__table__leaderboard.alien {
     background-color: #00b5ad;
     color: white;
 }
 
-.ui.button.register.alien {
+.ui.button.ui__button__register.alien {
     background-color: #00b5ad;
 }

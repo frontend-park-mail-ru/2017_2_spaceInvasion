@@ -7,8 +7,8 @@ function changeThemeForMan() {
   signUpBtn.classList.remove('alien');
   signUpBtn.classList.add('man');
 
-  const loginBtn = document.querySelector('.ui.submit.login.button');
-  const registerBtn = document.querySelector('.ui.button.register');
+  const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
+  const registerBtn = document.querySelector('.ui.button.ui__button__register');
 
   if (loginBtn != null) {
     loginBtn.classList.remove('alien');
@@ -20,7 +20,7 @@ function changeThemeForMan() {
     registerBtn.classList.add('man');
   }
 
-  const leaderboard = document.querySelector('.ui.table.leaderboard');
+  const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
   if (leaderboard != null) {
     leaderboard.classList.remove('alien');
     leaderboard.classList.add('man');
@@ -33,20 +33,20 @@ function changeThemeForAlien() {
   signUpBtn.classList.remove('man');
   signUpBtn.classList.add('alien');
 
-  const loginBtn = document.querySelector('.ui.submit.login.button');
+  const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
 
   if (loginBtn != null) {
     loginBtn.classList.remove('man');
     loginBtn.classList.add('alien');
   }
 
-  const leaderboard = document.querySelector('.ui.table.leaderboard');
+  const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
   if (leaderboard != null) {
     leaderboard.classList.remove('man');
     leaderboard.classList.add('alien');
   }
 
-  const registerBtn = document.querySelector('.ui.button.register');
+  const registerBtn = document.querySelector('.ui.button.ui__button__register');
   if(registerBtn != null){
     registerBtn.classList.remove('man');
     registerBtn.classList.add('alien');
@@ -59,10 +59,10 @@ function getThemeTag() {
   return tag.innerText;
 }
 
-const races = document.querySelectorAll('.compact.menu .dropdown.item .item');
+const races = document.querySelectorAll('.compact.menu .ui.simple.dropdown.ui__dropdown.item .item');
 races.forEach((el) => {
   el.addEventListener('click', () => {
-    const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
+    const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown .menu div.item");
     switch ((el as HTMLElement).innerText) {
       case 'Man':
       menuItems[1].classList.remove('active','selected');

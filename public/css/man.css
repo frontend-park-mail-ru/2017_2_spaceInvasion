@@ -10,12 +10,12 @@ body.man {
     background-color: #2185d0;
 }
 
-.ui.submit.login.button.man {
+.ui.submit.ui__submit__login.ui__submit__login__button.button.man {
     background-color: #e0e1e2 none;
 }
 
-.ui.table.leaderboard {}
+.ui.table.ui__selectable__celled__table__leaderboard {}
 
-.ui.button.register.man {
+.ui.button.ui__button__register.man {
     background-color: #2185d0;
 }
