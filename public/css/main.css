@@ -59,3 +59,7 @@
 .table.ui.selectable.celled.table {
     width: 300px;
 }
+
+.ui.dropdown {
+    font-size: initial;
+}
