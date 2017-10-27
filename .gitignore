@@ -91,5 +91,4 @@ matchesTable.pug.js
 **/dist/**
 tests/**/*.js
 mocks/**/*.js
-public/**/*.js
 !public/pnotify.custom.min.js

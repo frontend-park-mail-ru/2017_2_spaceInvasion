@@ -19,6 +19,33 @@ class Router {
     return this.path;
   }
 
+  route(path) {
+    const btnMap = new Map([
+      ['/', 'homeBtn'],
+      ['/login', 'homeBtn'],
+      ['/about', 'aboutBtn'],
+      ['/profile', 'homeBtn'],
+      ['/leaderboard', 'leaderboardBtn'],
+      ['/game', 'gameBtn'],
+    ]);
+	const pathMap = new Map([
+      ['/', showHome],
+      ['/login', showHome],
+      ['/about', showAbout],
+      ['/signup', showRegistration],
+      ['/profile', showPlayerPage],
+      ['/leaderboard', showLeaderboard],
+      ['/game', showGame],
+    ]);
+
+    const menu = document.querySelector('div.ui.huge.menu');
+    const btnClass = btnMap.get(path);
+    if (btnClass) {
+      menu.children[btnClass].setAttribute('class', 'active item');
+    }
+    pathMap.get(path)()
+  }
+
   start() {
     const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
     const themeID = sessionStorage.getItem("theme");
@@ -33,35 +60,17 @@ class Router {
     }
 
     this.path = window.location.pathname;
-    switch (this.path) {
-      case '/':
-        showHome();
-        break;
-      case '/login':
-        showHome();
-        break;
-      case '/about':
-        showAbout();
-        break;
-      case '/signup':
-        showRegistration();
-        break;
-      case '/profile':
-        showPlayerPage();
-        break;
-      case '/leaderboard':
-        showLeaderboard();
-        break;
-      default:
-        showHome();
-    }
+    this.route(this.path);
 
     window.onpopstate = () => {
       let path = '';
       const historyTabs = router.tabs;
       const menu = document.querySelector('div.ui.huge.menu');
-      const menutabs = [menu.children['homeBtn'], menu.children['aboutBtn'],
+      const menutabs = [
+        menu.children['homeBtn'],
+        menu.children['aboutBtn'],
         menu.children['leaderboardBtn'],
+        menu.children['gameBtn']
       ];
       menutabs.forEach((el) => {
         el.setAttribute('class', 'item');
@@ -74,34 +83,7 @@ class Router {
       }
 
       path = path || '/';
-      switch(path) {
-        case '/':
-          showHome();
-          menu.children['homeBtn'].setAttribute('class', 'active item');
-          break;
-        case '/profile':
-          showPlayerPage();
-          menu.children['homeBtn'].setAttribute('class', 'active item');
-          break;
-        case '/login':
-          showHome();
-          menu.children['homeBtn'].setAttribute('class', 'active item');
-          break;
-        case '/signup':
-          showRegistration();
-          break;
-        case '/about':
-          showAbout();
-          menu.children['aboutBtn'].setAttribute('class', 'active item');
-          break;
-        case '/leaderboard':
-          showLeaderboard();
-          menu.children['leaderboardBtn'].setAttribute('class', 'active item');
-          break;
-        case '/game':
-          showGame();
-          menu.children['gameBtn'].setAttribute('class', 'active item');
-      }
+      this.route(path);
     };
   }
 }
