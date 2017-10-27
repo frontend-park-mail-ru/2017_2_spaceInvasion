@@ -1,5 +1,5 @@
 import { closeDialog } from './aboutAlertDialog';
-import { showHome, showAbout, showLeaderboard, showRegistration } from '../main';
+import { showHome, showAbout, showLeaderboard, showRegistration, showGame } from '../main';
 
 const menuItems = document.querySelectorAll('.item');
 const menu = document.querySelector('div.ui.huge.menu');
@@ -10,7 +10,7 @@ function setSelection(el) {
 }
 
 function clearSelection() {
-  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'leaderboardBtn'];
+  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'leaderboardBtn', 'gameBtn'];
   tabs.forEach((el) => {
     document.getElementById(el).setAttribute('class', 'item');
   }, this);
@@ -42,6 +42,10 @@ function navigate() {
     case 'leaderboardBtn':
       menu.setAttribute('data-tab', 'leaderboard');
       showLeaderboard();
+      break;
+    case 'gameBtn':
+      menu.setAttribute('data-tab', 'game');
+      showGame();
       break;
     default:
       break;

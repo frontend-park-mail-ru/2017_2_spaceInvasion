@@ -1,4 +1,5 @@
-import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard } from '../main';
+import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from '../main';
+
 class Router {
   private path: string;
   private tabs: Array<string>;
@@ -72,30 +73,34 @@ class Router {
         path = '/';
       }
 
-      if (path === '/' || path === undefined) {
-        showHome();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/profile') {
-        showPlayerPage();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/login') {
-        showHome();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/signup') { showRegistration(); return; }
-      if (path === '/about') {
-        showAbout();
-        menu.children['aboutBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/leaderboard') {
-        showLeaderboard();
-        menu.children['leaderboardBtn'].setAttribute('class', 'active item');
+      path = path || '/';
+      switch(path) {
+        case '/':
+          showHome();
+          menu.children['homeBtn'].setAttribute('class', 'active item');
+          break;
+        case '/profile':
+          showPlayerPage();
+          menu.children['homeBtn'].setAttribute('class', 'active item');
+          break;
+        case '/login':
+          showHome();
+          menu.children['homeBtn'].setAttribute('class', 'active item');
+          break;
+        case '/signup':
+          showRegistration();
+          break;
+        case '/about':
+          showAbout();
+          menu.children['aboutBtn'].setAttribute('class', 'active item');
+          break;
+        case '/leaderboard':
+          showLeaderboard();
+          menu.children['leaderboardBtn'].setAttribute('class', 'active item');
+          break;
+        case '/game':
+          showGame();
+          menu.children['gameBtn'].setAttribute('class', 'active item');
       }
     };
   }
