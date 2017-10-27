@@ -10,7 +10,7 @@
     "url": "https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend.git"
   },
   "scripts": {
-    "start": "webpack && node app.js",
+    "start": "node app.js",
     "compile-pug": "pug -c --extension 'pug.js' --name-after-file public/blocks/",
     "jest": "jest",
     "lint": "eslint .",

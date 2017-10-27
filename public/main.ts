@@ -3,11 +3,16 @@ import Block from './blocks/block/index';
 import Section from './blocks/block/section';
 import Login from './blocks/login/index';
 import About from './blocks/about/index';
+import GameBlock from './blocks/game/index';
+import Game from './modules/Game';
+import SinglePlayerStrategy from './modules/game/gameStrateges/SinglePlayerStrategy';
 import Leaderboard from './blocks/leaderboard/index';
 import Registration from './blocks/registration/index';
 import PlayerPage from './blocks/playerPage/index';
 import { alertDialog } from './utils/aboutAlertDialog';
 import router from './modules/router';
+import { changeThemeForAlien, changeThemeForMan, getThemeTag } from './utils/initRaceDialog';
+
 
 const app = new Block(document.getElementById('application'));
 const signUpBtn = document.querySelector('.item#signUpBtn');
@@ -19,6 +24,7 @@ const sections = {
   about: new Section(Block.Create('section', {}, ['about-section'])),
   leaderboard: new Section(Block.Create('section', {}, ['leaderboard-section'])),
   playerpage: new Section(Block.Create('section', {}, ['playerpage-section'])),
+  game: new Section(Block.Create('section', {}, ['game-section'])),
 
   hide() {
     this
@@ -36,6 +42,9 @@ const sections = {
     this
       .playerpage
       .hide();
+    this
+      .game
+      .hide();
   },
 };
 
@@ -46,7 +55,8 @@ app
   .append(sections.signup)
   .append(sections.about)
   .append(sections.leaderboard)
-  .append(sections.playerpage);
+  .append(sections.playerpage)
+  .append(sections.game);
 
 function dismissAllMessages() {
   PNotify.removeAll();
@@ -148,6 +158,19 @@ function openRegistration() {
   sections.signup['signupform'].reset();
   router.setPath('/signup');
   sections.signup.show();
+
+  switch (getThemeTag()) {
+    case 'Alien':
+      changeThemeForAlien();
+      break;
+    case 'Man':
+      changeThemeForMan();
+      break;
+    default:
+      window.console.log('error');
+      break;
+  }
+
 }
 
 function openLeaderboard() {
@@ -177,12 +200,27 @@ function openAbout() {
   sections.about.show();
 }
 
+function openGame() {
+  dismissAllMessages();
+  sections.hide();
+  if (!sections.game.ready) {
+    sections.game.append(new GameBlock());
+    sections.about.ready = true;
+    new Game(SinglePlayerStrategy, 'username', document.querySelector('canvas#game'));
+  }
+  router.setPath('/game');
+  sections
+    .game
+    .show();
+}
+
 export {
   openLogin as showHome,
   openAbout as showAbout,
   openRegistration as showRegistration,
   openLeaderboard as showLeaderboard,
   openPlayerPage as showPlayerPage,
+  openGame as showGame,
   showError,
   router,
 };

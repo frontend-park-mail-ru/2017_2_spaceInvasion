@@ -7,6 +7,7 @@ class Form extends Block {
     super(el);
     this.rules = rules;
   }
+
   onSubmit(callback) {
     this.el.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -25,6 +26,8 @@ class Form extends Block {
         }
         callback(formData);
       }
+
+      return !errors;
     });
   }
 
@@ -59,7 +62,7 @@ class Form extends Block {
           }
           break;
         default:
-          return 0;
+          break;
       }
       if (errorMessages.length !== 0) {
         Form.appendErrors(errorMessages, arr[i], form);
@@ -71,7 +74,7 @@ class Form extends Block {
   }
 
   resetErrors() {
-    this.el.querySelectorAll('.message').forEach((err) => {
+    this.el.querySelectorAll('.message__error_message').forEach((err) => {
       const error = err as HTMLElement;
       error.hidden = true;
       error.innerText = '';
@@ -82,7 +85,7 @@ class Form extends Block {
   static appendErrors(arrOfErrors, htmlElement, form) {
     htmlElement.classList.add('errorBorder');
     arrOfErrors.forEach((element) => {
-      const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message`);
+      const message = form.querySelector(`div[name="${htmlElement.name}Field"] .message__error_message`);
       if (message !== null) {
         message.innerText += `${element}\n`;
         message.hidden = false;
