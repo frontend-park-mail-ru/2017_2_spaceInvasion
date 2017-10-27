@@ -1,5 +1,5 @@
 import Http from '../modules/httpModule';
-import { showPlayerPage, showHome } from '../main';
+import { showPlayerPage, showHome, showError } from '../main';
 
 class UserService {
   constructor() {
@@ -44,6 +44,8 @@ class UserService {
         } else {
           showHome();
         }
+      }).catch(() => {
+        showError('Oops, try again!');
       });
   }
 }

@@ -1,4 +1,3 @@
-import PNotify from 'pnotify';
 import userService from './services/userService';
 import Block from './blocks/block/index';
 import Login from './blocks/login/index';
@@ -7,9 +6,13 @@ import Leaderboard from './blocks/leaderboard/index';
 import Registration from './blocks/registration/index';
 import PlayerPage from './blocks/playerPage/index';
 import { alertDialog } from './utils/aboutAlertDialog';
+import router from './modules/router';
 
 const app = new Block(document.getElementById('application'));
 const signUpBtn = document.querySelector('.item#signUpBtn');
+const PNotify = require('./pnotify.custom.min.js');
+
+window.router = router;
 
 const sections = {
   login: Block.Create('section', {}, ['login-section']),
@@ -50,6 +53,8 @@ function dismissAllMessages() {
   PNotify.removeAll();
 }
 
+router.start();
+
 function showError(message) {
   return new PNotify({
     title: 'Error',
@@ -73,6 +78,7 @@ function openPlayerPage() {
     sections.playerpage.el.removeChild(sections.playerpage.el.firstChild);
     sections.playerpage.append(new PlayerPage());
   }
+  router.setPath('/profile');
   sections.playerpage.show();
 }
 
@@ -125,8 +131,12 @@ function openLogin() {
       sections.login.ready = true;
     }
     sections.login.loginform.reset();
+    router.setPath('/');
     sections.login.show();
-  } else if (sections.playerpage.isHidden()) openPlayerPage();
+  } else if (sections.playerpage.isHidden()) {
+    router.setPath('/profile');
+    openPlayerPage();
+  }
 }
 
 function openRegistration() {
@@ -139,6 +149,7 @@ function openRegistration() {
     sections.signup.ready = true;
   }
   sections.signup.signupform.reset();
+  router.setPath('/signup');
   sections.signup.show();
 }
 
@@ -151,6 +162,7 @@ function openLeaderboard() {
       .append(new Leaderboard());
     sections.leaderboard.ready = true;
   }
+  router.setPath('/leaderboard');
   sections
     .leaderboard
     .show();
@@ -164,6 +176,7 @@ function openAbout() {
     sections.about.ready = true;
     alertDialog();
   }
+  router.setPath('/about');
   sections.about.show();
 }
 
@@ -174,4 +187,5 @@ export {
   openRegistration as showRegistration,
   openLeaderboard as showLeaderboard,
   openPlayerPage as showPlayerPage,
+  showError,
 };
