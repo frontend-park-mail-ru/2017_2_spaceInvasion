@@ -14,6 +14,7 @@
     "compile-pug": "pug -c --extension 'pug.js' --name-after-file public/blocks/",
     "jest": "jest",
     "lint": "eslint .",
+    "dev": "webpack -w",
     "webpack": "webpack",
     "test": "webpack && jest || eslint .",
     "fix-lint": "eslint . --fix"
