@@ -8,7 +8,7 @@
     "sourceMap": true,
     "module": "es6",
     "target": "es6",
-    "allowJs": false
+    "allowJs": true
   },
   "exclude": [
     "node_modules"

@@ -1,4 +1,5 @@
-import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard } from '../main';
+import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from '../main';
+
 class Router {
   private path: string;
   private tabs: Array<string>;
@@ -18,6 +19,33 @@ class Router {
     return this.path;
   }
 
+  route(path) {
+    const btnMap = new Map([
+      ['/', 'homeBtn'],
+      ['/login', 'homeBtn'],
+      ['/about', 'aboutBtn'],
+      ['/profile', 'homeBtn'],
+      ['/leaderboard', 'leaderboardBtn'],
+      ['/game', 'gameBtn'],
+    ]);
+	const pathMap = new Map([
+      ['/', showHome],
+      ['/login', showHome],
+      ['/about', showAbout],
+      ['/signup', showRegistration],
+      ['/profile', showPlayerPage],
+      ['/leaderboard', showLeaderboard],
+      ['/game', showGame],
+    ]);
+
+    const menu = document.querySelector('div.ui.huge.menu');
+    const btnClass = btnMap.get(path);
+    if (btnClass) {
+      menu.children[btnClass].setAttribute('class', 'active item');
+    }
+    pathMap.get(path)()
+  }
+
   start() {
     const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
     const themeID = sessionStorage.getItem("theme");
@@ -32,35 +60,17 @@ class Router {
     }
 
     this.path = window.location.pathname;
-    switch (this.path) {
-      case '/':
-        showHome();
-        break;
-      case '/login':
-        showHome();
-        break;
-      case '/about':
-        showAbout();
-        break;
-      case '/signup':
-        showRegistration();
-        break;
-      case '/profile':
-        showPlayerPage();
-        break;
-      case '/leaderboard':
-        showLeaderboard();
-        break;
-      default:
-        showHome();
-    }
+    this.route(this.path);
 
     window.onpopstate = () => {
       let path = '';
       const historyTabs = router.tabs;
       const menu = document.querySelector('div.ui.huge.menu');
-      const menutabs = [menu.children['homeBtn'], menu.children['aboutBtn'],
+      const menutabs = [
+        menu.children['homeBtn'],
+        menu.children['aboutBtn'],
         menu.children['leaderboardBtn'],
+        menu.children['gameBtn']
       ];
       menutabs.forEach((el) => {
         el.setAttribute('class', 'item');
@@ -72,31 +82,8 @@ class Router {
         path = '/';
       }
 
-      if (path === '/' || path === undefined) {
-        showHome();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/profile') {
-        showPlayerPage();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/login') {
-        showHome();
-        menu.children['homeBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/signup') { showRegistration(); return; }
-      if (path === '/about') {
-        showAbout();
-        menu.children['aboutBtn'].setAttribute('class', 'active item');
-        return;
-      }
-      if (path === '/leaderboard') {
-        showLeaderboard();
-        menu.children['leaderboardBtn'].setAttribute('class', 'active item');
-      }
+      path = path || '/';
+      this.route(path);
     };
   }
 }
