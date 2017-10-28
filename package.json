@@ -16,7 +16,7 @@
     "lint": "eslint .",
     "dev": "webpack -w",
     "webpack": "webpack",
-    "test": "webpack && jest || eslint .",
+    "test": "jest || eslint .",
     "fix-lint": "eslint . --fix"
   },
   "dependencies": {

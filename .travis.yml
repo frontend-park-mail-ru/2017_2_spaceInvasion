@@ -5,8 +5,7 @@ node_js:
 - node
 - '8'
 script:
-- npm install
-- npm webpack
+- npm run webpack
 - npm test
 cache:
   directories:
