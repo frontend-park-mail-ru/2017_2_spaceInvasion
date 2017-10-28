@@ -1,4 +1,4 @@
-const baseUrl = 'https://space-invasion-backend.herokuapp.com/v1';
+const baseUrl = 'http://138.68.86.49/';
 
 class Http {
   static BaseUrl = baseUrl;
