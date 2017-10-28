@@ -4,9 +4,9 @@ language: node_js
 node_js:
 - node
 - '8'
-install:
-- npm install
 script:
+- npm install
+- npm webpack
 - npm test
 cache:
   directories:

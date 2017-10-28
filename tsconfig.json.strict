@@ -3,7 +3,7 @@
   "compilerOptions": {
     "alwaysStrict": true,
     "baseUrl": "./public",
-    "outDir": "./dist/",
+    "outDir": "./public/dist/",
     "diagnostics": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
