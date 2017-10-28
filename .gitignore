@@ -72,11 +72,8 @@ secrets.json
 *.pug.js
 *.html
 
-# Common packages
-**/common/**
-
 # Bundle
-**/dist/**
+public/dist/**
 tests/**/*.js
 mocks/**/*.js
 !public/pnotify.custom.min.js
