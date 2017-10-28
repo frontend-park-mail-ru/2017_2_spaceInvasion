@@ -70,11 +70,10 @@ secrets.json
 
 # pug auto-generated files
 *.pug.js
-
 *.html
 
-# PNotify
-**/pnotify*
+# Common packages
+**/common/**
 
 # Bundle
 **/dist/**
