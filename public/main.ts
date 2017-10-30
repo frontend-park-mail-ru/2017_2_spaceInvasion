@@ -67,6 +67,9 @@ router.start();
 
 function showError(message) {
   return new PNotify({
+    buttons: {
+      sticker: false
+    },
     title: 'Error',
     text: message,
     type: 'error',

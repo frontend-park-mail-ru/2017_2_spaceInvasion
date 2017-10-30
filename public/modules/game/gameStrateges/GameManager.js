@@ -1,5 +1,9 @@
 import GameScene from './GameScene';
 import ControllersManager from '../ControllersManager';
+import { showHome } from '../../../main.ts';
+
+const PNotify = require('../../../pnotify.custom.min.js');
+
 
 class GameManager {
   constructor(username, canvas, Strategy) {
@@ -37,8 +41,17 @@ class GameManager {
     this.requestID = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  onFinishGame() {
+  onFinishGame(victory) {
     this.destroy();
+    showHome();
+    return new PNotify({
+      title: 'Игра окончена',
+      type: (victory ? 'success' : 'notice'),
+      text: (victory ? 'Вы победили!' : 'Вы проиграли!'),
+      buttons: {
+        sticker: false,
+      },
+    });
   }
 
   destroy() {

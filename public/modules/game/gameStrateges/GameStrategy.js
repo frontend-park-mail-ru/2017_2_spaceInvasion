@@ -4,6 +4,7 @@ class GameStrategy {
       throw new TypeError('Can not create instance of GameStrategy');
     }
 
+    this.running = false;
     this.state = null;
   }
 }
