@@ -10,7 +10,7 @@ function setSelection(el) {
 }
 
 function clearSelection() {
-  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'leaderboardBtn', 'gameBtn'];
+  const tabs = ['homeBtn', 'aboutBtn', 'signUpBtn', 'leaderboardBtn'];
   tabs.forEach((el) => {
     document.getElementById(el).setAttribute('class', 'item');
   }, this);
@@ -42,10 +42,6 @@ function navigate() {
     case 'leaderboardBtn':
       menu.setAttribute('data-tab', 'leaderboard');
       showLeaderboard();
-      break;
-    case 'gameBtn':
-      menu.setAttribute('data-tab', 'game');
-      showGame();
       break;
     default:
       break;
