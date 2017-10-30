@@ -1,13 +1,13 @@
 const debug = process.env.NODE_ENV !== 'production';
-const webpack = require('webpack');
+require('webpack');
 const path = require('path');
 
 module.exports = {
   context: path.join(__dirname, '/public'),
   devtool: debug ? 'source-map' : false,
-//  plugins: debug ? [] : [
-//    new webpack.optimize.UglifyJsPlugin(),
-//  ],
+  // plugins: debug ? [] : [
+  //   new webpack.optimize.UglifyJsPlugin(),
+  // ],
   entry: './index.ts',
   output: {
     path: path.join(__dirname, '/public/dist'),
