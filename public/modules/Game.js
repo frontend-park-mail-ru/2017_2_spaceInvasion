@@ -1,5 +1,5 @@
 import GameStrategy from './game/gameStrateges/GameStrategy';
-import GameManager from './game/gameStrateges/GameManager';
+import gameManager from '../services/gameService';
 
 class Game {
   constructor(Strategy, username, canvas) {
@@ -8,7 +8,8 @@ class Game {
     }
     this.username = username;
     this.canvas = canvas;
-    this.manager = new GameManager(this.username, this.canvas, Strategy);
+    this.manager = gameManager;
+    this.manager.init(this.username, this.canvas, Strategy);
   }
 
   destroy() {

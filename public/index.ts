@@ -12,3 +12,6 @@ require('./common/semantic/dist/semantic.min.js');
 // Entrypoint
 require('./main.ts');
 require('./utils/navbar.ts');
+const PNotify = require('./pnotify.custom.min.js');
+
+export { PNotify };

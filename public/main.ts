@@ -12,11 +12,11 @@ import PlayerPage from './blocks/playerPage/index';
 import { alertDialog } from './utils/aboutAlertDialog';
 import router from './modules/router';
 import { changeThemeForAlien, changeThemeForMan, getThemeTag } from './utils/initRaceDialog';
-
+import gameService from './services/gameService';
+import { PNotify } from './index';
 
 const app = new Block(document.getElementById('application'));
 const signUpBtn = document.querySelector('.item#signUpBtn');
-const PNotify = require('./pnotify.custom.min.js');
 
 const sections = {
   login: new Section(Block.Create('section', {}, ['login-section'])),
@@ -27,24 +27,32 @@ const sections = {
   game: new Section(Block.Create('section', {}, ['game-section'])),
 
   hide() {
-    this
-      .login
-      .hide();
-    this
-      .signup
-      .hide();
-    this
-      .about
-      .hide();
-    this
-      .leaderboard
-      .hide();
-    this
-      .playerpage
-      .hide();
-    this
-      .game
-      .hide();
+    this.login.hide();
+    this.signup.hide();
+    this.about.hide();
+    this.leaderboard.hide();
+    this.playerpage.hide();
+    this.game.hide();
+
+    if (gameService.isRunning()) {
+      const backToGameID: string = 'backToGame';
+      console.log(PNotify.notices);
+      return new PNotify({
+        title: 'Игра идёт',
+        type: 'info',
+        text: '<a id=' + backToGameID + '>Вернитесь в игру!</a>',
+        nonblock: {
+          nonblock: true,
+        },
+        animation: 'none',  // NOTE: Bug in PNotify (https://github.com/sciactive/pnotify/issues/241#issuecomment-340626073)
+        hide: false,
+        after_open: () => {
+          const link = document.getElementById(backToGameID);
+          link.onclick = openGame;
+          return true;
+        }
+      });
+    }
   },
 };
 
@@ -132,9 +140,9 @@ function onSubmitRegistrationForm(formdata) {
 }
 
 function openLogin() {
+  sections.hide();
   if (!userService.isLoggedIn()) {
     signUpBtn.setAttribute('style', '');
-    sections.hide();
     if (!sections.login.ready) {
       sections.login['loginform'] = new Login();
       sections.login.append(sections.login['loginform']);
@@ -180,15 +188,11 @@ function openLeaderboard() {
   dismissAllMessages();
   sections.hide();
   if (!sections.leaderboard.ready) {
-    sections
-      .leaderboard
-      .append(new Leaderboard());
+    sections.leaderboard.append(new Leaderboard());
     sections.leaderboard.ready = true;
   }
   router.setPath('/leaderboard');
-  sections
-    .leaderboard
-    .show();
+  sections.leaderboard.show();
 }
 
 function openAbout() {
@@ -204,17 +208,17 @@ function openAbout() {
 }
 
 function openGame() {
-  dismissAllMessages();
   sections.hide();
+  dismissAllMessages();
   if (!sections.game.ready) {
     sections.game.append(new GameBlock());
     sections.about.ready = true;
-    new Game(SinglePlayerStrategy, 'username', document.querySelector('canvas#game'));
+     if (!gameService.isRunning()) {
+       new Game(SinglePlayerStrategy, 'username', document.querySelector('canvas#game'));
+    }
   }
   router.setPath('/game');
-  sections
-    .game
-    .show();
+  sections.game.show();
 }
 
 export {
