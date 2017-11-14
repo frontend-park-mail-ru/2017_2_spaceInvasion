@@ -1,4 +1,5 @@
 import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from '../main';
+import userService from "../services/userService";
 
 class Router {
   private path: string;
@@ -19,6 +20,14 @@ class Router {
     return this.path;
   }
 
+  checkIfGameCanStart() {
+    if (userService.isLoggedIn()) {
+      showGame()
+    } else {
+      showHome()
+    }
+  }
+
   route(path) {
     const btnMap = new Map([
       ['/', 'homeBtn'],
@@ -26,7 +35,6 @@ class Router {
       ['/about', 'aboutBtn'],
       ['/profile', 'homeBtn'],
       ['/leaderboard', 'leaderboardBtn'],
-      ['/game', 'gameBtn'],
     ]);
 	const pathMap = new Map([
       ['/', showHome],
@@ -35,7 +43,7 @@ class Router {
       ['/signup', showRegistration],
       ['/profile', showPlayerPage],
       ['/leaderboard', showLeaderboard],
-      ['/game', showGame],
+      ['/game', this.checkIfGameCanStart],
     ]);
 
     const menu = document.querySelector('div.ui.huge.menu');
@@ -69,8 +77,7 @@ class Router {
       const menutabs = [
         menu.children['homeBtn'],
         menu.children['aboutBtn'],
-        menu.children['leaderboardBtn'],
-        menu.children['gameBtn']
+        menu.children['leaderboardBtn']
       ];
       menutabs.forEach((el) => {
         el.setAttribute('class', 'item');

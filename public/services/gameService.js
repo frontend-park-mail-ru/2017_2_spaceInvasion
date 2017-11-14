@@ -1,8 +1,11 @@
-import GameScene from './GameScene';
-import ControllersManager from '../ControllersManager';
+import GameScene from '../modules/game/gameStrateges/GameScene';
+import ControllersManager from '../modules/game/ControllersManager';
+import { showHome } from '../main.ts';
+import { PNotify } from '../index.ts';
 
-class GameManager {
-  constructor(username, canvas, Strategy) {
+class GameService {
+  init(username, canvas, Strategy) {
+    this.running = false;
     this.username = username;
     this.strategy = new Strategy(this.onNewState.bind(this), this.onFinishGame.bind(this));
     this.scene = new GameScene(canvas);
@@ -17,6 +20,7 @@ class GameManager {
   }
 
   startGameLoop() {
+    this.running = true;
     this.requestID = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
@@ -37,8 +41,21 @@ class GameManager {
     this.requestID = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  onFinishGame() {
+  onFinishGame(victory) {
     this.destroy();
+    showHome();
+    return new PNotify({
+      title: 'Игра окончена',
+      type: (victory ? 'success' : 'notice'),
+      text: (victory ? 'Вы победили!' : 'Вы проиграли!'),
+      buttons: {
+        sticker: false,
+      },
+    });
+  }
+
+  isRunning() {
+    return this.running;
   }
 
   destroy() {
@@ -46,10 +63,12 @@ class GameManager {
       cancelAnimationFrame(this.requestID);
     }
 
+    this.running = false;
     this.strategy.destroy();
     this.scene.destroy();
     this.controllers.destroy();
   }
 }
 
-export default GameManager;
+const gameService = new GameService();
+export default gameService;

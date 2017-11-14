@@ -45,3 +45,8 @@
 .ui.dropdown.ui__dropdown {
     font-size: initial;
 }
+
+canvas#game {
+    width: 100%;
+    margin-top: -14px;
+}

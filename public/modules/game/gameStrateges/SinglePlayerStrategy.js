@@ -10,10 +10,10 @@ import Coin from '../sprites/coin';
 
 import findCollisions from '../findCollisions';
 
-const INTERVAL = 20;
 const SET_TOWERS_COOL_DOWN = 300;
 const SPEED_OF_BULLETS = 6;
 const TOWER_COOLDOWN = 50;
+const INTERVAL = 20;
 
 // TODO башни с разной стоимостью
 const TOWER_COST = 5;
@@ -185,16 +185,6 @@ class SinglePlayerStrategy extends GameStrategy {
       this.state.me.base.health -= 1;
     }
 
-    if (this.state.me.base.health === 0) {
-      this.funcFinishGame('Вы проиграли!!');
-      SinglePlayerStrategy.stopGameLoop();
-    }
-
-    if (this.state.opponent.base.health === 0) {
-      this.funcFinishGame('Вы победили!!');
-      SinglePlayerStrategy.stopGameLoop();
-    }
-
     // файерболы оппонента
     this.state.opponent.towers.forEach((tower) => {
       if (tower.coolDown > 0) {
@@ -282,6 +272,19 @@ class SinglePlayerStrategy extends GameStrategy {
       }
     }
 
+
+    if (this.state.me.base.health === 0) {
+      this.funcFinishGame(false);
+      this.stopGameLoop();
+      return;
+    }
+
+    if (this.state.opponent.base.health === 0) {
+      this.funcFinishGame(true);
+      this.stopGameLoop();
+      return;
+    }
+
     this.funcSetState(this.state);
   }
 
@@ -290,11 +293,17 @@ class SinglePlayerStrategy extends GameStrategy {
   }
 
   startGameLoop() {
-    this.interval = setInterval(() => this.gameLoop(), INTERVAL); // 1000
+    if (!this.running) {
+      this.running = true;
+      this.interval = setInterval(() => this.gameLoop(), INTERVAL); // 1000
+    }
   }
 
-  static stopGameLoop() {
-    clearInterval(INTERVAL);
+  stopGameLoop() {
+    if (this.running) {
+      clearInterval(this.interval);
+      this.running = false;
+    }
   }
 
   static pressed(name, data) {
@@ -302,8 +311,6 @@ class SinglePlayerStrategy extends GameStrategy {
   }
 
   destroy() {
-    super.destroy();
-
     this.stopGameLoop();
   }
 }
