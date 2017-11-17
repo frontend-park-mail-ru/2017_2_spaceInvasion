@@ -1,13 +1,16 @@
 const debug = process.env.NODE_ENV !== 'production';
-require('webpack');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CheckerPlugin = require('awesome-typescript-loader');
+require('webpack');
 
 module.exports = {
   context: path.join(__dirname, '/public'),
   devtool: debug ? 'source-map' : false,
-  // plugins: debug ? [] : [
-  //   new webpack.optimize.UglifyJsPlugin(),
-  // ],
+  plugins: debug ? [] : [
+    new UglifyJsPlugin(),
+    new CheckerPlugin(),
+  ],
   entry: './index.ts',
   output: {
     path: path.join(__dirname, '/public/dist'),
@@ -20,7 +23,7 @@ module.exports = {
     loaders: [
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       { test: /\.pug$/, use: ['pug-loader'] },
-      { test: /\.tsx?$/, use: ['ts-loader'], exclude: /node_modules/ },
+      { test: /\.tsx?$/, use: ['awesome-typescript-loader'], exclude: /node_modules/ },
     ],
   },
 };

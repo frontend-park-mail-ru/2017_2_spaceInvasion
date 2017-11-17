@@ -1,11 +1,7 @@
 import Unit from './sprites/unit';
 import Base from './sprites/base';
 import Bullet from './sprites/bullet';
-
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
-const UP = 'UP';
-const DOWN = 'DOWN';
+import { LEFT, RIGHT, UP, DOWN } from '../../utils/constants.ts';
 
 class Player {
   constructor(name, baseOptions, manOptions) {

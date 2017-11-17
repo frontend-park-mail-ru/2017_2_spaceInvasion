@@ -1,8 +1,5 @@
 import Sprite from './sprite';
-
-const BOMB_IMAGE_PATH = '../../../images/game/bomb.png';
-const BOMB_WIDTH = 30;
-const BOMB_HEIGHT = 30;
+import { BOMB_HEIGHT, BOMB_IMAGE_PATH, BOMB_WIDTH } from '../../../utils/constants.ts';
 
 export default class Bomb extends Sprite {
   constructor(xPosition, yPosition, coolDown = 200) {

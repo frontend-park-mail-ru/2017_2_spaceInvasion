@@ -1,15 +1,27 @@
-export default class User {
-  username;
-  email;
-  password;
-  score;
+import { validationRulesForRegistration as rules } from '../utils/validationRules';
 
-  fromPromise(p: Promise<any>) {
-    p.then((data) => {
-      this.username = data.username;
-      this.password = data.password;
-      this.email = data.email;
-      this.score = data.score || 0;
-    });
+class User {
+  username : string;
+  email : string;
+  password : string;
+  score ?: number;
+
+  constructor(username : string, email : string, password : string) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.score = 0;
   }
-};
+
+  static validate(u : User) : User {
+    if ((rules.get('password') || []).filter(rule => !rule.predicate(u.password)).length > 0 ||
+      (rules.get('email') || []).filter(rule => !rule.predicate(u.email)).length > 0 ||
+      (rules.get('login') || []).filter(rule => !rule.predicate(u.username)).length > 0) {
+      throw Error('Broken User object: ' + JSON.stringify(u));
+    }
+
+    return u;
+  }
+}
+
+export default User;

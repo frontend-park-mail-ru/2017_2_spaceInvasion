@@ -1,70 +1,78 @@
-import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from '../main';
+import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from './navigator';
 import userService from "../services/userService";
+import { throwIfNull } from "../utils/htmlUtils";
+import { changeThemeForAlien, changeThemeForMan, refreshTheme } from "./themes";
 
 class Router {
   private path: string;
-  private tabs: Array<string>;
+  private tabs: Array<string> = [];
 
-  constructor() {
-    this.path = '';
-    this.tabs = [];
-  }
-
-  setPath(newPath) {
+  setPath(newPath : string) {
     this.path = newPath;
     if (this.tabs[0] !== newPath) this.tabs.unshift(newPath);
-    window.history.pushState(null, null, newPath);
+    window.history.pushState(null, '', newPath);
   }
 
-  getPath() {
+  getPath() : string {
     return this.path;
   }
 
-  checkIfGameCanStart() {
-    if (userService.isLoggedIn()) {
-      showGame()
-    } else {
-      showHome()
-    }
-  }
+  route(path : string) : void {
+    refreshTheme();
 
-  route(path) {
-    const btnMap = new Map([
+    const checkIfGameCanStart = () => {
+      if (userService.isLoggedIn()) {
+        showGame()
+      } else {
+        showHome()
+      }
+    };
+
+    const btnMap = new Map<string, string>();
+    [
       ['/', 'homeBtn'],
       ['/login', 'homeBtn'],
       ['/about', 'aboutBtn'],
       ['/profile', 'homeBtn'],
       ['/leaderboard', 'leaderboardBtn'],
-    ]);
-	const pathMap = new Map([
+    ].forEach(route => btnMap.set(route[0], route[1]));
+
+	  const pathMap = new Map<string, () => void>();
+	  [
       ['/', showHome],
       ['/login', showHome],
       ['/about', showAbout],
       ['/signup', showRegistration],
       ['/profile', showPlayerPage],
       ['/leaderboard', showLeaderboard],
-      ['/game', this.checkIfGameCanStart],
-    ]);
+      ['/game', checkIfGameCanStart],
+    ].forEach(route => pathMap.set(route[0] as string, route[1] as () => void));
 
-    const menu = document.querySelector('div.ui.huge.menu');
+    const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
     const btnClass = btnMap.get(path);
     if (btnClass) {
-      menu.children[btnClass].setAttribute('class', 'active item');
+      throwIfNull(menu.children.namedItem(btnClass)).setAttribute('class', 'active item');
     }
-    pathMap.get(path)()
+
+    const callback = pathMap.get(path);
+    if (callback) {
+      callback();
+    } else {
+      // 404
+      showHome();
+    }
   }
 
-  start() {
-    const menuItems = document.querySelectorAll(".ui.dropdown .menu div.item");
-    const themeID = sessionStorage.getItem("theme");
-    if(themeID != null){
-      if (themeID.includes("man")){
-        menuItems[1].classList.remove('active','selected');
-        menuItems[0].classList.add('active','selected');
-      }else{
-        menuItems[0].classList.remove('active','selected');
-        menuItems[1].classList.add('active','selected');
-      }
+  start() : void {
+    const themeID = sessionStorage.getItem("theme") || 'man';
+
+    switch (themeID) {
+      case 'alien':
+        changeThemeForAlien();
+        break;
+      default: // man
+        changeThemeForMan();
+        break;
     }
 
     this.path = window.location.pathname;
@@ -73,15 +81,16 @@ class Router {
     window.onpopstate = () => {
       let path = '';
       const historyTabs = router.tabs;
-      const menu = document.querySelector('div.ui.huge.menu');
+      const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
       const menutabs = [
-        menu.children['homeBtn'],
-        menu.children['aboutBtn'],
-        menu.children['leaderboardBtn']
+        menu.querySelector('homeBtn'),
+        menu.querySelector('aboutBtn'),
+        menu.querySelector('leaderboardBtn')
       ];
-      menutabs.forEach((el) => {
+      menutabs.forEach((el : Element) => {
         el.setAttribute('class', 'item');
       }, this);
+
       if (router.tabs.length > 0) {
         historyTabs.shift();
         [path] = historyTabs;
@@ -96,5 +105,4 @@ class Router {
 }
 
 const router = new Router();
-
 export default router;

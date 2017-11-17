@@ -1,61 +1,54 @@
-export default class Emitter {
-  private events: object;
+class Emitter {
+  private events : Map<string, Array<(data : object) => void>>;
 
-  Run(action, event, data) {
-    if (event.constructor === Array) {
-      let i = 0;
-      const l = event.length;
-      while (i < l) {
-        this.Run(action, event[i], data);
-        i += 1;
+  _run(action : string, event : string[]|string, data : ((data : object) => void)|object) : void {
+    if (Array.isArray(event)) {
+      event.forEach(e => this._run(action, e, data), this);
+    } else {
+      switch (action) {
+        case 'attach':
+          this._attach(event, data as (data : object) => void);
+          break;
+        case 'detach':
+          this._detach(event);
+          break;
+        case 'emit':
+          this._emit(event, data as object);
+          break;
+        default:
+          break;
       }
-      return;
     }
-    if (event.constructor !== String) {
-      return;
-    }
-    this[action](event, data);
   }
 
-  attach(event, callback) {
-    this.Run('RunAttach', event, callback);
+  attach(event : string, callback : (data : object) => void) : void {
+    this._run('attach', event, callback);
   }
 
-  detach(event, callback) {
-    this.Run('RunDetach', event, callback);
+  detach(event : string) : void {
+    this._run('detach', event, {});
   }
 
-  emit(event, data) {
-    this.Run('RunEmit', event, data);
+  emit(event : string, data : object) : void {
+    this._run('emit', event, data);
   }
 
-  RunAttach(event, callback) {
-    if (!this.events[event]) {
-      this.events[event] = [];
-    }
-    this.events[event].push(callback);
+  _attach(event : string, callback : (data : object) => void) : void {
+    let events = this.events.get(event) || [];
+    events.push(callback);
+    this.events.set(event, events);
   }
 
-  RunEmit(event, data) {
-    const events = this.events[event];
+  _emit(event : string, data : object) : void {
+    const events = this.events.get(event);
     if (events) {
-      let i = 0;
-      const l = events.length;
-      while (i < l) {
-        events[i](data);
-        i += 1;
-      }
+      events.forEach(e => e(data));
     }
   }
 
-  RunDetach(event, callback) {
-    const events = this.events[event];
-    let index;
-    if (events) {
-      index = events.indexOf(callback);
-      if (index > -1) {
-        events.splice(index, 1);
-      }
-    }
+  _detach(event : string) : void {
+    this.events.delete(event);
   }
 }
+
+export default Emitter;

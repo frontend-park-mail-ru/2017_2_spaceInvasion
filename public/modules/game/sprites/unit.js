@@ -1,17 +1,6 @@
 import Sprite from './sprite';
-
-const UNIT_IMAGE_PATH = '../../../images/game/alienUnit.png';
-const UNIT_WIDTH = 50;
-const UNIT_HEIGHT = 50;
-const UNIT_DAMAGE = 10;
-
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
-
-const modelWidth = 960;
-const modelHeight = 640;
-
-const SPEED = 5;
+import { UNIT_DAMAGE, UNIT_HEIGHT, UNIT_IMAGE_PATH, UNIT_WIDTH, SPEED, modelWidth, modelHeight,
+  LEFT, RIGHT } from '../../../utils/constants.ts';
 
 export default class Unit extends Sprite {
   constructor(health = 100, xPosition, yPosition = 260) {

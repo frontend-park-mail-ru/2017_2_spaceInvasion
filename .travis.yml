@@ -6,7 +6,7 @@ node_js:
 - '8'
 script:
 - npm run webpack
-- npm test
+- NODE_ENV=test npm test
 cache:
   directories:
   - node_modules

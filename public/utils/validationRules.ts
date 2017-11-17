@@ -1,7 +1,12 @@
 // Критерии проверки валидности.
-const rulesRegForEmail = [
+class Rule {
+  predicate: (field : string) => boolean;
+  message : string;
+}
+
+const rulesRegForEmail : Rule[] = [
   {
-    predicate: email => /^[\w-]+@[\w-]+\.[A-Za-z]{2,4}$/.test(email),
+    predicate: email => /^\S+@\S+(\.\S+)+$/.test(email),
     message: 'Wrong format of email',
   },
   {
@@ -10,9 +15,9 @@ const rulesRegForEmail = [
   },
 ];
 
-const rulesRegForLogin = [
+const rulesRegForLogin : Rule[] = [
   {
-    predicate: login => /^[\w\-@]{5,}$/.test(login),
+    predicate: login => /^.{5,}$/.test(login),
     message: 'Minimum login length is 5',
   },
   {
@@ -21,40 +26,41 @@ const rulesRegForLogin = [
   },
 ];
 
-const rulesRegForPassword = [
+const rulesRegForPassword : Rule[] = [
   {
-    predicate: password => /^[\w\s\-.]{8,}$/.test(password),
+    predicate: password => /^.{8,}$/.test(password),
     message: 'Minimum password length is 8',
-  },
-  {
-    predicate: password => /^[\w\s\-.]+$/.test(password),
-    message: 'Passwords must contain only latin symbols,digits,_,-,.',
   },
 ];
 
-const rulesLogForLogin = [
+const rulesLogForLogin : Rule[] = [
   {
     predicate: login => login !== '',
     message: 'Login can not be blank',
   },
 ];
 
-const rulesLogForPassword = [
+const rulesLogForPassword : Rule[] = [
   {
     predicate: password => password !== '',
     message: 'Password can not be blank',
   },
 ];
 
-const validationRulesForLogin = {
-  rulesForLogin: rulesLogForLogin,
-  rulesForPassword: rulesLogForPassword,
-};
+type Rules = Map<string, Rule[]>;
 
-const validationRulesForRegistration = {
-  rulesForEmail: rulesRegForEmail,
-  rulesForLogin: rulesRegForLogin,
-  rulesForPassword: rulesRegForPassword,
-};
+const validationRulesForLogin = new Map<string, Rule[]>();
+[
+  ['login', rulesLogForLogin],
+  ['password', rulesLogForPassword]
+].forEach(rule => validationRulesForLogin.set(rule[0] as string, rule[1] as Rule[]));
 
-export { validationRulesForLogin, validationRulesForRegistration };
+const validationRulesForRegistration = new Map<string, Rule[]>();
+[
+  ['email', rulesRegForEmail],
+  ['login', rulesRegForLogin],
+  ['password', rulesRegForPassword],
+  ['repeatedPassword', rulesRegForPassword],
+].forEach(rule => validationRulesForRegistration.set(rule[0] as string, rule[1] as Rule[]));
+
+export { Rule, Rules, validationRulesForLogin, validationRulesForRegistration };

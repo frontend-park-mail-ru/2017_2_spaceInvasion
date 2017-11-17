@@ -1,9 +1,5 @@
 import Sprite from './sprite';
-
-const BULLET_IMAGE_PATH = '../../../images/game/bullet.png';
-const BULLET_WIDTH = 25;
-const BULLET_HEIGHT = 25;
-const BULLET_DAMAGE = 10;
+import { BULLET_DAMAGE, BULLET_HEIGHT, BULLET_IMAGE_PATH, BULLET_WIDTH } from '../../../utils/constants.ts';
 
 // TODO damage в конструкторе
 export default class Bullet extends Sprite {

@@ -76,4 +76,10 @@ secrets.json
 public/dist/**
 tests/**/*.js
 mocks/**/*.js
+public/**/*.js
 !public/pnotify.custom.min.js
+!public/common/semantic/dist/semantic.min.js
+
+# TypeScript compiler cache
+.awcache
+

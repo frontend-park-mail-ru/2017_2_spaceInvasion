@@ -1,14 +1,16 @@
+import { throwIfNull } from "./htmlUtils";
+
 let devDialog: HTMLElement;
 
-function closeDialog() {
+function closeDialog() : void {
   if (devDialog) {
     devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
   }
 }
 
-function initDialog() {
-  const dialog = document.querySelector('div.ui.modal');
-  const closeDialogBtn = document.querySelector('.closeBtn');
+function initDialog() : void {
+  const dialog = throwIfNull(document.querySelector('div.ui.modal'));
+  const closeDialogBtn = throwIfNull(document.querySelector('.closeBtn'));
 
   devDialog = <HTMLElement> dialog;
   closeDialogBtn.setAttribute('style', 'color:#ffffff');
@@ -17,7 +19,7 @@ function initDialog() {
   dialog.classList.add('scrolling', 'transition', 'visible', 'active', 'animating', 'scale', 'in');
 }
 
-function alertDialog() {
+function alertDialog() : void {
   const developerAvatar = document.querySelectorAll('img#devAvatar');
   const dialog = document.querySelectorAll('.ui.modal')[0];
 
@@ -36,14 +38,14 @@ function alertDialog() {
   const workOn = <HTMLElement> dialog.querySelector('.ui.header#workOn');
 
   developerAvatar.forEach((element) => {
-    (element as HTMLElement).onclick = function clickHandler() { // eslint-disable-line no-param-reassign
-      const id = element.getAttribute('name');
+    (element as HTMLElement).onclick = () => { // eslint-disable-line no-param-reassign
+      const id = throwIfNull(element.getAttribute('name'));
       avatar.setAttribute('src', developersInfo.avatars[+id]);
       title.innerText = `${developersInfo.names[+id]}`;
       workOn.innerText = `${developersInfo.workOn[+id]}`;
       initDialog();
     };
-  }, this);
+  });
 }
 
 export { alertDialog, closeDialog };

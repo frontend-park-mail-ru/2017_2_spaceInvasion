@@ -1,10 +1,5 @@
 import Sprite from './sprite';
-
-const TOWER_IMAGE_PATH = '../../../images/game/tower.png';
-const TOWER_WIDTH = 50;
-const TOWER_HEIGHT = 100;
-const TOWER_DAMAGE = 10;
-const TOWER_HEALTH = 100;
+import { TOWER_IMAGE_PATH, TOWER_DAMAGE, TOWER_HEALTH, TOWER_HEIGHT, TOWER_WIDTH } from '../../../utils/constants.ts';
 
 export default class Tower extends Sprite {
   constructor(coolDown, xPosition, yPosition, direction = 'RIGHT') {

@@ -1,10 +1,12 @@
 import Block from '../block/index';
 import userService from '../../services/userService';
-import { showHome, showGame, router } from '../../main';
+import { showHome, showGame } from '../../modules/navigator';
 import playerpageTemplate from './playerPage.pug';
+import { throwIfNull } from "../../utils/htmlUtils";
+import router from "../../modules/router";
 
-function onLogoutBtnClick(el) {
-  el.querySelector('.ui.button__logout').addEventListener('click', () => {
+function onLogoutBtnClick(el : HTMLElement) : void {
+  throwIfNull(el.querySelector('.ui.button__logout')).addEventListener('click', () => {
     userService.logout().then(() => {
       router.setPath('/');
       showHome();
@@ -12,8 +14,8 @@ function onLogoutBtnClick(el) {
   });
 }
 
-function onPlayBtnClick(el) {
-  el.querySelector('.ui.button__play').addEventListener('click', () => {
+function onPlayBtnClick(el : HTMLElement) : void {
+  throwIfNull(el.querySelector('.ui.button__play')).addEventListener('click', () => {
     if (userService.isLoggedIn()) {
       showGame();
     } else {

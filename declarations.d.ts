@@ -1,4 +1,4 @@
 declare module '*.pug' {
-  const value: WhateverTheTypeIs;
+  const value: any;
   export default value;
 }

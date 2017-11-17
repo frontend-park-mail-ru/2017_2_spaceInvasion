@@ -1,83 +1,65 @@
-import Http from '../modules/httpModule';
+import Http from '../modules/http';
 import User from '../models/user';
-import { showPlayerPage, showHome, showError, router } from '../main';
+import router from "../modules/router";
+import { showHome, showPlayerPage } from "../modules/navigator";
+import { throwIfNull } from "../utils/htmlUtils";
 
 class UserService {
-  user : User;
+  user : User | null;
   users : Array<User>;
 
-  constructor() {
+  logout() : Promise<Response|null> {
     this.user = null;
-    this.users = [];
+    return Http.Fetch('POST', '/user/logout');
   }
 
-  logout() {
-    const result = Http.Fetch('POST', '/user/logout');
-    if (result) {
-      this.user = null;
-    }
-    return result;
+  register(email : string, username : string, password : string) : Promise<User|null> {
+    return Http.Fetch('POST', '/user/signup', { email, username, password })
+      .then(data => throwIfNull(data).json())
+      .then((user: User) => {
+        this.user = user;
+        if (this.user.username && !this.users.find((el: User) => {
+            return this.user !== null && el.username === this.user.username;
+          })) {
+          this.users.push(this.user);
+        }
+        return this.user;
+      });
   }
 
-  // Регистрация пользователя
-  register(email, username, password) {
-    const result = Http.Fetch('POST', '/user/signup', { email, username, password })
-      .then(data => data.json());
-
-    if (!this.user) {
-      this.user = new User();
-    }
-    if (result) {
-      this.user.fromPromise(result);
-    }
-    if (this.user.username && !this.users.find(el => el.username === this.user.username)) {
-      this.users.push(this.user);
-    }
-
-    return result;
+  login(username : string, password : string) : Promise<User|null> {
+    return Http.Fetch('POST', '/user/signin', { username, password })
+      .then(data => throwIfNull(data).json())
+      .then((user : User) => this.user = User.validate(user));
   }
 
-  // Авторизация пользователя
-  login(username, password) {
-    const result = Http.Fetch('POST', '/user/signin', { username, password })
-      .then(data => data.json());
-
-    if (!this.user) {
-      this.user = new User();
-    }
-    if (result) {
-      this.user.fromPromise(result);
-    }
-
-    return result;
-  }
-
-  // Залогинен ли пользователь
-  isLoggedIn() {
+  isLoggedIn() : boolean {
     return Boolean(this.user);
   }
 
-  getData() {
-    Http.Fetch('GET', '/user').then(userdata => userdata.json())
-      .then((userdata) => {
+  fetch() : Promise<User|null> {
+    return Http.Fetch('GET', '/user')
+      .then(data => throwIfNull(data).json())
+      .then(data => {
         const path = window.location.pathname;
-        if (userdata.result !== 'Unauthorized') {
-          this.user = userdata;
-          if (path === '/login' || path === '/profile' || path === '/') {
+        if (data.result !== 'Unauthorized') {
+          if (path === '/login' || path === '/signup' || path === '/profile' || path === '/') {
             showPlayerPage();
             router.setPath('/profile');
           }
+          return this.user = data;
         } else if (path === '/login' || path === '/profile') {
           showHome();
-          router.setPath('/');
+          router.setPath('/login');
+          return null;
         }
       }).catch(() => {
-        router.setPath('/');
-        showError('Oops, try again!');
+        const path = window.location.pathname;
+        router.route(path);
+        return null;
       });
   }
 }
 
 const userService = new UserService();
-
 export default userService;

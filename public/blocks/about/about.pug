@@ -3,8 +3,8 @@ body
     .ui.one.column.centered.grid.ui__one__column__centered__grid__about
         h2(style="color: #FFF") Developers
     .ui.one.column.centered.grid.ui__one__column__centered__grid__about
-        - var developers = ['olga_surikova','vasiliy_dmitriev','nikita_boyarskikh','egor_kurakov']
-        - var id = 0
+        - const developers = ['olga_surikova','vasiliy_dmitriev','nikita_boyarskikh','egor_kurakov']
+        - let id = 0
             each developer in developers
                 img#devAvatar.ui.circular.image.ui__circular__image(name=id, src="/images/"+developer+".jpg")
                 -id++

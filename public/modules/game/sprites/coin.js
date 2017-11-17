@@ -1,9 +1,5 @@
 import Sprite from './sprite';
-
-const COIN_IMAGE_PATH = '../../../images/game/coin.png';
-const COIN_WIDTH = 30;
-const COIN_HEIGHT = 30;
-const COIN_COST = 10;
+import { COIN_COST, COIN_HEIGHT, COIN_IMAGE_PATH, COIN_WIDTH } from '../../../utils/constants.ts';
 
 export default class Coin extends Sprite {
   constructor(xPosition, yPosition, coolDown = 10) {

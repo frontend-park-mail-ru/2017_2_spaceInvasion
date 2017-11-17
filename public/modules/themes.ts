@@ -1,14 +1,13 @@
-import { throwIfNull } from "./htmlUtils";
-
-const body = throwIfNull(document.querySelector('body'));
-const signUpBtn = throwIfNull(document.querySelector('.ui.button#signUpBtn'));
-const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown .menu div.item");
+import { throwIfNull } from "../utils/htmlUtils";
 
 function changeThemeForMan() : void {
-  body.setAttribute('class', 'man');
+  const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown .menu div.item");
+
+  throwIfNull(document.querySelector('body')).setAttribute('class', 'man');
   menuItems[1].classList.remove('active','selected');
   menuItems[0].classList.add('active','selected');
 
+  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signUpBtn'));
   signUpBtn.classList.remove('alien');
   signUpBtn.classList.add('man');
 
@@ -35,10 +34,13 @@ function changeThemeForMan() : void {
 }
 
 function changeThemeForAlien() : void {
-  body.setAttribute('class', 'alien');
+  const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown.item .menu .item");
+
+  throwIfNull(document.querySelector('body')).setAttribute('class', 'alien');
   menuItems[0].classList.remove('active','selected');
   menuItems[1].classList.add('active','selected');
 
+  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signUpBtn'));
   signUpBtn.classList.remove('man');
   signUpBtn.classList.add('alien');
 
@@ -64,20 +66,37 @@ function changeThemeForAlien() : void {
   sessionStorage.setItem('theme', 'alien');
 }
 
-const races = document.querySelectorAll('.compact.menu .ui.simple.dropdown.ui__dropdown.item .item');
-races.forEach((el : Element) => {
-  el.addEventListener('click', () => {
-    switch ((el as HTMLElement).innerText) {
-      case 'Man':
-        changeThemeForMan();
-        break;
-      case 'Alien':
-        changeThemeForAlien();
-        break;
-      default:
-        throw Error('Wrong theme identifier');
-    }
-  });
-});
+function getTheme() : string {
+  return sessionStorage.getItem('theme') || 'man';
+}
 
-export { changeThemeForAlien, changeThemeForMan };
+function refreshTheme() : void {
+  switch (getTheme()) {
+    case 'alien':
+      changeThemeForAlien();
+      break;
+    default: // man
+      changeThemeForMan();
+      break;
+  }
+}
+
+function init() {
+  const races = document.querySelectorAll('.right.menu .ui.dropdown.ui__dropdown.item .menu .item');
+  races.forEach((el: HTMLElement) => {
+    el.addEventListener('click', () => {
+      switch (el.innerText) {
+        case 'Man':
+          changeThemeForMan();
+          break;
+        case 'Alien':
+          changeThemeForAlien();
+          break;
+        default:
+          throw Error('Wrong theme identifier');
+      }
+    });
+  });
+}
+
+export { changeThemeForAlien, changeThemeForMan, getTheme, refreshTheme, init as initThemes };

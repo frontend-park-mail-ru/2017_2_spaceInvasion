@@ -1,11 +1,9 @@
 import { modelHeight, modelWidth } from '../MODEL_COORDINATES';
+import { RED, BLACK, BLUE, DEFAULT_FONT } from '../../../utils/constants.ts';
 
 // Scaling
 let scaleCoeff = window.innerHeight / modelHeight;
-const RED = '#F00';
-const BLUE = '#000dd4';
-const BLACK = 'black';
-let FONT = 'italic 20pt Arial';
+let FONT = DEFAULT_FONT;
 
 class GameScene {
   constructor(canvas) {
