@@ -50,3 +50,17 @@ canvas#game {
     width: 100%;
     margin-top: -14px;
 }
+
+.stopmessage{
+    color: white;
+    text-align: center;
+}
+
+.stopimg{
+    text-align: center;
+}
+
+.stopimgsrc{
+    width: 290px;
+    height: 290px;
+}
