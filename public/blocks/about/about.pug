@@ -5,9 +5,9 @@ body
     .ui.one.column.centered.grid.ui__one__column__centered__grid__about
         - const developers = ['olga_surikova','vasiliy_dmitriev','nikita_boyarskikh','egor_kurakov']
         - let id = 0
-            each developer in developers
-                img#devAvatar.ui.circular.image.ui__circular__image(name=id, src="/images/"+developer+".jpg")
-                -id++
+        each developer in developers
+            img#devAvatar.ui.circular.image.ui__circular__image(name=id, src="/images/" + developer + ".jpg")
+            -id++
     .ui.modal
         i.close.icon.closeBtn
         #title.ui.header

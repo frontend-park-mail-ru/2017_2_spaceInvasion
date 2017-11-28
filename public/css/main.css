@@ -1,35 +1,35 @@
-.ui.card.ui__card__login{
+section .ui.card.ui__card__login {
     width: 400px;
     margin-top: 100px;
 }
 
-.ui.card.ui__card__login.container {
+section .ui.card.ui__card__login.container {
     width: 400px;
 }
 
-.ui.card.ui__card__registration{
+section .ui.card.ui__card__registration {
     margin-top: 100px;
     width: 400px;
 }
 
-.ui.selectable.called.table.ui__selectable__celled__table__leaderboard{
+.ui.selectable.called.table.ui__selectable__celled__table__leaderboard {
     margin-top: 40px;
 }
 
-.ui.one.column.centered.grid.ui__one__column__centered__grid__about{
+.ui.one.column.centered.grid.ui__one__column__centered__grid__about {
     margin-top: 100px;
 }
 
-.ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard{
+.ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard {
     margin-top: 100px;
 }
 
-.ui.circular.ui__circular__image{
+.ui.circular.ui__circular__image {
     width: 280px;
     height: 280px;
 }
 
-.one.column.login.grid.one__column__login__grid{
+.one.column.login.grid.one__column__login__grid {
     margin: 0px;
     width: 400px;
 }
@@ -49,4 +49,5 @@
 canvas#game {
     width: 100%;
     margin-top: -14px;
+    overflow: hidden;
 }
