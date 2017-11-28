@@ -1,14 +1,14 @@
-import { throwIfNull } from "./htmlUtils";
+import {throwIfNull} from './utils';
 
 let devDialog: HTMLElement;
 
-function closeDialog() : void {
+function closeDialog(): void {
   if (devDialog) {
     devDialog.setAttribute('class', 'ui modal scrolling transition hidden');
   }
 }
 
-function initDialog() : void {
+function initDialog(): void {
   const dialog = throwIfNull(document.querySelector('div.ui.modal'));
   const closeDialogBtn = throwIfNull(document.querySelector('.closeBtn'));
 
@@ -19,7 +19,13 @@ function initDialog() : void {
   dialog.classList.add('scrolling', 'transition', 'visible', 'active', 'animating', 'scale', 'in');
 }
 
-function alertDialog() : void {
+function showDialog(): void {
+  if (devDialog) {
+    devDialog.setAttribute('class', 'ui modal scrolling transition');
+  }
+}
+
+function alertDialog(): void {
   const developerAvatar = document.querySelectorAll('img#devAvatar');
   const dialog = document.querySelectorAll('.ui.modal')[0];
 
@@ -30,7 +36,7 @@ function alertDialog() : void {
     names: [
       'Olga Surikova', 'Vasiliy Dmitriev', 'Nikita Boyarskikh', 'Egor Kurakov',
     ],
-    workOn: ['Frontend', 'Frontend', 'Backend', 'Backend'],
+    workOn: ['Frontend', 'Frontend', 'Fullstack', 'Backend'],
   };
 
   const avatar = <HTMLElement> dialog.querySelector('img#developer-avatar');
@@ -38,14 +44,14 @@ function alertDialog() : void {
   const workOn = <HTMLElement> dialog.querySelector('.ui.header#workOn');
 
   developerAvatar.forEach((element) => {
-    (element as HTMLElement).onclick = () => { // eslint-disable-line no-param-reassign
+    element.addEventListener('click', () => {
       const id = throwIfNull(element.getAttribute('name'));
       avatar.setAttribute('src', developersInfo.avatars[+id]);
       title.innerText = `${developersInfo.names[+id]}`;
       workOn.innerText = `${developersInfo.workOn[+id]}`;
       initDialog();
-    };
+    });
   });
 }
 
-export { alertDialog, closeDialog };
+export {alertDialog, showDialog, closeDialog};

@@ -1,67 +1,132 @@
-const baseUrl = 'http://138.68.86.49/';
+const BASE_URL = 'http://138.68.86.49/';
 
-// Directions
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
-const UP = 'UP';
-const DOWN = 'DOWN';
+enum SIDE {
+  MAN,
+  ALIEN,
+}
+
+enum EVENT {
+  FIRE,
+  LEFT,
+  RIGHT,
+  DOWN,
+  UP,
+  TOWER,
+  NO
+}
+
+// Team contacts
+const TEAM = {
+  EMAIL: 'spaceinvasionlab@yandex.ru'
+};
 
 // Game constants
-// Tower
-const TOWER_IMAGE_PATH = '../../../images/game/tower.png';
-const TOWER_WIDTH = 50;
-const TOWER_HEIGHT = 100;
-const TOWER_DAMAGE = 10;
-const TOWER_HEALTH = 100;
+const HALF_LINE_COLOR = 'black';
+const HALF_LINE_WIDTH = 2;
 
-// Unit
-const UNIT_IMAGE_PATH = '../../../images/game/alienUnit.png';
-const UNIT_WIDTH = 50;
-const UNIT_HEIGHT = 50;
-const UNIT_DAMAGE = 10;
+const AREA = {
+  WIDTH: 960,
+  HEIGHT: 640,
+  BACKGROUND_IMAGE: '../../../images/game/moonBackground.png',
+};
 
-const modelWidth = 960;
-const modelHeight = 640;
+const TOWER = {
+  IMAGE_PATH: '../../../images/game/tower.png',
+  WIDTH: 50,
+  HEIGHT: 100,
+  DAMAGE: 10,
+  HEALTH: 100,
+  SPEED: 1000 * 0.5, // Выстрел каждые 0.5 секунды
+  COST: 5, // TODO башни с разной стоимостью
+};
 
-const SPEED = 5;
+const UNIT = {
+  MAN_IMAGE_PATH: '../../../images/game/alienUnit.png', // TODO: Other image for mans
+  ALIEN_IMAGE_PATH: '../../../images/game/alienUnit.png',
+  HEALTH: 100,
+  WIDTH: 50,
+  HEIGHT: 50,
+  DAMAGE: 10,
+  SPEED: 5,
+  SPAWN_OFFSET: 30,
+};
 
-// Coins
-const COIN_IMAGE_PATH = '../../../images/game/coin.png';
-const COIN_WIDTH = 30;
-const COIN_HEIGHT = 30;
-const COIN_COST = 10;
+const BOT = {
+  FIRE_SPEED: 1000 * 0.5, // Выстрел каждые 0.5 секунды
+  AMPLITUDE: 300,
+  TOWER_SPEED: 1000 * 2, // Установка башни каждые 2 секунды (если есть деньги на это)
+  RANDOM_TOWER_SPEED: 1000 * 5, // Бесплатная установка башни в случайном месте поля каждые 5 секунд
+};
 
-// Bullets
-const BULLET_IMAGE_PATH = '../../../images/game/bullet.png';
-const BULLET_WIDTH = 25;
-const BULLET_HEIGHT = 25;
-const BULLET_DAMAGE = 10;
+const FPS = 1000 / 120; // 120 fps
+
+const COIN = {
+  IMAGE_PATH: '../../../images/game/coin.png',
+  WIDTH: 30,
+  HEIGHT: 30,
+  COST: 10,
+  TICKS: 10,
+  LIFE_TIME: 10,
+  DEFAULT: 3,
+};
+
+const BULLET = {
+  IMAGE_PATH: '../../../images/game/bullet.png',
+  WIDTH: 25,
+  HEIGHT: 25,
+  DAMAGE: 10,
+  SPEED: 6,
+  INTERVAL: 1,
+  TICKS: 10,
+  LIFE_TIME: 3000,
+};
 
 // Bombs
-const BOMB_IMAGE_PATH = '../../../images/game/bomb.png';
-const BOMB_WIDTH = 30;
-const BOMB_HEIGHT = 30;
+const BOMB = {
+  IMAGE_PATH: '../../../images/game/bomb.png',
+  WIDTH: 30,
+  HEIGHT: 30,
+  LIFE_TIME: 10,
+  DAMAGE: 1,
+  TICKS: 10,
+};
 
 // Bases
-const BASE_IMAGE_PATH = '../../../images/game/base.png';
-const BASE_WIDTH = 110;
-const BASE_HEIGHT = 110;
-
-// Colors
-const RED = '#F00';
-const BLUE = '#000dd4';
-const BLACK = 'black';
+const BASE = {
+  HEALTH: 3,
+  IMAGE_PATH: '../../../images/game/base.png',
+  WIDTH: 110,
+  HEIGHT: 110,
+  OFFSET: 5,
+};
 
 // Fonts
 const DEFAULT_FONT = 'italic 20pt Arial';
 
-export { baseUrl,
-  TOWER_DAMAGE, TOWER_HEALTH, TOWER_HEIGHT, TOWER_IMAGE_PATH, TOWER_WIDTH, // Tower
-  UNIT_DAMAGE, UNIT_HEIGHT, UNIT_IMAGE_PATH, UNIT_WIDTH, modelHeight, modelWidth, SPEED, // Unit
-  LEFT, RIGHT, UP, DOWN, // Directions
-  COIN_COST, COIN_HEIGHT, COIN_IMAGE_PATH, COIN_WIDTH, // Coins
-  BULLET_DAMAGE, BULLET_HEIGHT, BULLET_IMAGE_PATH, BULLET_WIDTH, // Bullets
-  BOMB_HEIGHT, BOMB_IMAGE_PATH, BOMB_WIDTH, // Bombs
-  BASE_HEIGHT, BASE_IMAGE_PATH, BASE_WIDTH, // Bases
-  RED, BLACK, BLUE, DEFAULT_FONT // Styles
-};
+const ACTION_MAPPER = new Map<string, EVENT>();
+[
+  [EVENT.FIRE, [' ', 'Enter']],
+  [EVENT.LEFT, ['a', 'A', 'ф', 'Ф', 'ArrowLeft']],
+  [EVENT.RIGHT, ['d', 'D', 'в', 'В', 'ArrowRight']],
+  [EVENT.DOWN, ['s', 'S', 'ы', 'Ы', 'ArrowDown']],
+  [EVENT.UP, ['w', 'W', 'ц', 'Ц', 'ArrowUp']],
+  [EVENT.TOWER, ['Shift']],
+].forEach(row => (row[1] as string[]).forEach(el => ACTION_MAPPER.set(el, row[0] as EVENT)));
+
+const PATH_MAP = new Map<string, string>();
+[
+  ['/', 'home'],
+  ['/login', 'login'],
+  ['/about', 'about'],
+  ['/signup', 'signup'],
+  ['/profile', 'profile'],
+  ['/leaderboard', 'leaderboard'],
+  ['/game', 'game'],
+].forEach(value => PATH_MAP.set(value[0], value[1]));
+
+export {
+  BASE_URL, SIDE, TEAM, AREA,
+  TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE,
+  HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT, // Styles
+  ACTION_MAPPER, PATH_MAP, EVENT, FPS // Routing
+}
