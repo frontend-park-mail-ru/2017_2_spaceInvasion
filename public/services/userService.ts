@@ -46,6 +46,7 @@ class UserService {
   }
 
   fetch(): Promise<User | null> {
+    this.user = new User('Admin', 'spaceinvasionlab@yandex.ru', ''); // NOTE: Testing!!!!!! Remove it!
     return Http.Fetch('GET', '/user')
       .then(data => throwIfNull(data).json())
       .then(data => {

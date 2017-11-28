@@ -26,6 +26,7 @@ export default class Bomb extends Sprite implements Temporary, Rect {
   }
 
   destroy(): void {
+    debugger;
     this.target.damage(this.damage);
     this.visible = false;
     this.cancel();

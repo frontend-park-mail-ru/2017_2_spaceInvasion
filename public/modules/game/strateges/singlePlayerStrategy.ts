@@ -120,6 +120,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     // Если умирает юнит, респавним его и дамажим его дом
     this.state.units.filter(unit => !unit.alive()).forEach(unit => {
       unit.spawn();
+      debugger;
       if (!(unit instanceof Bot)) {
         this.state.bases.filter(base => base.side === unit.side)[0].damage(1);
       }
