@@ -1,94 +1,97 @@
-import { showPlayerPage, showHome, showRegistration, showAbout, showLeaderboard, showGame } from './navigator';
-import userService from "../services/userService";
-import { throwIfNull } from "../utils/htmlUtils";
-import { changeThemeForAlien, changeThemeForMan, refreshTheme } from "./themes";
+import Navigator from './navigator';
+import userService from '../services/userService';
+import {throwIfNull} from '../utils/utils';
+import {refreshTheme} from './themes';
+import {PATH_MAP} from '../utils/constants';
+import LoginBlock from '../blocks/login/index';
 
 class Router {
-  private path: string;
-  private tabs: Array<string> = [];
+  protected path: string;
+  protected tabs: Array<string> = [];
 
-  setPath(newPath : string) {
+  static route(path ?: string): void {
+    refreshTheme();
+
+    path = path || window.location.pathname;
+
+    const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
+    const btnClass = (PATH_MAP.get(path) || '').toLowerCase();
+    switch (btnClass) {
+      case 'home':
+      case 'leaderboard':
+      case 'about':
+      case 'signup':
+        throwIfNull(menu.querySelector(`#${btnClass}Btn`)).setAttribute('class', 'active item');
+        break;
+      case 'login':  // TODO: Сверстать homepage
+        throwIfNull(menu.querySelector(`#homeBtn`)).setAttribute('class', 'active item');
+        break;
+      case 'game':
+      case 'profile':
+        break;
+      default:
+        break;
+    }
+
+    switch (PATH_MAP.get(path)) {
+      case 'home':
+        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        break;
+      case 'login':
+      case 'profile':
+        if (userService.isLoggedIn()) {
+          Navigator.sections.playerPage.show();
+        } else {
+          Navigator.sections.login.show();
+        }
+        break;
+      case 'game':
+        if (userService.isLoggedIn()) {
+          Navigator.sections.game.show();
+        } else {
+          (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        }
+        break;
+      case 'about':
+        Navigator.sections.about.show();
+        break;
+      case 'signup':
+        Navigator.sections.registration.show();
+        break;
+      case 'leaderboard':
+        Navigator.sections.leaderboard.show();
+        break;
+      default:
+        // 404
+        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        break;
+    }
+  }
+
+  setPath(newPath: string): void {
     this.path = newPath;
     if (this.tabs[0] !== newPath) this.tabs.unshift(newPath);
     window.history.pushState(null, '', newPath);
   }
 
-  getPath() : string {
+  getPath(): string {
     return this.path;
   }
 
-  route(path : string) : void {
-    refreshTheme();
-
-    const checkIfGameCanStart = () => {
-      if (userService.isLoggedIn()) {
-        showGame()
-      } else {
-        showHome()
-      }
-    };
-
-    const btnMap = new Map<string, string>();
-    [
-      ['/', 'homeBtn'],
-      ['/login', 'homeBtn'],
-      ['/about', 'aboutBtn'],
-      ['/profile', 'homeBtn'],
-      ['/leaderboard', 'leaderboardBtn'],
-    ].forEach(route => btnMap.set(route[0], route[1]));
-
-	  const pathMap = new Map<string, () => void>();
-	  [
-      ['/', showHome],
-      ['/login', showHome],
-      ['/about', showAbout],
-      ['/signup', showRegistration],
-      ['/profile', showPlayerPage],
-      ['/leaderboard', showLeaderboard],
-      ['/game', checkIfGameCanStart],
-    ].forEach(route => pathMap.set(route[0] as string, route[1] as () => void));
-
-    const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
-    const btnClass = btnMap.get(path);
-    if (btnClass) {
-      throwIfNull(menu.children.namedItem(btnClass)).setAttribute('class', 'active item');
-    }
-
-    const callback = pathMap.get(path);
-    if (callback) {
-      callback();
-    } else {
-      // 404
-      showHome();
-    }
-  }
-
-  start() : void {
-    const themeID = sessionStorage.getItem("theme") || 'man';
-
-    switch (themeID) {
-      case 'alien':
-        changeThemeForAlien();
-        break;
-      default: // man
-        changeThemeForMan();
-        break;
-    }
-
-    this.path = window.location.pathname;
-    this.route(this.path);
+  start(): void {
+    Router.route();
 
     window.onpopstate = () => {
       let path = '';
       const historyTabs = router.tabs;
       const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
       const menutabs = [
-        menu.querySelector('homeBtn'),
-        menu.querySelector('aboutBtn'),
-        menu.querySelector('leaderboardBtn')
+        menu.querySelector('#homeBtn'),
+        menu.querySelector('#aboutBtn'),
+        menu.querySelector('#leaderboardBtn')
       ];
-      menutabs.forEach((el : Element) => {
-        el.setAttribute('class', 'item');
+      menutabs.forEach((el: Element | null) => {
+        throwIfNull(el).setAttribute('class', 'item');
       }, this);
 
       if (router.tabs.length > 0) {
@@ -99,10 +102,11 @@ class Router {
       }
 
       path = path || '/';
-      this.route(path);
+      Router.route(path);
     };
   }
 }
 
 const router = new Router();
+export {Router};
 export default router;
