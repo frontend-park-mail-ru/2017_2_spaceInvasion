@@ -1,13 +1,13 @@
-import { throwIfNull } from "../utils/htmlUtils";
+import {throwIfNull} from '../utils/utils';
 
-function changeThemeForMan() : void {
-  const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown .menu div.item");
+function changeThemeForMan(): void {
+  const menuItems = document.querySelectorAll('.ui.dropdown.ui__dropdown .menu div.item');
 
   throwIfNull(document.querySelector('body')).setAttribute('class', 'man');
-  menuItems[1].classList.remove('active','selected');
-  menuItems[0].classList.add('active','selected');
+  menuItems[1].classList.remove('active', 'selected');
+  menuItems[0].classList.add('active', 'selected');
 
-  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signUpBtn'));
+  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signupBtn'));
   signUpBtn.classList.remove('alien');
   signUpBtn.classList.add('man');
 
@@ -20,7 +20,7 @@ function changeThemeForMan() : void {
     loginBtn.classList.add('man');
   }
 
-  if(registerBtn !== null){
+  if (registerBtn !== null) {
     registerBtn.classList.remove('alien');
     registerBtn.classList.add('man');
   }
@@ -33,14 +33,14 @@ function changeThemeForMan() : void {
   sessionStorage.setItem('theme', 'man');
 }
 
-function changeThemeForAlien() : void {
-  const menuItems = document.querySelectorAll(".ui.dropdown.ui__dropdown.item .menu .item");
+function changeThemeForAlien(): void {
+  const menuItems = document.querySelectorAll('.ui.dropdown.ui__dropdown.item .menu .item');
 
   throwIfNull(document.querySelector('body')).setAttribute('class', 'alien');
-  menuItems[0].classList.remove('active','selected');
-  menuItems[1].classList.add('active','selected');
+  menuItems[0].classList.remove('active', 'selected');
+  menuItems[1].classList.add('active', 'selected');
 
-  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signUpBtn'));
+  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signupBtn'));
   signUpBtn.classList.remove('man');
   signUpBtn.classList.add('alien');
 
@@ -53,7 +53,7 @@ function changeThemeForAlien() : void {
     loginBtn.classList.add('alien');
   }
 
-  if(registerBtn !== null){
+  if (registerBtn !== null) {
     registerBtn.classList.remove('man');
     registerBtn.classList.add('alien');
   }
@@ -66,11 +66,11 @@ function changeThemeForAlien() : void {
   sessionStorage.setItem('theme', 'alien');
 }
 
-function getTheme() : string {
+function getTheme(): string {
   return sessionStorage.getItem('theme') || 'man';
 }
 
-function refreshTheme() : void {
+function refreshTheme(): void {
   switch (getTheme()) {
     case 'alien':
       changeThemeForAlien();
@@ -81,15 +81,15 @@ function refreshTheme() : void {
   }
 }
 
-function init() {
+function init(): void {
   const races = document.querySelectorAll('.right.menu .ui.dropdown.ui__dropdown.item .menu .item');
-  races.forEach((el: HTMLElement) => {
+  races.forEach((el: Element) => {
     el.addEventListener('click', () => {
-      switch (el.innerText) {
-        case 'Man':
+      switch ((el as HTMLElement).dataset['race']) {
+        case 'man':
           changeThemeForMan();
           break;
-        case 'Alien':
+        case 'alien':
           changeThemeForAlien();
           break;
         default:
@@ -99,4 +99,4 @@ function init() {
   });
 }
 
-export { changeThemeForAlien, changeThemeForMan, getTheme, refreshTheme, init as initThemes };
+export {changeThemeForAlien, changeThemeForMan, getTheme, refreshTheme, init as initThemes};

@@ -1,24 +1,23 @@
 import userService from './services/userService';
 import Block from './blocks/block/index';
 import router from './modules/router';
-import { throwIfNull } from "./utils/htmlUtils";
-import { sections, initNavigator } from "./modules/navigator";
-import { initThemes } from './modules/themes';
+import {throwIfNull} from './utils/utils';
+import {initThemes} from './modules/themes';
+import Navigator from './modules/navigator';
 
 const app = new Block(throwIfNull(document.getElementById('application')));
 
-sections.hide();
+new Navigator();
+
+Navigator.sections.hide();
 app
-  .append(sections.login)
-  .append(sections.signup)
-  .append(sections.about)
-  .append(sections.leaderboard)
-  .append(sections.playerpage)
-  .append(sections.game);
+  .append(Navigator.sections.login)
+  .append(Navigator.sections.registration)
+  .append(Navigator.sections.about)
+  .append(Navigator.sections.leaderboard)
+  .append(Navigator.sections.playerPage)
+  .append(Navigator.sections.game);
 
 initThemes();
-initNavigator();
 router.start();
 userService.fetch();
-
-export default app;
