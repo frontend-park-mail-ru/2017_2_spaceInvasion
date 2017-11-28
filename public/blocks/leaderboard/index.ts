@@ -1,28 +1,36 @@
 import Block from '../block/index';
 import Http from '../../modules/http';
 import leaderboardTemplate from './leaderboard.pug';
-import userService from "../../services/userService";
-import { throwIfNull } from "../../utils/htmlUtils";
+import userService from '../../services/userService';
+import {throwIfNull} from '../../utils/utils';
+import {refreshTheme} from '../../modules/themes';
+import Navigator from '../../modules/navigator';
+import router from '../../modules/router';
 
-function fetchLeaderboard(el : HTMLElement) : void {
-  Http.Fetch('GET', '/leaderboard')
-    .then(data => throwIfNull(data).json())
-    .then((res) => {
-      el.classList.remove('ui', 'active', 'loader');
-      el.innerHTML = leaderboardTemplate({ data: res, you: userService.user });
-  }).catch(() => {
-    el.classList.remove('ui', 'active', 'loader');
-    el.innerHTML = leaderboardTemplate({ data: [], you: userService.user });
-  });
-}
+class LeaderboardBlock extends Block {
+  show(): void {
+    if (!Navigator.sections.leaderboard.ready) {
+      this.fetchLeaderboard(this.el);
+      Navigator.sections.leaderboard.ready = true;
+    }
+    router.setPath('/leaderboard');
+    super.show();
+  }
 
-class Leaderboard extends Block {
-  constructor() {
-    const el = document.createElement('div');
+  private fetchLeaderboard(el: HTMLElement): void {
     el.classList.add('ui', 'active', 'loader');
-    fetchLeaderboard(el);
-    super(el);
+    Http.Fetch('GET', '/leaderboard')
+      .then(data => throwIfNull(data).json())
+      .then((res) => {
+        el.classList.remove('ui', 'active', 'loader');
+        el.innerHTML = leaderboardTemplate({data: res, you: userService.user});
+        refreshTheme();
+      }).catch(() => {
+      el.classList.remove('ui', 'active', 'loader');
+      el.innerHTML = leaderboardTemplate({data: [], you: userService.user});
+      refreshTheme();
+    });
   }
 }
 
-export default Leaderboard;
+export default LeaderboardBlock;

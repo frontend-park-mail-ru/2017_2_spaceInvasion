@@ -1,37 +1,43 @@
 import Block from '../block/index';
 import userService from '../../services/userService';
-import { showHome, showGame } from '../../modules/navigator';
-import playerpageTemplate from './playerPage.pug';
-import { throwIfNull } from "../../utils/htmlUtils";
-import router from "../../modules/router";
+import playerPageTemplate from './playerPage.pug';
+import {throwIfNull} from '../../utils/utils';
+import {default as router, Router} from '../../modules/router';
+import Navigator from '../../modules/navigator';
+import LoginBlock from '../login/index';
 
-function onLogoutBtnClick(el : HTMLElement) : void {
-  throwIfNull(el.querySelector('.ui.button__logout')).addEventListener('click', () => {
-    userService.logout().then(() => {
-      router.setPath('/');
-      showHome();
-    });
-  });
-}
-
-function onPlayBtnClick(el : HTMLElement) : void {
-  throwIfNull(el.querySelector('.ui.button__play')).addEventListener('click', () => {
-    if (userService.isLoggedIn()) {
-      showGame();
-    } else {
-      showHome();
+class PlayerPageBlock extends Block {
+  show(): void {
+    if (!Navigator.sections.playerPage.ready) {
+      this.el.innerHTML = playerPageTemplate({user: userService.user || 'Guest'});
+      this.onLogoutBtnClick(this.el);
+      this.onPlayBtnClick(this.el);
+      Navigator.sections.playerPage.ready = true;
     }
-  });
-}
 
-class PlayerPage extends Block {
-  constructor() {
-    const el = document.createElement('div');
-    el.innerHTML = playerpageTemplate({ user: userService.user || 'Guest' });
-    onLogoutBtnClick(el);
-    onPlayBtnClick(el);
-    super(el);
+    router.setPath('/profile');
+    super.show();
+  }
+
+  private onLogoutBtnClick(el: HTMLElement): void {
+    throwIfNull(el.querySelector('.ui.button__logout')).addEventListener('click', () => {
+      userService.logout().then(() => {
+        router.setPath('/');
+        Router.route();
+      });
+    });
+  }
+
+  private onPlayBtnClick(el: HTMLElement): void {
+    throwIfNull(el.querySelector('.ui.button__play')).addEventListener('click', () => {
+      Navigator.sections.hide();
+      if (userService.isLoggedIn()) {
+        Navigator.sections.game.show();
+      } else {
+        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+      }
+    });
   }
 }
 
-export default PlayerPage;
+export default PlayerPageBlock;

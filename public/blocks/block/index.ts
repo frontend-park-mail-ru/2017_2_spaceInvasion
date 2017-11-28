@@ -3,13 +3,16 @@
  * @module Block
  */
 class Block {
+  public ready: boolean;
+  protected el: HTMLElement;
+  protected childrens: Block[] = [];
 
-  el: HTMLElement;
   /**
    * @param {HTMLElement} el - корневой элемент блока
    * @constructor
    */
-  constructor(el : HTMLElement) {
+  constructor(el: HTMLElement) {
+    this.ready = false;
     this.el = el;
   }
 
@@ -18,37 +21,39 @@ class Block {
    * @param {string} [tagName='div'] - tagName блока
    * @param {string[]} [classes=[]] - список имён классов
    * @param {string|null} [text=null] - опциональный текст блока
-   * @return {Block}
+   * @param type {typeof T} - класс создаваемого блока
+   * @return {T} - T.super = Block
    * @constructor
    */
-  static Create(tagName = 'div', classes : string[] = [], text = '') : Block {
+  static Create<T extends Block>(tagName = 'div', classes: string[] = [],
+                                 type: { new(...args: any[]): T; }): T {
     const el = document.createElement(tagName);
     classes.forEach((className) => {
       el.classList.add(className);
     });
-    el.textContent = text;
-    return new Block(el);
+    el.textContent = '';
+    return new type(el);
   }
 
   /**
    * Установить новый текст для блока
    * @param {string} text
    */
-  setText(text : string) : void {
+  setText(text: string): void {
     this.el.textContent = text;
   }
 
   /**
    * Очищает содержимое блока
    */
-  clear() : void {
+  clear(): void {
     this.el.innerHTML = '';
   }
 
   /**
    * Скрывает блок
    */
-  hide() : void {
+  hide(): void {
     this.el.setAttribute('hidden', 'hidden');
   }
 
@@ -56,7 +61,7 @@ class Block {
    * Проверяет блок на видимость
    * @return {boolean}
    */
-  isHidden() : boolean {
+  isHidden(): boolean {
     const status = this.el.getAttribute('hidden');
     return status === 'hidden';
   }
@@ -64,7 +69,7 @@ class Block {
   /**
    * Отображает блок
    */
-  show() : void {
+  show(): void {
     this.el.removeAttribute('hidden');
   }
 
@@ -73,9 +78,26 @@ class Block {
    * @param {Block} block
    * @return {Block}
    */
-  append(block : Block) : Block {
+  append(block: Block): Block {
     this.el.appendChild(block.el);
+    this.childrens.push(block);
     return this;
+  }
+
+  /**
+   * Возвращает корневой элемент блока
+   * @return {HTMLElement}
+   */
+  getElement(): HTMLElement {
+    return this.el;
+  }
+
+  /**
+   * Возвращает потомков блока
+   * @return {Block[]}
+   */
+  getChildrens(): Block[] {
+    return this.childrens;
   }
 
   /**
@@ -84,7 +106,7 @@ class Block {
    * @param {EventListener} callback
    * @return {function(this:Block)} - функция отписки от события
    */
-  on(event : string, callback : EventListener) {
+  on(event: string, callback: EventListener): void {
     this.el.addEventListener(event, callback);
     return function eventListener(this: Block) {
       this.el.removeEventListener(event, callback);
