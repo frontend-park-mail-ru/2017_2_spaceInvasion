@@ -14,6 +14,7 @@
     "module": "es6",
     "target": "es5",
     "allowJs": false,
+    "downlevelIteration": true,
     "lib": [
       "es6",
       "dom",

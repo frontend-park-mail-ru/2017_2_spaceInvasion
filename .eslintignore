@@ -7,8 +7,8 @@ node_modules
 # Bundle
 **/dist/**
 
-# Semantic
-**/semantic/**
+# Common files
+**/common/**
 
 # PNotify
 **/pnotify*
