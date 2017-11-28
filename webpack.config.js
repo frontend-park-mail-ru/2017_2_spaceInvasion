@@ -24,7 +24,7 @@ module.exports = {
       {test: /\.css$/, use: ['style-loader', 'css-loader']},
       {test: /\.pug$/, use: ['pug-loader']},
       {test: /\.tsx?$/, use: ['awesome-typescript-loader'], exclude: /node_modules/},
-      {test: /\.png|woff2?|eot|ttf|svg$/, use: ['url-loader']}
+      {test: /\.png|woff2?|eot|ttf|svg$/, use: ['url-loader']},
     ],
   },
 }
