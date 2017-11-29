@@ -1,4 +1,5 @@
 const BASE_URL = 'http://138.68.86.49/';
+const WEB_SOCKETS_BASE_URL = 'ws://138.68.86.49/game';
 
 enum SIDE {
   MAN,
@@ -125,7 +126,7 @@ const PATH_MAP = new Map<string, string>();
 ].forEach(value => PATH_MAP.set(value[0], value[1]));
 
 export {
-  BASE_URL, SIDE, TEAM, AREA,
+  BASE_URL, SIDE, TEAM, AREA, WEB_SOCKETS_BASE_URL,
   TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE,
   HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT, // Styles
   ACTION_MAPPER, PATH_MAP, EVENT, FPS // Routing

@@ -1,4 +1,4 @@
-import PNotify from '../utils/notifications';
+import PNotify, {dismissAllMessages} from '../utils/notifications';
 import User from '../models/user';
 import GameScene from '../models/game/gameScene';
 import {ConstructableController, default as ControllerInterface} from '../modules/game/controllers/controllerInterface';
@@ -43,9 +43,14 @@ class GameService extends SubscriptableMixin {
 
   join(user: User, side: SIDE): void {
     if (this.strategy.join(user, side)) {
+      dismissAllMessages();
       this.bind();
     } else {
-      // TODO: Подождите других игроков...
+      new PNotify({
+        title: 'Пожалуйста, подождите...',
+        type: 'notice',
+        text: 'Подождите, пока кто-нибудь зайдёт в игру против Вас...',
+      });
     }
   }
 
