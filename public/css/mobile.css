@@ -4,6 +4,11 @@
     .ui.huge.menu{
         width: 750px;
     }
+
+    .ui.huge.menu{
+        font-size: large;
+    }
+
     .stopimg{
         width: 750px;
     }
