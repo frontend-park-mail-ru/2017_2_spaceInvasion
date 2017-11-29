@@ -12,7 +12,43 @@
     }
     .developertitle{
         font-size: 80px !important;
-        
+        color: white;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__about{
+        width: 764px;
+    }
+
+    .ui.one.column.centered.grid.one__column__login__grid{
+        width: 764px;
+    }
+
+    .ui.card.ui__card__login {
+        width: 427px !important;
+        font-size: x-large !important;
+    }
+    .field{
+        font-size: x-large !important;
+    }
+
+    .ui.submit.ui__submit__login.ui__submit__login__button.button{
+        font-size: x-large !important;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration{
+        width: 764px;
+    }
+
+    .ui.positive.button.ui__button__register{
+        font-size: x-large !important;
+    }
+
+    .description{
+        padding-top: 25px !important;
+    }
+
+    .header{
+        font-size: x-large !important;
     }
 
 }
