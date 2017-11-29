@@ -1,6 +1,6 @@
 
 /*iphone 6*/
-@media only screen and (max-width: 375px){
+@media only screen and (max-width: 414px){
     .ui.huge.menu{
         width: 750px;
     }
