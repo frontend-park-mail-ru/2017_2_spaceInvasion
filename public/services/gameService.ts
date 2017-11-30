@@ -7,7 +7,7 @@ import {SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
 import Navigator from '../modules/navigator';
-import LoginBlock from "../blocks/login/index";
+import LoginBlock from '../blocks/login/index';
 
 class GameService extends SubscriptableMixin {
   private static instance = new GameService();
@@ -38,7 +38,8 @@ class GameService extends SubscriptableMixin {
     this.running = true;
 
     // Subscribes
-    this.subscribe('GameService.onFinishGame', this.onFinishGame); // victory : boolean
+    this.subscribe('GameService.onFinishGame', this.onFinishGame); // victory: boolean
+    this.subscribe('GameService.join', this.join.bind(this)); // user: User, side: SIDE
   }
 
   join(user: User, side: SIDE): void {
@@ -49,15 +50,13 @@ class GameService extends SubscriptableMixin {
       new PNotify({
         title: 'Пожалуйста, подождите...',
         type: 'notice',
-        text: 'Подождите, пока кто-нибудь зайдёт в игру против Вас...',
+        text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
       });
     }
   }
 
   gameLoop(): void {
-    const controlsUpdates = Array.from(this.controllers.diff());
-
-    const newCommands = controlsUpdates.filter(el => el[1]).map(el => el[0]);
+    const newCommands = this.controllers.newCommands();
     newCommands.forEach(cmd => {
       try {
         emitter.emit('Strategy.onNewCommand', cmd);
@@ -70,7 +69,7 @@ class GameService extends SubscriptableMixin {
       }
     });
 
-    const stopedCommands = controlsUpdates.filter(el => el[1]).map(el => el[0]);
+    const stopedCommands = this.controllers.stoppedCommands();
     stopedCommands.forEach(cmd => emitter.emit('Strategy.onStopCommand', cmd));
 
     this.scene.render(this.strategy.getState());
@@ -97,11 +96,8 @@ class GameService extends SubscriptableMixin {
   }
 
   unbind(): void {
-    if (this.requestID) {
-      cancelAnimationFrame(this.requestID);
-    }
-
     if (this.binded) {
+      cancelAnimationFrame(this.requestID);
       this.scene.unbind();
       this.controllers.destroy();
       this.binded = false;
@@ -109,9 +105,9 @@ class GameService extends SubscriptableMixin {
   }
 
   bind(): void {
-    this.requestID = requestAnimationFrame(this.gameLoop.bind(this));
-
     if (!this.binded) {
+      this.requestID = requestAnimationFrame(this.gameLoop.bind(this));
+
       this.scene.bind();
       this.controllers.init();
       this.binded = true;

@@ -10,7 +10,7 @@ class MouseController implements ControllerInterface {
     throw Error('Not implemented');
   }
 
-  init() {
+  init(): void {
     const bindedMouseUpHandler = this.mouseUpHandler.bind(this);
     const bindedMouseDownHandler = this.mouseDownHandler.bind(this);
     document.addEventListener('mouseup', bindedMouseUpHandler);
@@ -19,23 +19,29 @@ class MouseController implements ControllerInterface {
     this.handlers.set('mousedown', bindedMouseDownHandler);
   }
 
-  diff(): Map<EVENT, boolean> {
+  diff(): EVENT[] {
     const clicked = [
       ...Array.from(this.previousMouseEvents.keys()),
       ...Array.from(this.mouseEvents.keys())
-    ].filter((key, pos, all) => ~all.indexOf(key, pos + 1)).reduce((res: Map<EVENT, boolean>, key) => {
-      res.set(key, !!this.mouseEvents.get(key));
-      return res;
-    }, new Map());
+    ].filter((key, pos, all) => ~all.indexOf(key, pos + 1))
+      .filter(key => Boolean(this.mouseEvents.get(key)) !== Boolean(this.previousMouseEvents.get(key)));
     this.previousMouseEvents = new Map(this.mouseEvents);
     return clicked;
   }
 
   is(event: EVENT): boolean {
-    return !!this.mouseEvents.get(event);
+    return Boolean(this.mouseEvents.get(event));
   }
 
-  destroy() {
+  newCommands(): EVENT[] {
+    return this.diff().filter(event => this.mouseEvents.get(event));
+  }
+
+  stoppedCommands(): EVENT[] {
+    return this.diff().filter(event => !this.mouseEvents.get(event));
+  }
+
+  destroy(): void {
     const mouseup = this.handlers.get('mouseup');
     if (mouseup) {
       document.removeEventListener('mouseup', mouseup);

@@ -1,34 +1,123 @@
 import Strategy from './strategy';
 import Player from '../../../models/game/player';
-import Tower from '../../../models/game/sprites/tower';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
-import Coords from '../../../models/game/coords';
-import {EVENT, SIDE, TEAM} from '../../../utils/constants';
-import Unit from '../../../models/game/sprites/unit';
+import {EVENT, SIDE, RESPAWN_DAMAGE} from '../../../utils/constants';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
-import Bot from '../../../models/game/sprites/bot';
 import emitter from '../../emitter';
-import collisionService from '../../../services/collisionService';
 import {mapEventDirection, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../webSockets';
+import userService from '../../../services/userService';
+import Unit from '../../../models/game/sprites/unit';
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   protected me: Player;
 
+  constructor() {
+    super();
+
+    // Subscribes
+    emitter.attach('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: number[]
+  }
+
+  startGameLoop() {
+    this.webSocketsInit();
+    super.startGameLoop();
+  }
+
+  private webSocketsInit(): void {
+    // Registration
+    webSocketService.subscribe('JoinApproved', this.onJoinApproved.bind(this));
+    webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
+
+    // Common events
+    webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
+    webSocketService.subscribe('Damage', this.onDamage.bind(this));
+
+    // My events
+    webSocketService.subscribe('Rollback', webSocketService.rollback.bind(webSocketService));
+    webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
+
+    // OpponentEvents
+    const opponent = this.state.players.filter(p => p !== this.me)[0];
+    webSocketService.subscribe('OpponentMove', opponent.unit.move.bind(opponent.unit));
+    webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
+    webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+  }
+
+  private onBombBoom(event: MessageEvent): void {
+    const targetID = event.data[0];
+    const bomb = this.state.bombs.filter(bomb => bomb.id === targetID)[0];
+    bomb.destroy();
+  }
+
+  private onDamage(event: MessageEvent): void {
+    const targetID = event.data[0];
+    const sourceID = event.data[1];
+
+    const bullet = this.state.bullets.filter(b => b.id === sourceID)[0];
+    try {
+      emitter.emit('Tower.damage.' + targetID, bullet.getDamage());
+      emitter.emit('Unit.damage.' + targetID, bullet.getDamage());
+    } catch {}
+  }
+
+  private onJoinApproved(event: MessageEvent): void {
+    const unitID: number = event.data[0];
+    const side: SIDE = event.data[1] === 'man' ? SIDE.MAN : SIDE.ALIEN;
+
+    const user = throwIfNull(userService.user);
+    this.me = this.addNewUser(unitID, user, side);
+  }
+
+  private onNewUser(event: MessageEvent): void {
+    const unitID: number = event.data[0];
+    const username: string = event.data[1];
+    const email: string = event.data[2];
+    const score: number = event.data[3];
+    const user = new User(username, email, '');
+    user.score = score;
+
+    this.addNewUser(unitID, user, event.data[4] === 'man' ? SIDE.MAN : SIDE.ALIEN);
+  }
+
+  private addNewUser(unitID: number, user: User, side: SIDE): Player {
+    const player = new Player(user, new Unit(unitID, side));
+    this.state.players.push(player);
+    this.state.bases.push(new Base(unitID, side));
+    this.state.units.push(player.unit);
+
+    emitter.emit('GameService.join', user, side);
+    if (this.state.players.length === 2) {
+      this.startGameLoop();
+    }
+
+    return player;
+  }
+
+  private rollbackEvent(event: number[]): void {
+    // TODO: Handle all types of events
+    switch (event[0]) {
+      case 0:
+        this.me.unit.move(360 - event[1]);
+        break;
+      default:
+        throw Error('Internal Error')
+    }
+  }
+
   onNewCommand(...data: any[]): void {
     const command = data[0] as EVENT;
-    const me = this.state.players.filter(user => !(user.unit instanceof Bot))[0];
     switch (command) {
       case EVENT.FIRE:
-        emitter.emit('Player.shout.' + me.unit.id);
+        emitter.emit('Player.shout.' + this.me.unit.id);
         webSocketService.send([]); // TODO: send anything
         break;
       case EVENT.TOWER:
-        emitter.emit('Player.setTower.' + me.unit.id);
+        emitter.emit('Player.setTower.' + this.me.unit.id);
         webSocketService.send([]); // TODO: send anything
         break;
       case EVENT.DOWN:
@@ -36,8 +125,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
       case EVENT.LEFT:
       case EVENT.RIGHT:
         emitter.emit(
-          'Player.setDirection.' + me.unit.id,
-          me.unit.getDirection() || 0 + throwIfNull(mapEventDirection(command))
+          'Player.setDirection.' + this.me.unit.id,
+          this.me.unit.getDirection() || 0 + throwIfNull(mapEventDirection(command))
         );
         break;
       case EVENT.NO:
@@ -71,20 +160,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   join(...data: any[]): boolean {
-    const user: User = data[0];
-    const side: SIDE = data[1];
-    webSocketService.send([]); // TODO: send anything
-
-    this.me = waitServer();
-    this.state.players.push(this.me);
-    this.state.bases.push(new Base(this.me.unit.id, this.me.unit.side));
-    this.state.units.push(this.me.unit);
-
-    this.startGameLoop();
-    return this.state.players.length === 2;
+    debugger;
+    return Boolean(this.me);
   }
 
-  gameLoop() {
+  gameLoop(): void {
     // Движение пуль и обработка пуль, вышедших за пределы поля
     this.state.bullets.forEach(blt => {
       blt.move();
@@ -103,11 +183,12 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // Установка бомб
     this.state.bases.filter(base => base.isUnderAttack()).forEach(
-      base => this.state.bombs.push(new Bomb(this.state.bombs.length, base))
+      base => {
+        const bomb = new Bomb(this.state.bombs.length, base);
+        bomb.cancelDestruction();
+        this.state.bombs.push(bomb);
+      }
     );
-
-    // Запускаем обработчик коллизий
-    this.handleCollisions();
 
     // За каждую убитую башню добавить монетки
     this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
@@ -117,10 +198,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     // Если умирает юнит, респавним его и дамажим его дом
     this.state.units.filter(unit => !unit.alive()).forEach(unit => {
       unit.spawn();
-      debugger;
-      if (!(unit instanceof Bot)) {
-        this.state.bases.filter(base => base.side === unit.side)[0].damage(1);
-      }
+      this.state.bases.filter(base => base.side === unit.side)[0].damage(RESPAWN_DAMAGE);
     });
 
     // Удаляем пропавшие пули
@@ -131,34 +209,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // Удаляем пропавшие монетки
     this.state.coins = this.state.coins.filter(coin => coin.visible);
-
-    // Проверяем, не закончилась ли игра
-    const deadBases = this.state.bases.filter(base => !base.alive());
-    if (deadBases.length > 0) {
-      this.funcFinishGame(
-        deadBases[0].side === this.state.units.filter(unit => unit instanceof Bot)[0].side
-      );
-      this.stopGameLoop();
-      return;
-    }
   }
 
-  destroy() {
+  destroy(): void {
     this.state.destroy();
     this.stopGameLoop();
-  }
-
-  private handleCollisions(): void {
-    collisionService.append(
-      ...this.state.bases,
-      ...this.state.units,
-      ...this.state.coins,
-      ...this.state.towers,
-      ...this.state.bombs,
-      ...this.state.bullets
-    );
-    collisionService.run();
-    collisionService.clear();
   }
 }
 

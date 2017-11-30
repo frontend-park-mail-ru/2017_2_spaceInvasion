@@ -14,12 +14,12 @@ class Game {
     gameService.init(this.canvas, Strategy, controller);
   }
 
-  join(user: User, side: SIDE) {
+  join(user: User, side: SIDE): void {
     this.users.push(user);
     gameService.join(user, side);
   }
 
-  destroy() {
+  destroy(): void {
     gameService.destroy();
     this.canvas.hidden = true;
   }

@@ -24,18 +24,23 @@ class KeyboardController implements ControllerInterface {
     document.addEventListener('keyup', bindedKeyUpHandler);
   }
 
-  diff(): Map<EVENT, boolean> {
+  diff(): EVENT[] {
     const pressed = [
       ...Array.from(this.previousKeys.keys()),
       ...Array.from(this.keys.keys())
     ].filter((key, pos, all) => ~all.indexOf(key, pos + 1))
-      .reduce(
-        (res: Map<EVENT, boolean>, key) => res.set(key, !this.previousKeys.get(key) && !!this.keys.get(key)),
-        new Map()
-      );
+      .filter(key => Boolean(this.previousKeys.get(key)) !== Boolean(this.keys.get(key)));
 
     this.previousKeys = new Map(this.keys);
     return pressed;
+  }
+
+  newCommands(): EVENT[] {
+    return this.diff().filter(event => this.keys.get(event));
+  }
+
+  stoppedCommands(): EVENT[] {
+    return this.diff().filter(event => !this.keys.get(event));
   }
 
   getKeys(): Map<EVENT, boolean> {

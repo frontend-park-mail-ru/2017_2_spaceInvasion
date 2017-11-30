@@ -5,6 +5,8 @@ import {throwIfNull} from '../../utils/utils';
 import {default as router, Router} from '../../modules/router';
 import Navigator from '../../modules/navigator';
 import LoginBlock from '../login/index';
+import SinglePlayerGameBlock from '../game/singlePlayerGameBlock';
+import MultiPlayerGameBlock from '../game/multiPlayerGameBlock';
 
 class PlayerPageBlock extends Block {
   show(): void {
@@ -22,6 +24,7 @@ class PlayerPageBlock extends Block {
   private onLogoutBtnClick(el: HTMLElement): void {
     throwIfNull(el.querySelector('.ui.button__logout')).addEventListener('click', () => {
       userService.logout().then(() => {
+        Navigator.sections.hide();
         router.setPath('/');
         Router.route();
       });
@@ -32,6 +35,7 @@ class PlayerPageBlock extends Block {
     throwIfNull(el.querySelector('.ui.button__play')).addEventListener('click', () => {
       Navigator.sections.hide();
       if (userService.isLoggedIn()) {
+        Navigator.sections.game.append(new MultiPlayerGameBlock());
         Navigator.sections.game.show();
       } else {
         (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
