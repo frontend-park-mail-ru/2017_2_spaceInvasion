@@ -10,6 +10,11 @@ abstract class Form extends Block {
     this.rules = rules;
   }
 
+  static emptyListener(e: Event) {
+    e.preventDefault();
+    return false;
+  }
+
   static validation(arr: HTMLFormControlsCollection, form: HTMLElement,
                     rules: Rules): number {
     let errCount = 0;
@@ -59,8 +64,8 @@ abstract class Form extends Block {
     return rules.filter(rule => !rule.predicate(target)).map(rule => rule.message);
   }
 
-  onSubmit(callback: (a: any) => any): void {
-    this.el.addEventListener('submit', (e) => {
+  onSubmitOnce(callback: (a: any) => any): void {
+    const listener = (e: Event) => {
       e.preventDefault();
       this.resetErrors();
       let data: any = {};
@@ -77,11 +82,18 @@ abstract class Form extends Block {
             data.name = value;
           }
         }
+
         callback(data);
+        this.el.removeEventListener('submit', bindedListener);
+        this.el.addEventListener('submit', Form.emptyListener);
       }
 
       return !errors;
-    });
+    };
+
+    const bindedListener = listener.bind(this);
+    this.el.removeEventListener('submit', Form.emptyListener);
+    this.el.addEventListener('submit', bindedListener);
   }
 
   reset(): void {
