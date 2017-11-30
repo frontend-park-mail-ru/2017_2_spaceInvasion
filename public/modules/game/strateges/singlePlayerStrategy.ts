@@ -4,7 +4,7 @@ import Tower from '../../../models/game/sprites/tower';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
 import Coords from '../../../models/game/coords';
-import {EVENT, SIDE, TEAM} from '../../../utils/constants';
+import {EVENT, SIDE, TEAM, RESPAWN_DAMAGE} from '../../../utils/constants';
 import Unit from '../../../models/game/sprites/unit';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
@@ -87,7 +87,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     return true;
   }
 
-  gameLoop() {
+  gameLoop(): void {
     // Движение пуль и обработка пуль, вышедших за пределы поля
     this.state.bullets.forEach(blt => {
       blt.move();
@@ -122,7 +122,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
       unit.spawn();
       debugger;
       if (!(unit instanceof Bot)) {
-        this.state.bases.filter(base => base.side === unit.side)[0].damage(1);
+        this.state.bases.filter(base => base.side === unit.side)[0].damage(RESPAWN_DAMAGE);
       }
     });
 
@@ -146,7 +146,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     }
   }
 
-  destroy() {
+  destroy(): void {
     this.state.destroy();
     this.stopGameLoop();
   }

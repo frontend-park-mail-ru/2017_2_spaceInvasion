@@ -21,29 +21,34 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Rect {
   protected stopIfOut(): void {
     if (this.coords.y + this.height / 2 > this.canvas.height) {
       this.coords.y = this.canvas.height - this.height / 2;
-      this.destroy();
+      this.stop();
     }
     if (this.coords.y - this.height / 2 < 0) {
       this.coords.y = this.height / 2;
-      this.destroy();
+      this.stop();
     }
     if (this.coords.x + this.width / 2 > this.canvas.width) {
       this.coords.x = this.canvas.width - this.width / 2;
-      this.destroy();
+      this.stop();
     }
     if (this.coords.x - this.width / 2 < 0) {
       this.coords.x = this.width / 2;
-      this.destroy();
+      this.stop();
     }
   }
 
   protected dontMove(): void {
-    this.destroy();
+    this.stop();
+  }
+
+  protected stop(): void {
+    this.speed = 0;
+    this.direction = null;
   }
 
   destroy() {
-    this.speed = 0;
-    this.direction = null;
+    super.destroy();
+    this.stop();
   }
 }
 

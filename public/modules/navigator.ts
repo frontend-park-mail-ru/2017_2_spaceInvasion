@@ -2,7 +2,6 @@ import {dismissAllMessages, showLeaveGameNotification} from '../utils/notificati
 import {throwIfNull} from '../utils/utils';
 import LoginBlock from '../blocks/login/index';
 import AboutBlock from '../blocks/about/index';
-import GameBlock from '../blocks/game/index';
 import LeaderboardBlock from '../blocks/leaderboard/index';
 import RegistrationBlock from '../blocks/registration/index';
 import PlayerPageBlock from '../blocks/playerPage/index';
@@ -12,7 +11,7 @@ import Block from '../blocks/block/index';
 class Sections {
   public home: Block;
   public about: AboutBlock;
-  public game: GameBlock;
+  public game: Block;
   public leaderboard: LeaderboardBlock;
   public login: LoginBlock;
   public registration: RegistrationBlock;
@@ -20,7 +19,7 @@ class Sections {
 
   constructor() {
     this.about = Block.Create('section', ['about-section'], AboutBlock);
-    this.game = Block.Create('section', ['game-section'], GameBlock);
+    this.game = Block.Create('section', ['game-section'], Block);
     this.leaderboard = Block.Create('section', ['leaderboard-section'], LeaderboardBlock);
     this.login = Block.Create('section', ['login-section'], LoginBlock);
     this.registration = Block.Create('section', ['registration-section'], RegistrationBlock);

@@ -21,8 +21,12 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
     // Subscribes
     this.subscribe('Strategy.height', () => this.height); // --No arguments--
     this.subscribe('Strategy.width', () => this.width); // --No arguments--
-    this.subscribe('Strategy.onNewCommand', this.onNewCommand.bind(this)); // command : EVENT
-    this.subscribe('Strategy.onStopCommand', this.onStopCommand.bind(this)); // command : EVENT
+  }
+
+  private emitterInit(): void {
+    // Subscribes
+    this.subscribe('Strategy.onNewCommand', this.onNewCommand.bind(this)); // command: EVENT
+    this.subscribe('Strategy.onStopCommand', this.onStopCommand.bind(this)); // command: EVENT
   }
 
   abstract onNewCommand(...data: any[]): void;
@@ -32,12 +36,13 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
 
   startGameLoop(): void {
     if (!this.running) {
-      this.running = true;
+      this.emitterInit();
       this.interval = window.setInterval(this.gameLoop.bind(this), FPS);
+      this.running = true;
     }
   }
 
-  stopGameLoop() {
+  stopGameLoop(): void {
     if (this.running) {
       clearInterval(this.interval);
       this.running = false;

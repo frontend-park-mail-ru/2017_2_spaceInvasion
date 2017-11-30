@@ -31,8 +31,8 @@ class GameState extends SubscriptableMixin {
     this.bombs = [];
 
     // Subscribes
-    this.subscribe('Bullet', this.newBullet); // direction : number|null, coords : Coords, source : Shootable
-    this.subscribe('Tower', this.setTower); // coords : Coords, direction : number|null, side : SIDE
+    this.subscribe('Bullet', this.newBullet); // direction: number|null, coords: Coords, source: Shootable
+    this.subscribe('Tower', this.setTower); // coords: Coords, direction: number|null, side: SIDE
     this.subscribe('Tower.random', this.setRandomTower); // --No arguments--
   }
 

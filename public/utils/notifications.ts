@@ -5,7 +5,7 @@ class PNotify {
     console.log(data);
   }
 
-  static removeAll() {
+  static removeAll(): void {
     console.log('remove it');
   }
 }
@@ -25,7 +25,7 @@ function showError(message: string): void {
   });
 }
 
-function showLeaveGameNotification() {
+function showLeaveGameNotification(): void {
   const backToGameID = 'backToGame';
   new PNotify({
     title: 'Игра идёт',

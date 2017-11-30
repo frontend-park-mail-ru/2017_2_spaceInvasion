@@ -5,7 +5,7 @@ import Destructible from '../interfaces/destructible';
 import Unit from './unit';
 import Collidable from '../interfaces/collidable';
 import Rect from '../interfaces/rect';
-import emitter from "../../../modules/emitter";
+import emitter from '../../../modules/emitter';
 
 export default class Base extends Sprite implements Destructible, Collidable, Rect {
   public readonly side: SIDE;
@@ -48,7 +48,7 @@ export default class Base extends Sprite implements Destructible, Collidable, Re
     return this.underAttack;
   }
 
-  bumpInto(obj: Collidable) {
+  bumpInto(obj: Collidable): void {
     if (obj instanceof Unit && obj.side !== this.side && !this.underAttack) {
       this.underAttack = true;
     }

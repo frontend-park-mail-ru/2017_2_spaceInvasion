@@ -4,11 +4,11 @@ import {EVENT} from '../../public/utils/constants';
 describe('utils', () => {
   it('throwIfNull', () => {
     expect(() => {throwIfNull(null)}).toThrow('Variable must not be null');
-    let a : boolean | null = null;
+    let a: boolean | null = null;
     expect(() => {throwIfNull(a)}).toThrow('Variable must not be null');
     a = true;
     expect(() => {
-      let b : boolean;
+      let b: boolean;
       b = throwIfNull(a);
       return b;
     }).toBeTruthy();

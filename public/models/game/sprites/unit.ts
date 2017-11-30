@@ -52,7 +52,7 @@ class Unit extends MovableMixin implements SubscriptableMixin, Destructible, Col
     this.coords = this.getCoordsBySide(this.side);
 
     // Subscribes
-    this.subscribe('Unit.damage.' + this.id, this.damage); // points : number
+    this.subscribe('Unit.damage.' + this.id, this.damage); // points: number
   }
 
   destroy(): void {
