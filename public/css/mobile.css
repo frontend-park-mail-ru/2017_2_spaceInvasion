@@ -1,12 +1,8 @@
-
-/*iphone 6*/
 @media only screen and (max-width: 414px){
     .ui.huge.menu{
         width: 750px;
-    }
-
-    .ui.huge.menu{
         font-size: large;
+        height: 96px;
     }
 
     .stopimg{
@@ -56,4 +52,32 @@
         font-size: x-large !important;
     }
 
+    .winloseimg{
+        width: 750px;
+        height: 750px;
+    }
+
+    .matchdetailsmessage{
+        color: white;
+        font-size: 45px;
+        width: 750px;
+        text-align: center;
+    }
+
+    .controls{
+        width: 750px;
+    }
+
+    .ui.playagain{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+
+    .ui.leave{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+    }
 }

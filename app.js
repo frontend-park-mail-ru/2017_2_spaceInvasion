@@ -19,6 +19,10 @@ app.get('/404',(req,res)=>{
   res.render('404.pug');
 });
 
+app.get('/winlose',(req,res)=>{
+  res.render('winlose.pug');
+});
+
 app.get('*', (req, res) => {
   res.render('index.pug');
 });

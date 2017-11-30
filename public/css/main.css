@@ -68,3 +68,32 @@ canvas#game {
 .developertitle{
     color: white;
 }
+
+.matchdetailsmessage{
+    margin-top: 0px;
+    text-align: center;
+    color: white;
+}
+
+.winloseimg{
+    width: 550px;
+    height: 550px;
+}
+
+.matchresult{
+    text-align: center;
+}
+
+.controls{
+    text-align: center;
+}
+
+.ui.playagain{
+    width: 150px;
+    height: 50px;
+}
+
+.ui.leave{
+    width: 150px;
+    height: 50px;
+}

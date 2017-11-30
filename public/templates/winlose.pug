@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name='viewport', content='width=device-width')
+        title Space Invasion
+        link(href="/common/semantic/dist/semantic.min.css" rel="stylesheet")
+    body.man
+        include navbar.pug
+        div.matchresult
+            img.winloseimg(src='../images/victory.png')
+        h1.matchdetailsmessage vasidmi win! +150 Elo
+        div.controls
+            button.positive.ui.button.playagain Play Again
+            button.negative.ui.button.leave Leave
+        #application
+        script(src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous")
+        script(src="/dist/bundle.js")
