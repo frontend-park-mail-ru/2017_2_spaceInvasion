@@ -8,7 +8,7 @@ import Bullet from './bullet';
 import Rect from '../interfaces/rect';
 import Temporary from '../interfaces/temporary';
 import emitter from '../../../modules/emitter';
-import {throwIfNull} from "../../../utils/utils";
+import {throwIfNull} from '../../../utils/utils';
 
 class Tower extends Sprite implements Shootable, Collidable, Destructible, Rect, Temporary {
   public readonly cost = TOWER.COST;
@@ -34,7 +34,7 @@ class Tower extends Sprite implements Shootable, Collidable, Destructible, Rect,
     this.interval = window.setInterval(this.shout.bind(this), TOWER.SPEED);
 
     // Subscribes
-    this.subscribe('Tower.damage.' + this.id, this.damage); // points : number
+    this.subscribe('Tower.damage.' + this.id, this.damage); // points: number
   }
 
   cancel(): void {

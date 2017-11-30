@@ -34,7 +34,15 @@ export default class Bomb extends Sprite implements Temporary, Rect {
   }
 
   cancel(): void {
+    this.cancelDestruction();
+    this.cancelCountDown();
+  }
+
+  cancelDestruction(): void {
     clearTimeout(this.timer);
+  }
+
+  cancelCountDown(): void {
     clearInterval(this.countDownTimer);
   }
 

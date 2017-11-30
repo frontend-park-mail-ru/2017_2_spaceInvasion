@@ -16,8 +16,8 @@ interface StrategyInterface {
   join(...data: any[]): boolean;
 
   // Subscribes
-  onNewCommand(...data: any[]): void; // Strategy.onNewCommand(command : EVENT)
-  onStopCommand(...data: any[]): void; // Strategy.onStopCommand(command : EVENT)
+  onNewCommand(...data: any[]): void; // command: EVENT
+  onStopCommand(...data: any[]): void; // command: EVENT
 }
 
 export {ConstructableStrategy};

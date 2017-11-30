@@ -27,7 +27,7 @@ function protect(img: HTMLImageElement): HTMLImageElement {
   return img;
 }
 
-function resize(img: HTMLImageElement, w : number,  h : number): HTMLImageElement {
+function resize(img: HTMLImageElement, w: number,  h: number): HTMLImageElement {
     img = protect(img);
 
     let steps = Math.ceil(Math.log(img.width / w) / Math.LN2);

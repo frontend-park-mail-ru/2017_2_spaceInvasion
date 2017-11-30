@@ -16,11 +16,11 @@ class Player extends SubscriptableMixin {
     this.unit = unit;
 
     // Subscribes
-    this.subscribe('Player.reward.' + this.unit.id, this.reward.bind(this)); // coins : number
-    this.subscribe('Player.pay.' + this.unit.id, this.pay.bind(this)); // coins : number
+    this.subscribe('Player.reward.' + this.unit.id, this.reward.bind(this)); // coins: number
+    this.subscribe('Player.pay.' + this.unit.id, this.pay.bind(this)); // coins: number
     this.subscribe('Player.setTower.' + this.unit.id, this.setTower.bind(this)); // --No arguments
     this.subscribe('Player.shout.' + this.unit.id, this.unit.shout.bind(this.unit)); // --No arguments
-    this.subscribe('Player.setDirection.' + this.unit.id, this.unit.setDirection.bind(this.unit)); // direction : number|null
+    this.subscribe('Player.setDirection.' + this.unit.id, this.unit.setDirection.bind(this.unit)); // direction: number|null
   }
 
   reward(coins: number): void {

@@ -28,7 +28,7 @@ class Bot extends Unit implements SubscriptableMixin, MovableMixin, Destructible
   }
 
   move(): void {
-    if (Math.abs(this.coords.y - emitter.emit('Strategy.height') / 2) > BOT.AMPLITUDE){
+    if (Math.abs(this.coords.y - emitter.emit('Strategy.height') / 2) > BOT.AMPLITUDE) {
       this.direction = this.direction === 0 ? 180 : 0;
     }
     super.move();

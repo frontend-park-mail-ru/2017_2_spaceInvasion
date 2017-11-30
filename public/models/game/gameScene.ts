@@ -32,20 +32,20 @@ class GameScene extends SubscriptableMixin {
     this.resize();
   }
 
-  bind() {
+  bind(): void {
     this.handlers.forEach((val, key) => window.addEventListener(key, val));
   }
 
-  unbind() {
+  unbind(): void {
     this.handlers.forEach((val, key) => window.removeEventListener(key, val));
   }
 
-  resize() {
+  resize(): void {
     this.aspectRatio = this.canvas.width / emitter.emit('Strategy.width');
     this.font.replace(/\d+/, '' + this.aspectRatio);
   }
 
-  render(state: GameState) {
+  render(state: GameState): void {
     // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.renderBackground();
@@ -64,11 +64,11 @@ class GameScene extends SubscriptableMixin {
     // this.ctx.scale(1 / this.aspectRatio, 1 / this.aspectRatio);
   }
 
-  destroy() {
+  destroy(): void {
     this.unbind();
   }
 
-  protected clearStyle() {
+  protected clearStyle(): void {
     this.ctx.shadowColor = '';
     this.ctx.shadowOffsetX = 0;
     this.ctx.shadowOffsetY = 0;
@@ -78,7 +78,7 @@ class GameScene extends SubscriptableMixin {
     this.ctx.lineWidth = 1;
   }
 
-  private renderBackground() {
+  private renderBackground(): void {
     const background = new Image();
     const height = this.canvas.height;
 
@@ -96,7 +96,7 @@ class GameScene extends SubscriptableMixin {
     background.src = this.background;
   }
 
-  private renderHalfLine() {
+  private renderHalfLine(): void {
     this.ctx.strokeStyle = HALF_LINE_COLOR;
     this.ctx.lineWidth = HALF_LINE_WIDTH;
     this.ctx.beginPath();
@@ -106,26 +106,26 @@ class GameScene extends SubscriptableMixin {
     this.clearStyle();
   }
 
-  private renderBases(state: GameState) {
+  private renderBases(state: GameState): void {
     state.bases.forEach(base => base.render(this.ctx));
   }
 
-  private renderUnits(state: GameState) {
+  private renderUnits(state: GameState): void {
     state.units.forEach(unit => unit.render(this.ctx));
   }
 
-  private renderTowers(state: GameState) {
+  private renderTowers(state: GameState): void {
     state.towers.forEach(tower => {
       tower.render(this.ctx);
       this.renderHealthOfTower(tower);
     });
   }
 
-  private renderBullets(state: GameState) {
+  private renderBullets(state: GameState): void {
     state.bullets.forEach(bullet => bullet.render(this.ctx));
   }
 
-  private renderText(state: GameState) {
+  private renderText(state: GameState): void {
     this.ctx.shadowOffsetX = 5;
     this.ctx.shadowOffsetY = 5;
     this.ctx.shadowBlur = 5;

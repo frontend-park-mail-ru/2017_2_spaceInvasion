@@ -8,12 +8,12 @@ class Block {
   protected childrens: Block[] = [];
 
   /**
-   * @param {HTMLElement} el - корневой элемент блока
+   * @param {HTMLElement|undefined} el - корневой элемент блока (по умолчанию - <div>)
    * @constructor
    */
-  constructor(el: HTMLElement) {
+  constructor(el?: HTMLElement) {
     this.ready = false;
-    this.el = el;
+    this.el = el || document.createElement('div');
   }
 
   /**
@@ -48,13 +48,15 @@ class Block {
    */
   clear(): void {
     this.el.innerHTML = '';
+    this.childrens = [];
   }
 
   /**
-   * Скрывает блок
+   * Скрывает блок и его детей
    */
   hide(): void {
     this.el.setAttribute('hidden', 'hidden');
+    this.childrens.forEach(block => block.hide());
   }
 
   /**
@@ -67,10 +69,11 @@ class Block {
   }
 
   /**
-   * Отображает блок
+   * Отображает блок и его детей
    */
   show(): void {
     this.el.removeAttribute('hidden');
+    this.childrens.forEach(ch => ch.show());
   }
 
   /**
@@ -108,7 +111,7 @@ class Block {
    */
   on(event: string, callback: EventListener): void {
     this.el.addEventListener(event, callback);
-    return function eventListener(this: Block) {
+    return function eventListener(this: Block): void {
       this.el.removeEventListener(event, callback);
     }.bind(this);
   }
