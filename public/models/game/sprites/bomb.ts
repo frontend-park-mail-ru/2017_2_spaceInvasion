@@ -5,7 +5,7 @@ import Temporary from '../interfaces/temporary';
 import Rect from '../interfaces/rect';
 
 export default class Bomb extends Sprite implements Temporary, Rect {
-  protected readonly target: Base;
+  public readonly target: Base;
   protected readonly damage = BOMB.DAMAGE;
   protected timer: number;
   protected countDownTimer: number;
@@ -26,8 +26,8 @@ export default class Bomb extends Sprite implements Temporary, Rect {
   }
 
   destroy(): void {
-    debugger;
     this.target.damage(this.damage);
+    this.target.underAttack = false;
     this.visible = false;
     this.cancel();
     super.destroy();

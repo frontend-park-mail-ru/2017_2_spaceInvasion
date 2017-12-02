@@ -6,6 +6,10 @@ class Coords {
     this.x = x;
     this.y = y;
   }
+
+  static copy(coords: Coords): Coords {
+    return new Coords(coords.x, coords.y);
+  }
 }
 
 export default Coords;

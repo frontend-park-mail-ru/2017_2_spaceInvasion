@@ -4,7 +4,7 @@ import Tower from '../../../models/game/sprites/tower';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
 import Coords from '../../../models/game/coords';
-import {EVENT, SIDE, TEAM, RESPAWN_DAMAGE} from '../../../utils/constants';
+import {EVENT, SIDE, TEAM, RESPAWN_DAMAGE, BOT} from '../../../utils/constants';
 import Unit from '../../../models/game/sprites/unit';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
@@ -12,7 +12,7 @@ import StrategyInterface from './strategyInterface';
 import Bot from '../../../models/game/sprites/bot';
 import emitter from '../../emitter';
 import collisionService from '../../../services/collisionService';
-import {mapEventDirection, throwIfNull} from '../../../utils/utils';
+import {mapEventDirection, subDirs, sumDirs} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 
 class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
@@ -32,7 +32,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
       case EVENT.RIGHT:
         emitter.emit(
           'Player.setDirection.' + me.unit.id,
-          me.unit.getDirection() || 0 + throwIfNull(mapEventDirection(command))
+          sumDirs(me.unit.getDirection(), mapEventDirection(command))
         );
         break;
       case EVENT.NO:
@@ -53,7 +53,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
         // Cancel moving by this direction
         emitter.emit(
           'Player.setDirection.' + me.unit.id,
-          me.unit.getDirection() || 0 - throwIfNull(mapEventDirection(command))
+          subDirs(me.unit.getDirection(), mapEventDirection(command))
         );
         break;
       case EVENT.FIRE:
@@ -71,17 +71,19 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     const side: SIDE = data[1];
     const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
 
-    this.state.players.push(new Player(user, new Unit(0, side)));
+    this.state.players.push(new Player(user, new Unit(this.lastID++, side)));
     this.state.players.push(new Player(new User('Bot', TEAM.EMAIL, '********'),
-      new Bot(1, oppositeSide)));
+      new Bot(this.lastID++, oppositeSide)));
     this.state.players.forEach(p => {
       this.state.bases.push(new Base(p.unit.id, p.unit.side));
       this.state.units.push(p.unit)
     });
 
     // Две башни противника уже стоят
-    this.state.towers.push(new Tower(0, new Coords(130, 120), 90, oppositeSide));
-    this.state.towers.push(new Tower(1, new Coords(130, 400), 90, oppositeSide));
+    const oppositeDir = oppositeSide === SIDE.MAN ? new Coords(-1, 0) : new Coords(1, 0);
+    const oppositeX = oppositeSide === SIDE.MAN ? BOT.TOWER_OFFSET : this.width - BOT.TOWER_OFFSET;
+    this.state.towers.push(new Tower(this.lastID++, new Coords(oppositeX, 120), oppositeDir, oppositeSide));
+    this.state.towers.push(new Tower(this.lastID++, new Coords(oppositeX, 400), oppositeDir, oppositeSide));
 
     this.startGameLoop();
     return true;
@@ -105,8 +107,12 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     this.state.units.forEach(unit => unit.move());
 
     // Установка бомб
-    this.state.bases.filter(base => base.isUnderAttack()).forEach(
-      base => this.state.bombs.push(new Bomb(this.state.bombs.length, base))
+    this.state.bases.filter(base => base.underAttack).forEach(
+      base => {
+        if (!this.state.bombs.some(bomb => bomb.target.id === base.id)) {
+          this.state.bombs.push(new Bomb(this.lastID++, base))
+        }
+      }
     );
 
     // Запускаем обработчик коллизий
@@ -114,13 +120,12 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
 
     // За каждую убитую башню добавить монетки
     this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
-      this.state.coins.push(new Coin(this.state.coins.length, tower.getCoords()));
+      this.state.coins.push(new Coin(this.lastID++, tower.getCoords()));
     });
 
     // Если умирает юнит, респавним его и дамажим его дом
     this.state.units.filter(unit => !unit.alive()).forEach(unit => {
       unit.spawn();
-      debugger;
       if (!(unit instanceof Bot)) {
         this.state.bases.filter(base => base.side === unit.side)[0].damage(RESPAWN_DAMAGE);
       }
@@ -135,20 +140,17 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     // Удаляем пропавшие монетки
     this.state.coins = this.state.coins.filter(coin => coin.visible);
 
+    // Удаляем пропавшие бомбы
+    this.state.bombs = this.state.bombs.filter(bomb => bomb.visible);
+
     // Проверяем, не закончилась ли игра
     const deadBases = this.state.bases.filter(base => !base.alive());
     if (deadBases.length > 0) {
-      this.funcFinishGame(
+      emitter.emit('Game.onFinishGame',
         deadBases[0].side === this.state.units.filter(unit => unit instanceof Bot)[0].side
       );
-      this.stopGameLoop();
       return;
     }
-  }
-
-  destroy(): void {
-    this.state.destroy();
-    this.stopGameLoop();
   }
 
   private handleCollisions(): void {
@@ -157,7 +159,6 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
       ...this.state.units,
       ...this.state.coins,
       ...this.state.towers,
-      ...this.state.bombs,
       ...this.state.bullets
     );
     collisionService.run();

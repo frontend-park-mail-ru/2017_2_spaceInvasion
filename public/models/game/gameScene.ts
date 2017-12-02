@@ -145,13 +145,13 @@ class GameScene extends SubscriptableMixin {
       }
     });
 
-    state.players.forEach((player, i) => {
+    state.players.forEach(player => {
       let x: number;
-      if (i % 2 === 0) {
-        this.ctx.shadowColor = 'red';
+      if (player.unit.side === SIDE.MAN) {
+        this.ctx.shadowColor = 'blue';
         x = 10;
       } else {
-        this.ctx.shadowColor = 'blue';
+        this.ctx.shadowColor = 'red';
         x = 700;
       }
       this.ctx.strokeText(player.user.username, x, 40);
@@ -165,7 +165,9 @@ class GameScene extends SubscriptableMixin {
 
   private renderBombs(state: GameState) {
     state.bombs.forEach((bomb, i) => {
-      this.ctx.strokeText(`Bomb ${i + 1}: ${bomb.getTime()}`, 400 + (i - state.bombs.length) * (bomb.getWidth() + 2), 40);
+      const text = `Bomb ${i + 1}: ${bomb.getTime()}`;
+      const textWidth = this.ctx.measureText(text).width;
+      this.ctx.strokeText(text, bomb.getCoords().x - (bomb.target.side === SIDE.MAN ? 0 : 1) * textWidth, 40);
       bomb.render(this.ctx);
     });
   }

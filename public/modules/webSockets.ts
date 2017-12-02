@@ -25,13 +25,13 @@ class WebSocketsService {
 
     this.socket.onopen = () => {
       const user = userService.user;
-      emitter.emit('GameService.join', user, getTheme() === 'man' ? SIDE.MAN : SIDE.ALIEN);
+      emitter.emit('Game.join', user, getTheme() === 'man' ? SIDE.MAN : SIDE.ALIEN);
     };
 
     this.socket.onclose = (event) => {
       if (event.wasClean) {
         // You are lose, because you are disconnected
-        emitter.emit('GameService.onFinishGame', false);
+        emitter.emit('Game.onFinishGame', false);
       } else {
         // Error on server side
         new PNotify({

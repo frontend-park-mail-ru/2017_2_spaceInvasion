@@ -6,11 +6,10 @@ interface ConstructableController {
 
 interface ControllerInterface {
   diff(): EVENT[]
-  newCommands(): EVENT[];
-  stoppedCommands(): EVENT[];
   is(event: EVENT): boolean;
   init(): void;
   destroy(): void;
+  getEvents(): Map<EVENT, boolean>;
 }
 
 export {ConstructableController};

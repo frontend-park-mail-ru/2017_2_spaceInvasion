@@ -24,6 +24,7 @@ class Emitter {
     let detached = 0;
     for (let i = events.indexOf(callback); ~i; detached++) {
       events.splice(i, 1);
+      i = events.indexOf(callback);
     }
 
     if (detached === 0) {
@@ -55,7 +56,7 @@ class Emitter {
         case 'emit':
           return this._emit(event, data as any[]);
         default:
-          break;
+          throw Error('Internal Error');
       }
     }
   }

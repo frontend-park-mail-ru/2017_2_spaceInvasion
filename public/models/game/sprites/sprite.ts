@@ -28,19 +28,21 @@ abstract class Sprite extends SubscriptableMixin implements Rect {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    const aspectRatio = emitter.emit('Scene.aspectRatio');
-    const render = () => ctx.drawImage(
-      this.image,
-      (this.coords.x - this.width / 2) * aspectRatio,
-      (this.coords.y - this.height / 2) * aspectRatio,
-      (this.width) * aspectRatio,
-      (this.height) * aspectRatio
-    );
+    if (this.visible) {
+      const aspectRatio = emitter.emit('Scene.aspectRatio');
+      const render = () => ctx.drawImage(
+        this.image,
+        (this.coords.x - this.width / 2) * aspectRatio,
+        (this.coords.y - this.height / 2) * aspectRatio,
+        (this.width) * aspectRatio,
+        (this.height) * aspectRatio
+      );
 
-    if (!this.image.complete) {
-      this.image.onload = render;
-    } else {
-      render();
+      if (!this.image.complete) {
+        this.image.onload = render;
+      } else {
+        render();
+      }
     }
   }
 
@@ -54,12 +56,6 @@ abstract class Sprite extends SubscriptableMixin implements Rect {
 
   getHeight(): number {
     return this.height;
-  }
-
-  destroy(): void {
-    this.handlers.forEach((val, key) => {
-      emitter.detach(key, val);
-    });
   }
 
   getImage(): HTMLImageElement {

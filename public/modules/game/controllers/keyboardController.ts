@@ -28,27 +28,19 @@ class KeyboardController implements ControllerInterface {
     const pressed = [
       ...Array.from(this.previousKeys.keys()),
       ...Array.from(this.keys.keys())
-    ].filter((key, pos, all) => ~all.indexOf(key, pos + 1))
+    ].filter((key, pos, all) => !~all.indexOf(key, pos + 1))
       .filter(key => Boolean(this.previousKeys.get(key)) !== Boolean(this.keys.get(key)));
 
     this.previousKeys = new Map(this.keys);
     return pressed;
   }
 
-  newCommands(): EVENT[] {
-    return this.diff().filter(event => this.keys.get(event));
-  }
-
-  stoppedCommands(): EVENT[] {
-    return this.diff().filter(event => !this.keys.get(event));
-  }
-
-  getKeys(): Map<EVENT, boolean> {
+  getEvents(): Map<EVENT, boolean> {
     return this.keys;
   }
 
   is(key: EVENT): boolean {
-    return this.keys.get(key) || false;
+    return Boolean(this.keys.get(key));
   }
 
   destroy(): void {

@@ -1,7 +1,7 @@
 import GameState from '../../../models/game/state';
 
 interface ConstructableStrategy {
-  new(funcFinishGame: (victory: boolean) => any): StrategyInterface;
+  new(): StrategyInterface;
 }
 
 interface StrategyInterface {

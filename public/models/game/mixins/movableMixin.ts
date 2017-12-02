@@ -2,33 +2,38 @@ import Sprite from '../sprites/sprite';
 import Movable from '../interfaces/movable';
 import Rect from '../interfaces/rect';
 import SubscriptableMixin from './subscriptableMixin';
+import emitter from '../../../modules/emitter';
+import Coords from '../coords';
+import Oriented from '../interfaces/oriented';
 
-class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Rect {
-  protected direction: number|null;
+class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Oriented, Rect {
+  protected direction: Coords;
   protected speed: number;
 
-  move(dir?: number|null): void {
+  move(dir?: Coords): void {
     if (dir === undefined) {
       dir = this.direction;
     }
-    if (dir !== null) {
-      this.coords.x += this.speed * Math.cos(dir);
-      this.coords.y += this.speed * Math.sin(dir);
-      this.stopIfOut();
-    }
+
+    this.coords.x += this.speed * dir.x;
+    this.coords.y += this.speed * dir.y;
+    this.stopIfOut();
   }
 
   protected stopIfOut(): void {
-    if (this.coords.y + this.height / 2 > this.canvas.height) {
-      this.coords.y = this.canvas.height - this.height / 2;
+    const height = emitter.emit('Strategy.height');
+    const width = emitter.emit('Strategy.width');
+
+    if (this.coords.y + this.height / 2 > height) {
+      this.coords.y = height - this.height / 2;
       this.stop();
     }
     if (this.coords.y - this.height / 2 < 0) {
       this.coords.y = this.height / 2;
       this.stop();
     }
-    if (this.coords.x + this.width / 2 > this.canvas.width) {
-      this.coords.x = this.canvas.width - this.width / 2;
+    if (this.coords.x + this.width / 2 > width) {
+      this.coords.x = width - this.width / 2;
       this.stop();
     }
     if (this.coords.x - this.width / 2 < 0) {
@@ -41,9 +46,12 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Rect {
     this.stop();
   }
 
-  protected stop(): void {
+  stop(): void {
     this.speed = 0;
-    this.direction = null;
+  }
+
+  getDirection(): Coords {
+    return this.direction
   }
 
   destroy() {

@@ -10,7 +10,7 @@ import emitter from '../../../modules/emitter';
 export default class Base extends Sprite implements Destructible, Collidable, Rect {
   public readonly side: SIDE;
   protected health = BASE.HEALTH;
-  protected underAttack = false;
+  public underAttack = false;
 
   constructor(id: number, side: SIDE) {
     super(
@@ -44,12 +44,8 @@ export default class Base extends Sprite implements Destructible, Collidable, Re
     return this.health;
   }
 
-  isUnderAttack(): boolean {
-    return this.underAttack;
-  }
-
   bumpInto(obj: Collidable): void {
-    if (obj instanceof Unit && obj.side !== this.side && !this.underAttack) {
+    if (obj instanceof Unit && obj.side !== this.side) {
       this.underAttack = true;
     }
   }

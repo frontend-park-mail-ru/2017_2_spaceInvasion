@@ -8,6 +8,12 @@ class SubscriptableMixin {
     this.handlers.set(event, binded);
     emitter.attach(event, binded);
   }
+
+  protected destroy(): void {
+    this.handlers.forEach((handler, event) => {
+      emitter.detach(event, handler)
+    });
+  }
 }
 
 export default SubscriptableMixin;

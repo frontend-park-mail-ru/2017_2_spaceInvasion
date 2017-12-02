@@ -6,9 +6,10 @@ import {default as router, Router} from '../../modules/router';
 import Navigator from '../../modules/navigator';
 import LoginBlock from '../login/index';
 import SinglePlayerGameBlock from '../game/singlePlayerGameBlock';
-import MultiPlayerGameBlock from '../game/multiPlayerGameBlock';
 
 class PlayerPageBlock extends Block {
+  private initialized = false;
+
   show(): void {
     if (!Navigator.sections.playerPage.ready) {
       this.el.innerHTML = playerPageTemplate({user: userService.user || 'Guest'});
@@ -35,7 +36,10 @@ class PlayerPageBlock extends Block {
     throwIfNull(el.querySelector('.ui.button__play')).addEventListener('click', () => {
       Navigator.sections.hide();
       if (userService.isLoggedIn()) {
-        Navigator.sections.game.append(new MultiPlayerGameBlock());
+        if (!this.initialized) {
+          Navigator.sections.game.append(new SinglePlayerGameBlock());
+          this.initialized = true;
+        }
         Navigator.sections.game.show();
       } else {
         (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage

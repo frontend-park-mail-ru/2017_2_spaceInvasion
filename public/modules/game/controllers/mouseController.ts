@@ -23,7 +23,7 @@ class MouseController implements ControllerInterface {
     const clicked = [
       ...Array.from(this.previousMouseEvents.keys()),
       ...Array.from(this.mouseEvents.keys())
-    ].filter((key, pos, all) => ~all.indexOf(key, pos + 1))
+    ].filter((key, pos, all) => !~all.indexOf(key, pos + 1))
       .filter(key => Boolean(this.mouseEvents.get(key)) !== Boolean(this.previousMouseEvents.get(key)));
     this.previousMouseEvents = new Map(this.mouseEvents);
     return clicked;
@@ -33,12 +33,8 @@ class MouseController implements ControllerInterface {
     return Boolean(this.mouseEvents.get(event));
   }
 
-  newCommands(): EVENT[] {
-    return this.diff().filter(event => this.mouseEvents.get(event));
-  }
-
-  stoppedCommands(): EVENT[] {
-    return this.diff().filter(event => !this.mouseEvents.get(event));
+  getEvents(): Map<EVENT, boolean> {
+    return this.mouseEvents;
   }
 
   destroy(): void {

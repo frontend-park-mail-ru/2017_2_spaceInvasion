@@ -2,16 +2,17 @@ import Strategy from './strategy';
 import Player from '../../../models/game/player';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
-import {EVENT, SIDE, RESPAWN_DAMAGE} from '../../../utils/constants';
+import {EVENT, SIDE} from '../../../utils/constants';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
-import {mapEventDirection, throwIfNull} from '../../../utils/utils';
+import {mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../webSockets';
 import userService from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
+import Coords from '../../../models/game/coords';
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   protected me: Player;
@@ -20,7 +21,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     super();
 
     // Subscribes
-    emitter.attach('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: number[]
+    this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: number[]
   }
 
   startGameLoop() {
@@ -62,7 +63,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     try {
       emitter.emit('Tower.damage.' + targetID, bullet.getDamage());
       emitter.emit('Unit.damage.' + targetID, bullet.getDamage());
-    } catch {}
+    } catch {
+    }
   }
 
   private onJoinApproved(event: MessageEvent): void {
@@ -90,7 +92,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     this.state.bases.push(new Base(unitID, side));
     this.state.units.push(player.unit);
 
-    emitter.emit('GameService.join', user, side);
+    emitter.emit('Game.join', user, side);
     if (this.state.players.length === 2) {
       this.startGameLoop();
     }
@@ -100,9 +102,10 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private rollbackEvent(event: number[]): void {
     // TODO: Handle all types of events
+    const coords = new Coords(-event[1], -event[2]);
     switch (event[0]) {
       case 0:
-        this.me.unit.move(360 - event[1]);
+        this.me.unit.move(coords);
         break;
       default:
         throw Error('Internal Error')
@@ -126,7 +129,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
       case EVENT.RIGHT:
         emitter.emit(
           'Player.setDirection.' + this.me.unit.id,
-          this.me.unit.getDirection() || 0 + throwIfNull(mapEventDirection(command))
+          sumDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
         break;
       case EVENT.NO:
@@ -146,7 +149,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         // Cancel moving by this direction
         emitter.emit(
           'Player.setDirection.' + this.me.unit.id,
-          this.me.unit.getDirection() || 0 - throwIfNull(mapEventDirection(command))
+          subDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
         break;
       case EVENT.FIRE:
@@ -160,7 +163,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   join(...data: any[]): boolean {
-    debugger;
     return Boolean(this.me);
   }
 
@@ -182,9 +184,9 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     this.state.units.forEach(unit => unit.move());
 
     // Установка бомб
-    this.state.bases.filter(base => base.isUnderAttack()).forEach(
+    this.state.bases.filter(base => base.underAttack).forEach(
       base => {
-        const bomb = new Bomb(this.state.bombs.length, base);
+        const bomb = new Bomb(this.lastID++, base);
         bomb.cancelDestruction();
         this.state.bombs.push(bomb);
       }
@@ -192,14 +194,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // За каждую убитую башню добавить монетки
     this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
-      this.state.coins.push(new Coin(this.state.coins.length, tower.getCoords()));
+      this.state.coins.push(new Coin(this.lastID++, tower.getCoords()));
     });
 
-    // Если умирает юнит, респавним его и дамажим его дом
-    this.state.units.filter(unit => !unit.alive()).forEach(unit => {
-      unit.spawn();
-      this.state.bases.filter(base => base.side === unit.side)[0].damage(RESPAWN_DAMAGE);
-    });
+    // Если умирает юнит, респавним его
+    this.state.units.filter(unit => !unit.alive()).forEach(unit => unit.spawn());
 
     // Удаляем пропавшие пули
     this.state.bullets = this.state.bullets.filter(blt => blt.visible);
@@ -209,11 +208,16 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // Удаляем пропавшие монетки
     this.state.coins = this.state.coins.filter(coin => coin.visible);
-  }
 
-  destroy(): void {
-    this.state.destroy();
-    this.stopGameLoop();
+    // Удаляем пропавшие бомбы
+    this.state.bombs = this.state.bombs.filter(bomb => bomb.visible);
+
+    // Проверяем, не закончилась ли игра
+    const deadBases = this.state.bases.filter(base => !base.alive());
+    if (deadBases.length > 0) {
+      emitter.emit('Game.onFinishGame', deadBases[0].side !== this.me.unit.side);
+      return;
+    }
   }
 }
 

@@ -1,5 +1,4 @@
 import MovableMixin from '../mixins/movableMixin';
-import {BULLET} from '../../../utils/constants';
 import Coords from '../coords';
 import Collidable from '../interfaces/collidable';
 import Unit from './unit';
@@ -7,15 +6,19 @@ import Tower from './tower';
 import Temporary from '../interfaces/temporary';
 import Shootable from '../interfaces/shootable';
 import Rect from '../interfaces/rect';
+import {BULLET} from '../../../utils/constants';
+import Movable from '../interfaces/movable';
+import SubscriptableMixin from '../mixins/subscriptableMixin';
+import Oriented from '../interfaces/oriented';
 
-export default class Bullet extends MovableMixin implements Collidable, Temporary, Rect {
+export default class Bullet extends MovableMixin implements Movable, Oriented, SubscriptableMixin, Collidable, Temporary, Rect {
   protected damage = BULLET.DAMAGE;
   protected timer: number;
   protected time = BULLET.TICKS;
   protected countDownTimer: number;
   protected sorce: Shootable;
 
-  constructor(id: number, direction: number|null, coords: Coords, sorce: Shootable) {
+  constructor(id: number, direction: Coords, coords: Coords, sorce: Shootable) {
     super(
       id,
       coords,
@@ -31,9 +34,9 @@ export default class Bullet extends MovableMixin implements Collidable, Temporar
     this.countDownTimer = window.setInterval(this.countDown.bind(this), Math.ceil(BULLET.LIFE_TIME / BULLET.TICKS));
   }
 
-  move(dir?: number|null): void {
+  move(dir?: Coords): void {
     super.move();
-    if (this.direction === null || this.speed === 0) {
+    if (this.speed === 0) {
       this.destroy();
     }
   }
@@ -45,7 +48,6 @@ export default class Bullet extends MovableMixin implements Collidable, Temporar
 
   destroy(): void {
     this.visible = false;
-    this.direction = null;
     this.speed = 0;
     this.damage = 0;
     this.cancel();
@@ -62,7 +64,7 @@ export default class Bullet extends MovableMixin implements Collidable, Temporar
     return this.damage;
   }
 
-  getDirection(): number|null {
+  getDirection(): Coords {
     return this.direction;
   }
 
