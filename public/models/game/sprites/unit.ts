@@ -118,6 +118,10 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
     return this._damage;
   }
 
+  getSpeed(): number {
+    return this.speed;
+  }
+
   private getCoordsBySide(side: SIDE): Coords {
     const coords = new Coords;
     coords.y = emitter.emit('Strategy.height') / 2 + this.height / 2;

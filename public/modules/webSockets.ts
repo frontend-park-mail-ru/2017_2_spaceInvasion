@@ -7,7 +7,7 @@ import Strategy from './game/strateges/strategy';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< string, Array<(...data: any[]) => any> >();
+  protected handlers = new Map< number, Array<(...data: any[]) => any> >();
   protected socket: WebSocket;
   protected eventStack: Array<number[]> = [];
   private static instance: WebSocketsService;
@@ -43,11 +43,13 @@ class WebSocketsService {
     };
 
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
-      const handlers = this.handlers.get(event.type);
-      if (!handlers) {
+        const handlers = this.handlers.get(event.data[1]);
+        console.log(event.data);
+        if (!handlers) {
         WebSocketsService.error();
         return;
       }
+      console.log(event.data);
       this.eventStack = this.eventStack.slice(event.data[0]);
       handlers.forEach(h => h(event.data.slice(1)));
     }).bind(this);
@@ -55,7 +57,7 @@ class WebSocketsService {
     this.socket.onerror = WebSocketsService.error;
   }
 
-  subscribe(type: string, handler: (event: MessageEvent) => any): void {
+  subscribe(type: number, handler: (event: MessageEvent) => any): void {
     let handlers = this.handlers.get(type);
     if (!handlers) {
       handlers = [];
@@ -64,7 +66,7 @@ class WebSocketsService {
     this.handlers.set(type, handlers);
   }
 
-  send(data: number[]): void {
+  send(data: any): void {
     if (this.eventStack.length <= MAX_EVENTS) {
       this.eventStack.push(data);
       this.socket.send(JSON.stringify(data));

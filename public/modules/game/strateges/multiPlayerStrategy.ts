@@ -7,7 +7,7 @@ import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
-import {mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
+import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../webSockets';
 import userService from '../../../services/userService';
@@ -31,22 +31,22 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private webSocketsInit(): void {
     // Registration
-    webSocketService.subscribe('JoinApproved', this.onJoinApproved.bind(this));
-    webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
+    webSocketService.subscribe(7, this.onJoinApproved.bind(this));
+    // webSocketService.subscribe(7, this.onNewUser.bind(this));
 
     // Common events
-    webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
-    webSocketService.subscribe('Damage', this.onDamage.bind(this));
+    webSocketService.subscribe(5, this.onBombBoom.bind(this));
+    webSocketService.subscribe(2, this.onDamage.bind(this));
 
     // My events
-    webSocketService.subscribe('Rollback', webSocketService.rollback.bind(webSocketService));
-    webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
+    webSocketService.subscribe(1, webSocketService.rollback.bind(webSocketService));
+    webSocketService.subscribe(8, this.me.reward.bind(this.me));
 
     // OpponentEvents
     const opponent = this.state.players.filter(p => p !== this.me)[0];
-    webSocketService.subscribe('OpponentMove', opponent.unit.move.bind(opponent.unit));
-    webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
-    webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+    webSocketService.subscribe(3, opponent.unit.move.bind(opponent.unit));
+    webSocketService.subscribe(6, opponent.unit.shout.bind(opponent.unit));
+    // webSocketService.subscribe(2, opponent.reward.bind(opponent));
   }
 
   private onBombBoom(event: MessageEvent): void {
@@ -117,11 +117,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     switch (command) {
       case EVENT.FIRE:
         emitter.emit('Player.shout.' + this.me.unit.id);
-        webSocketService.send([]); // TODO: send anything
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 3, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
         break;
       case EVENT.TOWER:
         emitter.emit('Player.setTower.' + this.me.unit.id);
-        webSocketService.send([]); // TODO: send anything
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 1, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
         break;
       case EVENT.DOWN:
       case EVENT.UP:
@@ -131,6 +131,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           'Player.setDirection.' + this.me.unit.id,
           sumDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 0, this.me.unit.getDirection().x * this.me.unit.getSpeed(), this.me.unit.getDirection().y * this.me.unit.getSpeed()]}); // TODO: send anything
         break;
       case EVENT.NO:
         break;
@@ -163,6 +164,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   join(...data: any[]): boolean {
+    webSocketService.send({class:'JoinRequest', d:[]});
     return Boolean(this.me);
   }
 
