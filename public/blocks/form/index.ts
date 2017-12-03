@@ -74,7 +74,7 @@ abstract class Form extends Block {
           const name = (elements[i] as HTMLInputElement).name;
           const value = (elements[i] as HTMLInputElement).value;
           if (name !== 'ValidateBtn' && name !== 'repeatedPassword') {
-            data.name = value;
+            data[name] = value;
           }
         }
         callback(data);

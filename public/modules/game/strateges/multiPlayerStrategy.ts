@@ -32,10 +32,10 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   private webSocketsInit(): void {
     // Registration
     webSocketService.subscribe('JoinApproved', this.onJoinApproved.bind(this));
-    webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
+    // webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
 
     // Common events
-    webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
+    // webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
     webSocketService.subscribe('Damage', this.onDamage.bind(this));
 
     // My events
@@ -44,9 +44,13 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // OpponentEvents
     const opponent = this.state.players.filter(p => p !== this.me)[0];
-    webSocketService.subscribe('OpponentMove', opponent.unit.move.bind(opponent.unit));
+    webSocketService.subscribe('AcceptedMoveMessage', opponent.unit.move.bind(opponent.unit));
     webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
     webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+  }
+
+  private onBombInstall(event: MessageEvent): void {
+
   }
 
   private onBombBoom(event: MessageEvent): void {

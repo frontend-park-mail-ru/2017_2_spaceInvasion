@@ -54,6 +54,10 @@ function getBulletCoords(shootable: Shootable&Rect&Oriented): Coords {
   return new Coords(coords.x + dir.x * (width/2 + BULLET.OFFSET), coords.y + dir.y * (height/2 + BULLET.OFFSET));
 }
 
+function isNumber(n: any): boolean {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function getCodeByDir(dir: Coords): number {
   switch (dir.x) {
     case 0:
@@ -94,4 +98,4 @@ function getCodeByDir(dir: Coords): number {
   }
 }
 
-export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords};
+export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber};

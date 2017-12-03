@@ -5,7 +5,7 @@ import {throwIfNull} from '../../utils/utils';
 import {default as router, Router} from '../../modules/router';
 import Navigator from '../../modules/navigator';
 import LoginBlock from '../login/index';
-import SinglePlayerGameBlock from '../game/singlePlayerGameBlock';
+import MultiPlayerGameBlock from '../game/multiPlayerGameBlock';
 
 class PlayerPageBlock extends Block {
   private initialized = false;
@@ -37,7 +37,7 @@ class PlayerPageBlock extends Block {
       Navigator.sections.hide();
       if (userService.isLoggedIn()) {
         if (!this.initialized) {
-          Navigator.sections.game.append(new SinglePlayerGameBlock());
+          Navigator.sections.game.append(new MultiPlayerGameBlock());
           this.initialized = true;
         }
         Navigator.sections.game.show();

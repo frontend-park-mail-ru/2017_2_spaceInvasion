@@ -4,6 +4,7 @@ import PNotify from '../utils/notifications';
 import userService from '../services/userService';
 import {getTheme} from './themes';
 import Strategy from './game/strateges/strategy';
+import {isNumber} from '../utils/utils';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
@@ -18,6 +19,10 @@ class WebSocketsService {
     }
 
     WebSocketsService.instance = this;
+  }
+
+  protected static dataIsValid(data: any): boolean {
+    return (data.data instanceof Array) && data.data.all((el: any) => isNumber(el))
   }
 
   init(): void {
@@ -43,13 +48,14 @@ class WebSocketsService {
     };
 
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
-      const handlers = this.handlers.get(event.type);
-      if (!handlers) {
+      const data = event.data;
+      const handlers = this.handlers.get(data.class);
+      if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
         WebSocketsService.error();
         return;
       }
-      this.eventStack = this.eventStack.slice(event.data[0]);
-      handlers.forEach(h => h(event.data.slice(1)));
+      this.eventStack = this.eventStack.slice(data.data[0]);
+      handlers.forEach(h => h(data.slice(1)));
     }).bind(this);
 
     this.socket.onerror = WebSocketsService.error;
@@ -60,7 +66,15 @@ class WebSocketsService {
     if (!handlers) {
       handlers = [];
     }
-    handlers.push(handler);
+
+    const wrapper = (event: MessageEvent) => {
+      if (!WebSocketsService.dataIsValid(event.data)) {
+        WebSocketsService.error();
+      }
+      return handler(event);
+    };
+
+    handlers.push(wrapper);
     this.handlers.set(type, handlers);
   }
 
