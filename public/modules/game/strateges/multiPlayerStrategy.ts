@@ -19,34 +19,30 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   constructor() {
     super();
+    this.webSocketsInit();
 
     // Subscribes
-    this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: number[]
-  }
-
-  startGameLoop() {
-    this.webSocketsInit();
-    super.startGameLoop();
+    this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: string
   }
 
   private webSocketsInit(): void {
     // Registration
-    webSocketService.subscribe('JoinApproved', this.onJoinApproved.bind(this));
+    webSocketService.subscribe('GameInitResponse', this.onJoinApproved.bind(this));
     // webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
 
     // Common events
     // webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
-    webSocketService.subscribe('Damage', this.onDamage.bind(this));
+    // webSocketService.subscribe('Damage', this.onDamage.bind(this));
 
     // My events
-    webSocketService.subscribe('Rollback', webSocketService.rollback.bind(webSocketService));
-    webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
+    // webSocketService.subscribe('Rollback', webSocketService.rollback.bind(webSocketService));
+    // webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
 
     // OpponentEvents
-    const opponent = this.state.players.filter(p => p !== this.me)[0];
-    webSocketService.subscribe('AcceptedMoveMessage', opponent.unit.move.bind(opponent.unit));
-    webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
-    webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+    // const opponent = this.state.players.filter(p => p !== this.me)[0];
+    // webSocketService.subscribe('AcceptedMoveMessage', opponent.unit.move.bind(opponent.unit));
+    // webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
+    // webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
   }
 
   private onBombInstall(event: MessageEvent): void {
@@ -71,9 +67,10 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     }
   }
 
-  private onJoinApproved(event: MessageEvent): void {
-    const unitID: number = event.data[0];
-    const side: SIDE = event.data[1] === 'man' ? SIDE.MAN : SIDE.ALIEN;
+  private onJoinApproved(data: any): void {
+      console.log(data);
+      const unitID: number = data.data[0];
+    const side: SIDE = data.data[1] === 'man' ? SIDE.MAN : SIDE.ALIEN;
 
     const user = throwIfNull(userService.user);
     this.me = this.addNewUser(unitID, user, side);
@@ -97,6 +94,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     this.state.units.push(player.unit);
 
     emitter.emit('Game.join', user, side);
+    console.log(JSON.stringify(this.state));
     if (this.state.players.length === 2) {
       this.startGameLoop();
     }
@@ -104,7 +102,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     return player;
   }
 
-  private rollbackEvent(event: number[]): void {
+  private rollbackEvent(event: any): void {
     // TODO: Handle all types of events
     const coords = new Coords(-event[1], -event[2]);
     switch (event[0]) {
@@ -167,6 +165,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   join(...data: any[]): boolean {
+    webSocketService.send({class: 'JoinRequest'});
     return Boolean(this.me);
   }
 

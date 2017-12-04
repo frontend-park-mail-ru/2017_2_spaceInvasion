@@ -10,7 +10,7 @@ class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
   protected handlers = new Map< string, Array<(...data: any[]) => any> >();
   protected socket: WebSocket;
-  protected eventStack: Array<number[]> = [];
+  protected eventStack: any[] = [];
   private static instance: WebSocketsService;
 
   constructor() {
@@ -22,7 +22,7 @@ class WebSocketsService {
   }
 
   protected static dataIsValid(data: any): boolean {
-    return (data.data instanceof Array) && data.data.all((el: any) => isNumber(el))
+    return (data.data instanceof Array) && data.data.every((el: any) => isNumber(el));
   }
 
   init(): void {
@@ -48,37 +48,38 @@ class WebSocketsService {
     };
 
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
-      const data = event.data;
+      const data = JSON.parse(event.data);
       const handlers = this.handlers.get(data.class);
-      if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
+        console.log(data, handlers, this.handlers);
+        if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
         WebSocketsService.error();
         return;
       }
       this.eventStack = this.eventStack.slice(data.data[0]);
-      handlers.forEach(h => h(data.slice(1)));
+      handlers.forEach(h => h(data));
     }).bind(this);
 
     this.socket.onerror = WebSocketsService.error;
   }
 
-  subscribe(type: string, handler: (event: MessageEvent) => any): void {
+  subscribe(type: string, handler: (data: any) => any): void {
     let handlers = this.handlers.get(type);
     if (!handlers) {
       handlers = [];
     }
 
-    const wrapper = (event: MessageEvent) => {
-      if (!WebSocketsService.dataIsValid(event.data)) {
+    const wrapper = (data: any) => {
+      if (!WebSocketsService.dataIsValid(data)) {
         WebSocketsService.error();
       }
-      return handler(event);
+      return handler(data);
     };
 
     handlers.push(wrapper);
     this.handlers.set(type, handlers);
   }
 
-  send(data: number[]): void {
+  send(data: any): void {
     if (this.eventStack.length <= MAX_EVENTS) {
       this.eventStack.push(data);
       this.socket.send(JSON.stringify(data));

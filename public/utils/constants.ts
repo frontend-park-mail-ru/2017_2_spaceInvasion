@@ -1,5 +1,5 @@
-const BASE_URL = 'http://138.68.86.49/';
-const WEB_SOCKETS_BASE_URL = 'ws://138.68.86.49/game';
+const BASE_URL = 'http://localhost:8080/v1';
+const WEB_SOCKETS_BASE_URL = 'ws://localhost:8080/game';
 const MAX_EVENTS = 100;
 const RESPAWN_DAMAGE = 1;
 
