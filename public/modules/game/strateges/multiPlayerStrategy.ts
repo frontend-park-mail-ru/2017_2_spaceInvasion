@@ -10,7 +10,7 @@ import emitter from '../../emitter';
 import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../webSockets';
-import userService from '../../../services/userService';
+import {default as userService, UserService} from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
 
@@ -68,12 +68,19 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onJoinApproved(data: any): void {
-      console.log(data);
-      const unitID: number = data.data[0];
-    const side: SIDE = data.data[1] === 'man' ? SIDE.MAN : SIDE.ALIEN;
+    // Ignore data.data[0] -> always === -1
+    const type = data.data[1];
+    const side: SIDE = data.data[2] === 0 ? SIDE.MAN : SIDE.ALIEN;
+    const enemyID = data.data[3];
+    const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
 
-    const user = throwIfNull(userService.user);
-    this.me = this.addNewUser(unitID, user, side);
+    UserService.getUser(enemyID).then(enemy => {
+      const user = throwIfNull(userService.user);
+      this.me = this.addNewUser(user, side);
+      this.addNewUser(enemy, oppositeSide);
+    }).catch(() => {
+      // TODO
+    });
   }
 
   private onNewUser(event: MessageEvent): void {
@@ -84,17 +91,17 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     const user = new User(username, email, '');
     user.score = score;
 
-    this.addNewUser(unitID, user, event.data[4] === 'man' ? SIDE.MAN : SIDE.ALIEN);
+    this.addNewUser(user, event.data[4] === 'man' ? SIDE.MAN : SIDE.ALIEN);
   }
 
-  private addNewUser(unitID: number, user: User, side: SIDE): Player {
-    const player = new Player(user, new Unit(unitID, side));
+  private addNewUser(user: User, side: SIDE): Player {
+    const id = user.id || 0;
+    const player = new Player(user, new Unit(id, side));
     this.state.players.push(player);
-    this.state.bases.push(new Base(unitID, side));
+    this.state.bases.push(new Base(id, side));
     this.state.units.push(player.unit);
 
-    emitter.emit('Game.join', user, side);
-    console.log(JSON.stringify(this.state));
+    // emitter.emit('Game.join', user, side);
     if (this.state.players.length === 2) {
       this.startGameLoop();
     }

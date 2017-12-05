@@ -59,6 +59,11 @@ class UserService {
         Router.route();
       });
   }
+
+  static getUser(id: number): Promise<User> {
+    return Http.Fetch('GET', '/user/' + id)
+      .then(data => throwIfNull(data).json());
+  }
 }
 
 const userService = new UserService();

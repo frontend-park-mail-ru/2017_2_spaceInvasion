@@ -8,7 +8,7 @@ import {isNumber} from '../utils/utils';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< number, Array<(...data: any[]) => any> >();
+  protected handlers = new Map< string, Array<(...data: any[]) => any> >();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
   private static instance: WebSocketsService;
@@ -62,6 +62,7 @@ class WebSocketsService {
     this.socket.onerror = WebSocketsService.error;
   }
 
+  // TODO: Substitude class to type
   subscribe(type: string, handler: (data: any) => any): void {
     let handlers = this.handlers.get(type);
     if (!handlers) {

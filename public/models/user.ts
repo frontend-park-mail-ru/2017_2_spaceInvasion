@@ -1,12 +1,14 @@
 import {validationRulesForRegistration as rules} from '../utils/validationRules';
 
 class User {
+  public id?: number;
   public username: string;
   public email: string;
   public password: string;
   public score ?: number;
 
-  constructor(username: string, email: string, password: string, score: number = 0) {
+  constructor(username: string, email: string, password: string, score: number = 0, id?: number) {
+    this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
