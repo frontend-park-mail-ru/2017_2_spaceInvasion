@@ -6,11 +6,11 @@ class User {
   public password: string;
   public score ?: number;
 
-  constructor(username: string, email: string, password: string) {
+  constructor(username: string, email: string, password: string, score: number = 0) {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.score = 0;
+    this.score = score;
   }
 
   static validate(u: User): User {

@@ -6,8 +6,8 @@ import {Router} from '../modules/router';
 
 class UserService {
   private static instance = new UserService();
-  user: User | null;
-  users: Array<User>;
+  user: User | null = null;
+  users: Array<User> = [];
 
   constructor() {
     if (UserService.instance) {
@@ -45,21 +45,18 @@ class UserService {
     return Boolean(this.user);
   }
 
-  fetch(): Promise<User | null> {
-    this.user = new User('Admin', 'spaceinvasionlab@yandex.ru', ''); // NOTE: Testing!!!!!! Remove it!
-    return Http.Fetch('GET', '/user')
+  fetch(): void {
+    Http.Fetch('GET', '/user')
       .then(data => throwIfNull(data).json())
       .then(data => {
-        Router.route();
         if (data.result !== 'Unauthorized') {
-          return this.user = data;
-        } else {
-          return null;
+          this.user = data;
         }
+        Navigator.sections.hide();
+        Router.route();
       }).catch(() => {
         Navigator.sections.hide();
         Router.route();
-        return null;
       });
   }
 }

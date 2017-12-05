@@ -52,12 +52,6 @@ class Navigator {
     for (let i = 0; i < menuItems.length; i += 1) {
       menuItems[i].addEventListener('click', Navigator.navigate.bind(menuItems[i]));
     }
-
-    // TODO: remove it after debug!!!!!!
-    throwIfNull(document.querySelector('.ru')).addEventListener('click', () => {
-      Navigator.sections.hide();
-      Navigator.sections.game.show();
-    });
   }
 
   static navigate(this: HTMLElement): void {
