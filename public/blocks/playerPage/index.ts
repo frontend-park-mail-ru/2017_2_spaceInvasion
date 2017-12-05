@@ -6,6 +6,7 @@ import {default as router, Router} from '../../modules/router';
 import Navigator from '../../modules/navigator';
 import LoginBlock from '../login/index';
 import MultiPlayerGameBlock from '../game/multiPlayerGameBlock';
+import SinglePlayerGameBlock from '../game/singlePlayerGameBlock';
 
 class PlayerPageBlock extends Block {
   private initialized = false;

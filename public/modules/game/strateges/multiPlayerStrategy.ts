@@ -7,7 +7,7 @@ import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
-import {mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
+import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../webSockets';
 import userService from '../../../services/userService';
@@ -119,11 +119,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     switch (command) {
       case EVENT.FIRE:
         emitter.emit('Player.shout.' + this.me.unit.id);
-        webSocketService.send([]); // TODO: send anything
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 3, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
         break;
       case EVENT.TOWER:
         emitter.emit('Player.setTower.' + this.me.unit.id);
-        webSocketService.send([]); // TODO: send anything
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 1, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
         break;
       case EVENT.DOWN:
       case EVENT.UP:
@@ -133,6 +133,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           'Player.setDirection.' + this.me.unit.id,
           sumDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
+        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 0, this.me.unit.getDirection().x * this.me.unit.getSpeed(), this.me.unit.getDirection().y * this.me.unit.getSpeed()]}); // TODO: send anything
         break;
       case EVENT.NO:
         break;
@@ -165,7 +166,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   join(...data: any[]): boolean {
-    webSocketService.send({class: 'JoinRequest'});
+    webSocketService.send({class:'JoinRequest'});
     return Boolean(this.me);
   }
 

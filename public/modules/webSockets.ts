@@ -8,7 +8,7 @@ import {isNumber} from '../utils/utils';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< string, Array<(...data: any[]) => any> >();
+  protected handlers = new Map< number, Array<(...data: any[]) => any> >();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
   private static instance: WebSocketsService;
@@ -50,8 +50,8 @@ class WebSocketsService {
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
       const data = JSON.parse(event.data);
       const handlers = this.handlers.get(data.class);
-        console.log(data, handlers, this.handlers);
-        if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
+      console.log(data, handlers, this.handlers);
+      if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
         WebSocketsService.error();
         return;
       }
