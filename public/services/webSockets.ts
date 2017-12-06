@@ -1,14 +1,14 @@
 import {SIDE, WEB_SOCKETS_BASE_URL, MAX_EVENTS} from '../utils/constants';
-import emitter from './emitter';
+import emitter from '../modules/emitter';
 import PNotify from '../utils/notifications';
-import userService from '../services/userService';
-import {getTheme} from './themes';
-import Strategy from './game/strateges/strategy';
+import userService from './userService';
+import {getTheme} from '../modules/themes';
+import Strategy from '../modules/game/strateges/strategy';
 import {isNumber} from '../utils/utils';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< string, Array<(...data: any[]) => any> >();
+  protected handlers = new Map< number, Array<(...data: any[]) => any> >();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
   private static instance: WebSocketsService;
@@ -22,7 +22,7 @@ class WebSocketsService {
   }
 
   protected static dataIsValid(data: any): boolean {
-    return (data.data instanceof Array) && data.data.every((el: any) => isNumber(el));
+    return (data instanceof Array) && data.every((el: any) => isNumber(el)); // && data.data.length >= 1;
   }
 
   init(): void {
@@ -35,8 +35,7 @@ class WebSocketsService {
 
     this.socket.onclose = (event) => {
       if (event.wasClean) {
-        // You are lose, because you are disconnected
-        emitter.emit('Game.onFinishGame', false);
+       console.log('Disconnected');
       } else {
         // Error on server side
         new PNotify({
@@ -45,25 +44,27 @@ class WebSocketsService {
           message: `${event.reason} (${event.code})`
         });
       }
+      // You are lose, because you are disconnected
+      emitter.emit('Game.onFinishGame', false);
     };
 
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
       const data = JSON.parse(event.data);
-      const handlers = this.handlers.get(data.class);
-      console.log(data, handlers, this.handlers);
-      if (handlers === undefined || !WebSocketsService.dataIsValid(data)) {
+      console.log(data, this.handlers);
+      debugger;
+      const handlers = this.handlers.get(data.data[1]);
+      if (handlers === undefined || !WebSocketsService.dataIsValid(data.data)) {
         WebSocketsService.error();
         return;
       }
       this.eventStack = this.eventStack.slice(data.data[0]);
-      handlers.forEach(h => h(data));
+      handlers.forEach(h => h(data.data.slice(2)));
     }).bind(this);
 
     this.socket.onerror = WebSocketsService.error;
   }
 
-  // TODO: Substitude class to type
-  subscribe(type: string, handler: (data: any) => any): void {
+  subscribe(type: number, handler: (data: any) => any): void {
     let handlers = this.handlers.get(type);
     if (!handlers) {
       handlers = [];

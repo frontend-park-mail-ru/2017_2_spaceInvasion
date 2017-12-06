@@ -1,5 +1,5 @@
 import GameBlock from './index';
-import webSocketService from '../../modules/webSockets';
+import webSocketService from '../../services/webSockets';
 import MultiPlayerStrategy from '../../modules/game/strateges/multiPlayerStrategy';
 
 class MultiPlayerGameBlock extends GameBlock {

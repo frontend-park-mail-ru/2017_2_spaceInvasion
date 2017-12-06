@@ -9,7 +9,7 @@ import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
 import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
-import webSocketService from '../../webSockets';
+import webSocketService from '../../../services/webSockets';
 import {default as userService, UserService} from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
@@ -27,7 +27,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private webSocketsInit(): void {
     // Registration
-    webSocketService.subscribe('GameInitResponse', this.onJoinApproved.bind(this));
+    webSocketService.subscribe(7, this.onJoinApproved.bind(this));
     // webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
 
     // Common events
@@ -39,10 +39,16 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     // webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
 
     // OpponentEvents
-    // const opponent = this.state.players.filter(p => p !== this.me)[0];
-    // webSocketService.subscribe('AcceptedMoveMessage', opponent.unit.move.bind(opponent.unit));
+    webSocketService.subscribe(3, this.onMove.bind(this));
     // webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
     // webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+  }
+
+  private onMove(data: any): void {
+    const opponent = this.state.players.filter(p => p !== this.me)[0];
+    if (opponent !== undefined) {
+      opponent.unit.correctCoords(new Coords(data[0], data[1]));
+    }
   }
 
   private onBombInstall(event: MessageEvent): void {
@@ -68,10 +74,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onJoinApproved(data: any): void {
-    // Ignore data.data[0] -> always === -1
-    const type = data.data[1];
-    const side: SIDE = data.data[2] === 0 ? SIDE.MAN : SIDE.ALIEN;
-    const enemyID = data.data[3];
+    const side: SIDE = data[0] === 0 ? SIDE.MAN : SIDE.ALIEN;
+    const enemyID = data[1];
     const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
 
     UserService.getUser(enemyID).then(enemy => {
@@ -81,17 +85,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     }).catch(() => {
       // TODO
     });
-  }
-
-  private onNewUser(event: MessageEvent): void {
-    const unitID: number = event.data[0];
-    const username: string = event.data[1];
-    const email: string = event.data[2];
-    const score: number = event.data[3];
-    const user = new User(username, email, '');
-    user.score = score;
-
-    this.addNewUser(user, event.data[4] === 'man' ? SIDE.MAN : SIDE.ALIEN);
   }
 
   private addNewUser(user: User, side: SIDE): Player {
