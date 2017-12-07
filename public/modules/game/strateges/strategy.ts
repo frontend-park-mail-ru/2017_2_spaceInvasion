@@ -73,8 +73,7 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
   protected newBullet(...data: any[]): void {
     let direction = data[0] as Coords;
     const coords = data[1] as Coords;
-    const source = data[2] as MovableMixin&Shootable;
-    this.state.bullets.push(new Bullet(this.lastID++, direction, coords, source));
+    this.state.bullets.push(new Bullet(this.lastID++, direction, coords));
   }
 
   protected setTower(...data: any[]): void {

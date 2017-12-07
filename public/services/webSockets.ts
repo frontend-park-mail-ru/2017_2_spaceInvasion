@@ -34,24 +34,23 @@ class WebSocketsService {
     };
 
     this.socket.onclose = (event) => {
-      if (event.wasClean) {
-       console.log('Disconnected');
-      } else {
+      let victory = false;
+      if (!event.wasClean) {
         // Error on server side
         new PNotify({
           title: 'Server is unavailable',
           type: 'error',
           message: `${event.reason} (${event.code})`
         });
+        victory = true;
       }
       // You are lose, because you are disconnected
-      emitter.emit('Game.onFinishGame', false);
+      emitter.emit('Game.onFinishGame', victory);
     };
 
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
       const data = JSON.parse(event.data);
-      console.log(data, this.handlers);
-      debugger;
+      console.log(data);
       const handlers = this.handlers.get(data.data[1]);
       if (handlers === undefined || !WebSocketsService.dataIsValid(data.data)) {
         WebSocketsService.error();

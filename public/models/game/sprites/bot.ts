@@ -8,6 +8,7 @@ import SubscriptableMixin from '../mixins/subscriptableMixin';
 import Temporary from '../interfaces/temporary';
 import {BOT, SIDE, UNIT} from '../../../utils/constants';
 import emitter from '../../../modules/emitter';
+import Coords from '../coords';
 
 // TODO: Написать умный ИИ
 class Bot extends Unit implements SubscriptableMixin, MovableMixin, Destructible, Collidable, Shootable, Rect, Temporary {
@@ -60,6 +61,22 @@ class Bot extends Unit implements SubscriptableMixin, MovableMixin, Destructible
   destroy(): void {
     this.cancel();
     super.destroy();
+  }
+
+  static copy(bot: Bot): Bot {
+    const newBot = new Bot(bot.id, bot.side);
+    newBot.coords = Coords.copy(bot.coords);
+    newBot._damage = bot._damage;
+    newBot.health = bot.health;
+    newBot.visible = bot.visible;
+    newBot.direction = Coords.copy(bot.direction);
+    newBot.handlers = new Map(bot.handlers);
+    newBot.speed = bot.speed;
+    newBot.cancel();
+    newBot.shoutTimer = bot.shoutTimer;
+    newBot.randomTowerTimer = bot.randomTowerTimer;
+    newBot.towerTimer = bot.towerTimer;
+    return newBot;
   }
 
   protected setTower(): void {

@@ -2,7 +2,7 @@ import Strategy from './strategy';
 import Player from '../../../models/game/player';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
-import {EVENT, SIDE} from '../../../utils/constants';
+import {EVENT, SIDE, RPS} from '../../../utils/constants';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
@@ -13,9 +13,12 @@ import webSocketService from '../../../services/webSockets';
 import {default as userService, UserService} from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
+import GameState from "../../../models/game/state";
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   protected me: Player;
+  protected sendedState = new GameState();
+  protected timer: number;
 
   constructor() {
     super();
@@ -23,6 +26,29 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // Subscribes
     this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: string
+  }
+
+  startGameLoop(): void {
+    if (!this.running) {
+      this.timer = setInterval(this.sendToServer.bind(this), 1000 / RPS);
+    }
+    super.startGameLoop();
+  }
+
+  protected sendToServer(): void {
+    const me = this.sendedState.players.filter(p => p.unit.side === this.me.unit.side)[0];
+    if (me && this.me.unit.getCoords().x !== me.unit.getCoords().x && this.me.unit.getCoords().y !== me.unit.getCoords().y) {
+      webSocketService.send({
+        class: 'ClientSnap',
+        request: [
+          this.lastID++,
+          0,
+          this.me.unit.getCoords().x - me.unit.getCoords().x,
+          this.me.unit.getCoords().y - me.unit.getCoords().y,
+        ]
+      });
+    }
+    this.sendedState = GameState.copy(this.state);
   }
 
   private webSocketsInit(): void {
@@ -133,7 +159,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           'Player.setDirection.' + this.me.unit.id,
           sumDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
-        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 0, this.me.unit.getDirection().x * this.me.unit.getSpeed(), this.me.unit.getDirection().y * this.me.unit.getSpeed()]}); // TODO: send anything
         break;
       case EVENT.NO:
         break;
@@ -185,7 +210,9 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     });
 
     // Движение игроков
-    this.state.units.forEach(unit => unit.move());
+    this.state.units.forEach(unit => {
+      unit.move();
+    });
 
     // Установка бомб
     this.state.bases.filter(base => base.underAttack).forEach(

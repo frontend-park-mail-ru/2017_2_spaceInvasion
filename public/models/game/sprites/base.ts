@@ -50,6 +50,16 @@ export default class Base extends Sprite implements Destructible, Collidable, Re
     }
   }
 
+  static copy(base: Base): Base {
+    const newBase = new Base(base.id, base.side);
+    newBase.visible = base.visible;
+    newBase.handlers = new Map(base.handlers);
+    newBase.coords = Coords.copy(base.coords);
+    newBase.health = base.health;
+    newBase.underAttack = base.underAttack;
+    return newBase;
+  }
+
   private getCoordsBySide(side: SIDE): Coords {
     const coords = new Coords;
     coords.y = emitter.emit('Strategy.height') / 2;

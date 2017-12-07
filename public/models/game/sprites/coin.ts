@@ -25,6 +25,18 @@ class Coin extends Sprite implements Collidable, Temporary, Rect {
     this.countDownTimer = window.setInterval(this.countDown.bind(this), Math.ceil(COIN.LIFE_TIME / COIN.TICKS));
   }
 
+  static copy(coin: Coin): Coin {
+    const newCoin = new Coin(coin.id, Coords.copy(coin.coords));
+    newCoin.visible = coin.visible;
+    newCoin.handlers = new Map(coin.handlers);
+    newCoin.time = coin.time;
+    newCoin.cost = coin.cost;
+    newCoin.cancel();
+    newCoin.countDownTimer = coin.countDownTimer;
+    newCoin.timer = coin.timer;
+    return newCoin;
+  }
+
   bumpInto(obj: Collidable): void {
     if (obj instanceof Unit) {
       this.destroy();

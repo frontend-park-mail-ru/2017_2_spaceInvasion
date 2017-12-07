@@ -22,22 +22,29 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
   }
 
   correctCoords(coords: Coords): void {
+    if (coords.x === this.coords.x && coords.y === this.coords.y) {
+      return;
+    }
+
     const start = performance.now();
     const startCoords = Coords.copy(this.getCoords());
     const duration = 1000 / FPS * SMOOTH_COEF;
-    requestAnimationFrame(function animate(this: MovableMixin, time: number) {
+
+    const animate = (time: number) => {
       let timePassed = time - start;
       if (timePassed > duration) {
         timePassed = duration;
       }
 
-      this.coords.x = timePassed/duration * (coords.x - startCoords.x);
-      this.coords.y = timePassed/duration * (coords.y - startCoords.y);
+      this.coords.x = startCoords.x + timePassed/duration * (coords.x - startCoords.x);
+      this.coords.y = startCoords.y + timePassed/duration * (coords.y - startCoords.y);
 
       if (timePassed < duration) {
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate.bind(this));
       }
-    }.bind(this));
+    };
+
+    requestAnimationFrame(animate.bind(this));
   }
 
   protected stopIfOut(): void {
