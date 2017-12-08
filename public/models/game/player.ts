@@ -25,6 +25,14 @@ class Player extends SubscriptableMixin {
     this.subscribe('Player.setDirection.' + this.unit.id, this.unit.setDirection.bind(this.unit)); // direction: Coords
   }
 
+  static copy(player: Player): Player {
+    const user = User.copy(player.user);
+    const unit = Unit.copy(player.unit);
+    const newPlayer = new Player(user, unit);
+    newPlayer.destroy(); // Unbind subscribes
+    return newPlayer;
+  }
+
   reward(coins: number): void {
     this.coins += coins;
   }

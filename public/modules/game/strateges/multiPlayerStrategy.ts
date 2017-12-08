@@ -2,20 +2,23 @@ import Strategy from './strategy';
 import Player from '../../../models/game/player';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
-import {EVENT, SIDE} from '../../../utils/constants';
+import {EVENT, SIDE, RPS} from '../../../utils/constants';
 import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
 import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
-import webSocketService from '../../webSockets';
+import webSocketService from '../../../services/webSockets';
 import {default as userService, UserService} from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
+import GameState from "../../../models/game/state";
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   protected me: Player;
+  protected sendedState = new GameState();
+  protected timer: number;
 
   constructor() {
     super();
@@ -25,9 +28,32 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: string
   }
 
+  startGameLoop(): void {
+    if (!this.running) {
+      this.timer = setInterval(this.sendToServer.bind(this), 1000 / RPS);
+    }
+    super.startGameLoop();
+  }
+
+  protected sendToServer(): void {
+    const me = this.sendedState.players.filter(p => p.unit.side === this.me.unit.side)[0];
+    if (me && this.me.unit.getCoords().x !== me.unit.getCoords().x && this.me.unit.getCoords().y !== me.unit.getCoords().y) {
+      webSocketService.send({
+        class: 'ClientSnap',
+        request: [
+          this.lastID++,
+          0,
+          this.me.unit.getCoords().x - me.unit.getCoords().x,
+          this.me.unit.getCoords().y - me.unit.getCoords().y,
+        ]
+      });
+    }
+    this.sendedState = GameState.copy(this.state);
+  }
+
   private webSocketsInit(): void {
     // Registration
-    webSocketService.subscribe('GameInitResponse', this.onJoinApproved.bind(this));
+    webSocketService.subscribe(7, this.onJoinApproved.bind(this));
     // webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
 
     // Common events
@@ -39,10 +65,16 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     // webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
 
     // OpponentEvents
-    // const opponent = this.state.players.filter(p => p !== this.me)[0];
-    // webSocketService.subscribe('AcceptedMoveMessage', opponent.unit.move.bind(opponent.unit));
+    webSocketService.subscribe(3, this.onMove.bind(this));
     // webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
     // webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+  }
+
+  private onMove(data: any): void {
+    const opponent = this.state.players.filter(p => p !== this.me)[0];
+    if (opponent !== undefined) {
+      opponent.unit.correctCoords(new Coords(data[0], data[1]));
+    }
   }
 
   private onBombInstall(event: MessageEvent): void {
@@ -68,10 +100,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onJoinApproved(data: any): void {
-    // Ignore data.data[0] -> always === -1
-    const type = data.data[1];
-    const side: SIDE = data.data[2] === 0 ? SIDE.MAN : SIDE.ALIEN;
-    const enemyID = data.data[3];
+    const side: SIDE = data[0] === 0 ? SIDE.MAN : SIDE.ALIEN;
+    const enemyID = data[1];
     const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
 
     UserService.getUser(enemyID).then(enemy => {
@@ -81,17 +111,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     }).catch(() => {
       // TODO
     });
-  }
-
-  private onNewUser(event: MessageEvent): void {
-    const unitID: number = event.data[0];
-    const username: string = event.data[1];
-    const email: string = event.data[2];
-    const score: number = event.data[3];
-    const user = new User(username, email, '');
-    user.score = score;
-
-    this.addNewUser(user, event.data[4] === 'man' ? SIDE.MAN : SIDE.ALIEN);
   }
 
   private addNewUser(user: User, side: SIDE): Player {
@@ -141,7 +160,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           'Player.setDirection.' + this.me.unit.id,
           sumDirs(this.me.unit.getDirection(), mapEventDirection(command)),
         );
-        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 0, this.me.unit.getDirection().x * this.me.unit.getSpeed(), this.me.unit.getDirection().y * this.me.unit.getSpeed()]}); // TODO: send anything
         break;
       case EVENT.NO:
         break;
@@ -193,7 +211,9 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     });
 
     // Движение игроков
-    this.state.units.forEach(unit => unit.move());
+    this.state.units.forEach(unit => {
+      unit.move();
+    });
 
     // Установка бомб
     this.state.bases.filter(base => base.underAttack).forEach(

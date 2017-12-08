@@ -24,6 +24,10 @@ class User {
 
     return u;
   }
+
+  static copy(user: User): User {
+    return new User(user.username, user.email, user.password, user.score, user.id);
+  }
 }
 
 export default User;

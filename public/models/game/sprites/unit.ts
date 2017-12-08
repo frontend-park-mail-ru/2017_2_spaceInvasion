@@ -35,6 +35,18 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
     return side === SIDE.MAN ? new Coords(1, 0) : new Coords(-1, 0);
   }
 
+  static copy(unit: Unit): Unit {
+    const newUnit = new Unit(unit.id, unit.side);
+    newUnit.coords = Coords.copy(unit.coords);
+    newUnit.visible = unit.visible;
+    newUnit.speed = unit.speed;
+    newUnit.direction = Coords.copy(unit.direction);
+    newUnit.handlers = new Map(unit.handlers);
+    newUnit.health = unit.health;
+    newUnit._damage = unit._damage;
+    return newUnit;
+  }
+
   onHisHalf(): boolean {
     switch (this.side) {
       case SIDE.ALIEN:

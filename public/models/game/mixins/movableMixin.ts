@@ -5,6 +5,7 @@ import SubscriptableMixin from './subscriptableMixin';
 import emitter from '../../../modules/emitter';
 import Coords from '../coords';
 import Oriented from '../interfaces/oriented';
+import {FPS, SMOOTH_COEF} from '../../../utils/constants';
 
 class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Oriented, Rect {
   protected direction: Coords;
@@ -18,6 +19,32 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
     this.coords.x += this.speed * dir.x;
     this.coords.y += this.speed * dir.y;
     this.stopIfOut();
+  }
+
+  correctCoords(coords: Coords): void {
+    if (coords.x === this.coords.x && coords.y === this.coords.y) {
+      return;
+    }
+
+    const start = performance.now();
+    const startCoords = Coords.copy(this.getCoords());
+    const duration = 1000 / FPS * SMOOTH_COEF;
+
+    const animate = (time: number) => {
+      let timePassed = time - start;
+      if (timePassed > duration) {
+        timePassed = duration;
+      }
+
+      this.coords.x = startCoords.x + timePassed/duration * (coords.x - startCoords.x);
+      this.coords.y = startCoords.y + timePassed/duration * (coords.y - startCoords.y);
+
+      if (timePassed < duration) {
+        requestAnimationFrame(animate.bind(this));
+      }
+    };
+
+    requestAnimationFrame(animate.bind(this));
   }
 
   protected stopIfOut(): void {

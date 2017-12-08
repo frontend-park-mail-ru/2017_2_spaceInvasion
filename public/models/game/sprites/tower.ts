@@ -31,11 +31,21 @@ class Tower extends Sprite implements Shootable, Oriented, Collidable, Destructi
     this.handlers = new Map();
     this.side = side;
     this.direction = direction;
-    this.coords = coords;
     this.interval = window.setInterval(this.shout.bind(this), TOWER.SPEED);
 
     // Subscribes
     this.subscribe('Tower.damage.' + this.id, this.damage); // points: number
+  }
+
+  static copy(tower: Tower): Tower {
+    const newTower = new Tower(tower.id, Coords.copy(tower.coords), Coords.copy(tower.direction), tower.side);
+    newTower.handlers = new Map(tower.handlers);
+    newTower.visible = tower.visible;
+    newTower.health = tower.health;
+    newTower._damage = tower._damage;
+    newTower.cancel();
+    newTower.interval = tower.interval;
+    return newTower;
   }
 
   cancel(): void {

@@ -62,7 +62,9 @@ const BOT = {
   TOWER_OFFSET: 100,
 };
 
-const FPS = 1000 / 120; // 120 fps
+const FPS = 120;
+const RPS = 0.5;
+const SMOOTH_COEF = 10; // Фреймов коррекции координат
 
 const COIN = {
   IMAGE_PATH: '../../../images/game/coin.png',
@@ -131,6 +133,6 @@ const PATH_MAP = new Map<string, string>();
 
 export {
   BASE_URL, SIDE, TEAM, AREA, WEB_SOCKETS_BASE_URL, MAX_EVENTS, RESPAWN_DAMAGE,
-  TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE, HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT, // Styles
-  ACTION_MAPPER, PATH_MAP, EVENT, FPS // Routing
+  TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE, HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT,
+  ACTION_MAPPER, PATH_MAP, EVENT, FPS, SMOOTH_COEF, RPS,
 }
