@@ -136,7 +136,7 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
 
   private getCoordsBySide(side: SIDE): Coords {
     const coords = new Coords;
-    coords.y = emitter.emit('Strategy.height') / 2 + this.height / 2;
+    coords.y = emitter.emit('Strategy.height') / 2;
     switch (side) {
       case SIDE.MAN:
         coords.x = UNIT.SPAWN_OFFSET + this.width / 2;
