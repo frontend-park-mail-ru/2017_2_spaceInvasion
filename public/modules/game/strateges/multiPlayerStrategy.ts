@@ -96,6 +96,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private addNewUser(user: User, side: SIDE): Player {
     const id = user.id || 0;
+    console.log(id);
     const player = new Player(user, new Unit(id, side));
     this.state.players.push(player);
     this.state.bases.push(new Base(id, side));
