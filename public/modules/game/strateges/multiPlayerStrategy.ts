@@ -37,7 +37,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   protected sendToServer(): void {
     const me = this.sendedState.players.filter(p => p.unit.side === this.me.unit.side)[0];
-    if (me && this.me.unit.getCoords().x !== me.unit.getCoords().x && this.me.unit.getCoords().y !== me.unit.getCoords().y) {
+    if (me && (this.me.unit.getCoords().x !== me.unit.getCoords().x || this.me.unit.getCoords().y !== me.unit.getCoords().y)) {
       webSocketService.send({
         class: 'ClientSnap',
         request: [
