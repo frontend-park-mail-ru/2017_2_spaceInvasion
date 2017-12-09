@@ -7,13 +7,19 @@ import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
-import {getCodeByDir, mapEventDirection, subDirs, sumDirs, throwIfNull} from '../../../utils/utils';
+import {
+  getCodeByDir, getDirByCode, getEventsByCode, getEventsByDir, getOtherSide, mapEventDirection, subDirs, sumDirs,
+  throwIfNull
+} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 import webSocketService from '../../../services/webSockets';
 import {default as userService, UserService} from '../../../services/userService';
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
-import GameState from "../../../models/game/state";
+import GameState from '../../../models/game/state';
+import collisionService from '../../../services/collisionService';
+import Tower from '../../../models/game/sprites/tower';
+import Bullet from '../../../models/game/sprites/bullet';
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   protected me: Player;
@@ -52,22 +58,59 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private webSocketsInit(): void {
-    // Registration
-    webSocketService.subscribe(7, this.onJoinApproved.bind(this));
-    // webSocketService.subscribe('NewUser', this.onNewUser.bind(this));
+    // Get whole state from server
+    // webSocketService.subscribe(0, this.setState.bind(this)); // Update state from server
+
+    // 1 - Rollback обрабатывается по другой механике
 
     // Common events
-    // webSocketService.subscribe('BombBoom', this.onBombBoom.bind(this));
-    // webSocketService.subscribe('Damage', this.onDamage.bind(this));
+    webSocketService.subscribe(2, this.onCollision.bind(this)); // Collision
 
-    // My events
-    // webSocketService.subscribe('Rollback', webSocketService.rollback.bind(webSocketService));
-    // webSocketService.subscribe('CollectMoney', this.me.reward.bind(this.me));
+    // Opponent events
+    webSocketService.subscribe(3, this.onMove.bind(this)); // Move
+    webSocketService.subscribe(4, this.onShout.bind(this)); // Shout
+    webSocketService.subscribe(5, this.onBombInstall.bind(this)); // Bomb Installed
+    webSocketService.subscribe(6, this.onTower.bind(this)); // Tower
+    // webSocketService.subscribe(8, this.onChangeCache.bind(this)); // Coins
 
-    // OpponentEvents
-    webSocketService.subscribe(3, this.onMove.bind(this));
-    // webSocketService.subscribe('OpponentShot', opponent.unit.shout.bind(opponent.unit));
-    // webSocketService.subscribe('OpponentCollectMoney', opponent.reward.bind(opponent));
+    // Registration
+    webSocketService.subscribe(7, this.onJoinApproved.bind(this)); // Join
+  }
+
+  private onShout(data: any): void {
+    const x = data[0];
+    const y = data[1];
+    const dirCode = data[2];
+
+    this.state.bullets.push(
+      new Bullet(
+        this.lastID++,
+        getDirByCode(dirCode),
+        new Coords(x, y)
+      )
+    );
+  }
+
+  private onTower(data: any): void {
+    const x = data[0];
+    const y = data[1];
+    const dirCode = data[2];
+
+    this.state.towers.push(
+      new Tower(
+        this.lastID++,
+        new Coords(x, y),
+        getDirByCode(dirCode),
+        getOtherSide(this.me.unit.side)
+      )
+    );
+  }
+
+  private onChangeCache(data: any): void {
+    const ID = data[0];
+    const coins = data[1];
+    const player = this.state.players.filter(p => p.unit.id === ID)[0];
+    player.reward(coins - player.coins);
   }
 
   private onMove(data: any): void {
@@ -77,37 +120,48 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     }
   }
 
-  private onBombInstall(event: MessageEvent): void {
-
+  private onBombInstall(data: any): void {
+    const ID = data[0];
+    this.state.bombs.push(
+      new Bomb(
+        ID,
+        this.state.bases.filter(b => b.side === this.me.unit.side)[0]
+      )
+    )
   }
 
-  private onBombBoom(event: MessageEvent): void {
-    const targetID = event.data[0];
+  private onBombBoom(data: any): void {
+    const targetID = data[0];
     const bomb = this.state.bombs.filter(bomb => bomb.id === targetID)[0];
     bomb.destroy();
   }
 
-  private onDamage(event: MessageEvent): void {
-    const targetID = event.data[0];
-    const sourceID = event.data[1];
+  private onCollision(data: any): void {
+    const sprite1 = this.state.findSpriteByID(data[0]);
+    const sprite2 = this.state.findSpriteByID(data[1]);
 
-    const bullet = this.state.bullets.filter(b => b.id === sourceID)[0];
-    try {
-      emitter.emit('Tower.damage.' + targetID, bullet.getDamage());
-      emitter.emit('Unit.damage.' + targetID, bullet.getDamage());
-    } catch {
+    if (sprite1 && sprite2) {
+      if (sprite1 instanceof Bomb) {
+        this.onBombBoom([sprite2.id]);
+        return;
+      }
+      if (sprite2 instanceof  Bomb) {
+        this.onBombBoom([sprite1.id]);
+        return;
+      }
+      collisionService.append(sprite1, sprite2);
+      collisionService.run();
     }
   }
 
   private onJoinApproved(data: any): void {
     const side: SIDE = data[0] === 0 ? SIDE.MAN : SIDE.ALIEN;
     const enemyID = data[1];
-    const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
 
     UserService.getUser(enemyID).then(enemy => {
       const user = throwIfNull(userService.user);
       this.me = this.addNewUser(user, side);
-      this.addNewUser(enemy, oppositeSide);
+      this.addNewUser(enemy, getOtherSide(side));
     }).catch(() => {
       // TODO
     });
@@ -131,10 +185,10 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private rollbackEvent(event: any): void {
     // TODO: Handle all types of events
-    const coords = new Coords(-event[1], -event[2]);
     switch (event[0]) {
-      case 0:
-        this.me.unit.move(coords);
+      case 0: // Move
+        const coords = new Coords(-event[1], -event[2]);
+        this.me.unit.correctCoords(coords);
         break;
       default:
         throw Error('Internal Error')
@@ -146,11 +200,25 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     switch (command) {
       case EVENT.FIRE:
         emitter.emit('Player.shout.' + this.me.unit.id);
-        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 3, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
+        webSocketService.send({
+          class: 'ClientSnap',
+          request: [
+            this.lastID++,
+            3, // Shout
+            getCodeByDir(this.me.unit.getDirection())
+          ]
+        });
         break;
       case EVENT.TOWER:
         emitter.emit('Player.setTower.' + this.me.unit.id);
-        webSocketService.send({class: 'ClientSnap', request: [this.lastID++, 1, getCodeByDir(this.me.unit.getDirection())]}); // TODO: send anything
+        webSocketService.send({
+          class: 'ClientSnap',
+          request: [
+            this.lastID++,
+            1, // Tower
+            getCodeByDir(this.me.unit.getDirection())
+          ]
+        });
         break;
       case EVENT.DOWN:
       case EVENT.UP:
@@ -197,27 +265,33 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   gameLoop(): void {
-    // Движение пуль и обработка пуль, вышедших за пределы поля
+    // Движение пуль
     this.state.bullets.forEach(blt => {
       blt.move();
-      if (
-        blt.getCoords().x + blt.getWidth() / 2 <= 0 ||
-        blt.getCoords().x - blt.getWidth() / 2 >= this.width ||
-        blt.getCoords().y + blt.getHeight() / 2 <= 0 ||
-        blt.getCoords().y - blt.getHeight() / 2 >= this.height
-      ) {
-        blt.destroy();
-      }
     });
 
     // Движение игроков
+    const myPreveousSpeed = this.me.unit.getSpeed();
     this.state.units.forEach(unit => {
       unit.move();
     });
 
+    // Включаем игнор клавиш, если юнит упёрся в стену
+    if (this.me.unit.getSpeed() === 0 && myPreveousSpeed !== 0) {
+      getEventsByDir(this.me.unit.getDirection())
+        .forEach(event => emitter.emit('Game.undoAction', event));
+    }
+
     // Установка бомб
     this.state.bases.filter(base => base.underAttack).forEach(
       base => {
+        webSocketService.send({
+          class: 'ClientSnap',
+          request: [
+            this.lastID++,
+            2 // Bomb
+          ]
+        });
         const bomb = new Bomb(this.lastID++, base);
         bomb.cancelDestruction();
         this.state.bombs.push(bomb);

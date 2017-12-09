@@ -8,7 +8,7 @@ import {isNumber} from '../utils/utils';
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< number, Array<(...data: any[]) => any> >();
+  protected handlers = new Map< number, Array<(...data: any[]) => void> >();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
   private static instance: WebSocketsService;
@@ -51,11 +51,19 @@ class WebSocketsService {
     this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
       const data = JSON.parse(event.data);
       console.log(data);
+
+      // Rollback
+      if (data.data[1] === 1) {
+        this.rollback(data.data[0]);
+        return;
+      }
+
       const handlers = this.handlers.get(data.data[1]);
       if (handlers === undefined || !WebSocketsService.dataIsValid(data.data)) {
         WebSocketsService.error();
         return;
       }
+
       this.eventStack = this.eventStack.slice(data.data[0]);
       handlers.forEach(h => h(data.data.slice(2)));
     }).bind(this);
@@ -63,7 +71,7 @@ class WebSocketsService {
     this.socket.onerror = WebSocketsService.error;
   }
 
-  subscribe(type: number, handler: (data: any) => any): void {
+  subscribe(type: number, handler: (data: any) => void): void {
     let handlers = this.handlers.get(type);
     if (!handlers) {
       handlers = [];
@@ -89,13 +97,12 @@ class WebSocketsService {
     }
   }
 
-  rollback(event: MessageEvent) {
-    const lastApprovedEventID = event.data[0];
-    const notAppliedEvents = this.eventStack.slice(lastApprovedEventID + 1);
-    this.eventStack = this.eventStack.slice(0, lastApprovedEventID + 1);
+  rollback(id: number) {
+    const notAppliedEvents = this.eventStack.slice(id + 2);
+    this.eventStack = this.eventStack.slice(0, id + 2);
 
     notAppliedEvents.forEach(event => {
-      emitter.emit('Strategy.rollbackEvent', event);
+      emitter.emit('Strategy.rollbackEvent', event.data);
     });
   }
 

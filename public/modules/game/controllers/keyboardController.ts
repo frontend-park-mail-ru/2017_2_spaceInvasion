@@ -5,6 +5,7 @@ class KeyboardController implements ControllerInterface {
   protected keys = new Map<EVENT, boolean>();
   protected previousKeys = new Map<EVENT, boolean>();
   private handlers = new Map<string, (...args: any[]) => any>();
+  private static nextIgnoreAction: EVENT|null = null;
 
   protected static map(event: KeyboardEvent): EVENT {
     event.preventDefault();
@@ -41,6 +42,10 @@ class KeyboardController implements ControllerInterface {
 
   is(key: EVENT): boolean {
     return Boolean(this.keys.get(key));
+  }
+
+  resetEvent(event: EVENT): void {
+    this.previousKeys.set(event, false);
   }
 
   destroy(): void {

@@ -21,6 +21,7 @@ class Game extends SubscriptableMixin {
     // Subscribes
     this.subscribe('Game.join', this.join.bind(this)); // user: User, side: SIDE
     this.subscribe('Game.onFinishGame', this.onFinishGame); // victory: boolean
+    this.subscribe('Game.undoAction', gameService.undoAction.bind(gameService)); // action: EVENT
   }
 
   join(user: User, side: SIDE): void {

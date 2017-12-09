@@ -10,6 +10,7 @@ interface ControllerInterface {
   init(): void;
   destroy(): void;
   getEvents(): Map<EVENT, boolean>;
+  resetEvent(event: EVENT): void;
 }
 
 export {ConstructableController};

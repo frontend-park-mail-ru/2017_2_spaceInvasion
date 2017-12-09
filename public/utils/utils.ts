@@ -1,4 +1,4 @@
-import {BULLET, EVENT} from './constants';
+import {BULLET, EVENT, SIDE} from './constants';
 import Coords from '../models/game/coords';
 import Shootable from '../models/game/interfaces/shootable';
 import Rect from '../models/game/interfaces/rect';
@@ -19,6 +19,10 @@ const eventMapper = new Map<EVENT, Coords>(
     [EVENT.DOWN, new Coords(0, 1)]
   ]
 );
+
+function getOtherSide(side: SIDE): SIDE {
+  return side === SIDE.MAN ? SIDE.ALIEN : SIDE.MAN;
+}
 
 function mapEventDirection(event: EVENT): Coords {
   let direction: undefined|Coords = eventMapper.get(event);
@@ -98,4 +102,48 @@ function getCodeByDir(dir: Coords): number {
   }
 }
 
-export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber};
+function getDirByCode(code: number): Coords {
+  switch (code) {
+    case 0:
+      return new Coords(0, -1);
+    case 1:
+      return new Coords(1, -1);
+    case 2:
+      return new Coords(1, 0);
+    case 3:
+      return new Coords(1, 1);
+    case 4:
+      return new Coords(0, 1);
+    case 5:
+      return new Coords(-1, 1);
+    case 6:
+      return new Coords(-1, 0);
+    case 7:
+      return new Coords(-1, -1);
+    default:
+      throw Error('Internal Error');
+  }
+}
+
+const eventCodes = new Map<number, EVENT[]>(
+  [
+    [0, [EVENT.UP]],
+    [1, [EVENT.UP, EVENT.RIGHT]],
+    [2, [EVENT.RIGHT]],
+    [3, [EVENT.DOWN, EVENT.RIGHT]],
+    [4, [EVENT.DOWN]],
+    [5, [EVENT.DOWN, EVENT.LEFT]],
+    [6, [EVENT.LEFT]],
+    [7, [EVENT.UP, EVENT.LEFT]],
+  ]
+);
+
+function getEventsByCode(code: number): EVENT[] {
+  return eventCodes.get(code) || [];
+}
+
+function getEventsByDir(dir: Coords): EVENT[] {
+  return getEventsByCode(getCodeByDir(dir));
+}
+
+export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber, getOtherSide, getDirByCode, getEventsByCode, getEventsByDir};

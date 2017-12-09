@@ -12,7 +12,7 @@ import StrategyInterface from './strategyInterface';
 import Bot from '../../../models/game/sprites/bot';
 import emitter from '../../emitter';
 import collisionService from '../../../services/collisionService';
-import {mapEventDirection, subDirs, sumDirs} from '../../../utils/utils';
+import {getEventsByDir, getOtherSide, mapEventDirection, subDirs, sumDirs} from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
 
 class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
@@ -69,7 +69,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
   join(...data: any[]): boolean {
     const user: User = data[0];
     const side: SIDE = data[1];
-    const oppositeSide = side === SIDE.ALIEN ? SIDE.MAN : SIDE.ALIEN;
+    const oppositeSide = getOtherSide(side);
 
     this.state.players.push(new Player(user, new Unit(this.lastID++, side)));
     this.state.players.push(new Player(new User('Bot', TEAM.EMAIL, '********'),
@@ -90,21 +90,24 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
   }
 
   gameLoop(): void {
-    // Движение пуль и обработка пуль, вышедших за пределы поля
+    const me = this.state.units.filter(u => !(u instanceof Bot))[0];
+
+    // Движение пуль
     this.state.bullets.forEach(blt => {
       blt.move();
-      if (
-        blt.getCoords().x + blt.getWidth() / 2 <= 0 ||
-        blt.getCoords().x - blt.getWidth() / 2 >= this.width ||
-        blt.getCoords().y + blt.getHeight() / 2 <= 0 ||
-        blt.getCoords().y - blt.getHeight() / 2 >= this.height
-      ) {
-        blt.destroy();
-      }
     });
 
     // Движение игроков
-    this.state.units.forEach(unit => unit.move());
+    const myPreveousSpeed = me.getSpeed();
+    this.state.units.forEach(unit => {
+      unit.move();
+    });
+
+    // Включаем игнор клавиш, если юнит упёрся в стену
+    if (me.getSpeed() === 0 && myPreveousSpeed !== 0) {
+      getEventsByDir(me.getDirection())
+        .forEach(event => emitter.emit('Game.undoAction', event));
+    }
 
     // Установка бомб
     this.state.bases.filter(base => base.underAttack).forEach(

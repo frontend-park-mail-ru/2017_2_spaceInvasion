@@ -51,20 +51,25 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
     const height = emitter.emit('Strategy.height');
     const width = emitter.emit('Strategy.width');
 
+    let stop = false;
     if (this.coords.y + this.height / 2 > height) {
       this.coords.y = height - this.height / 2;
-      this.stop();
+      stop = true;
     }
     if (this.coords.y - this.height / 2 < 0) {
       this.coords.y = this.height / 2;
-      this.stop();
+      stop = true;
     }
     if (this.coords.x + this.width / 2 > width) {
       this.coords.x = width - this.width / 2;
-      this.stop();
+      stop = true;
     }
     if (this.coords.x - this.width / 2 < 0) {
       this.coords.x = this.width / 2;
+      stop = true;
+    }
+
+    if (stop) {
       this.stop();
     }
   }

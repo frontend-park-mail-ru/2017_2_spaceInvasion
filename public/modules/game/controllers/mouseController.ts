@@ -37,6 +37,10 @@ class MouseController implements ControllerInterface {
     return this.mouseEvents;
   }
 
+  resetEvent(event: EVENT): void {
+    this.previousMouseEvents.set(event, false);
+  }
+
   destroy(): void {
     const mouseup = this.handlers.get('mouseup');
     if (mouseup) {

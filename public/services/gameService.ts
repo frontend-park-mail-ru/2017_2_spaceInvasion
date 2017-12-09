@@ -3,7 +3,7 @@ import User from '../models/user';
 import GameScene from '../models/game/gameScene';
 import {ConstructableController, default as ControllerInterface} from '../modules/game/controllers/controllerInterface';
 import {ConstructableStrategy, default as StrategyInterface} from '../modules/game/strateges/strategyInterface';
-import {SIDE} from '../utils/constants';
+import {EVENT, SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
 
@@ -100,6 +100,10 @@ class GameService extends SubscriptableMixin {
     this.strategy.destroy();
     this.controllers.destroy();
     this.scene.destroy();
+  }
+
+  undoAction(action: EVENT): void {
+    this.controllers.resetEvent(action);
   }
 }
 

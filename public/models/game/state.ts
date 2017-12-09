@@ -5,6 +5,7 @@ import Coin from './sprites/coin';
 import Player from './player';
 import Base from './sprites/base';
 import Bomb from './sprites/bomb';
+import Sprite from './sprites/sprite';
 
 class GameState {
   public players: Player[];
@@ -35,6 +36,19 @@ class GameState {
     newState.bullets = state.bullets.map(b => Bullet.copy(b));
     newState.bombs = state.bombs.map(b => Bomb.copy(b));
     return newState;
+  }
+
+  findSpriteByID(ID: number): Sprite|null {
+    return ([
+      this.bases,
+      this.units,
+      this.towers,
+      this.coins,
+      this.bullets,
+      this.bombs,
+    ] as Sprite[][])
+      .filter(sprites => sprites.filter(s => s.id === ID).length > 0)
+      .map(sprites => sprites[0])[0] || null;
   }
 
   destroy(): void {
