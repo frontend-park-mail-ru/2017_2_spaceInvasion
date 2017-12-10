@@ -22,7 +22,11 @@ import Tower from '../../../models/game/sprites/tower';
 import Bullet from '../../../models/game/sprites/bullet';
 
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
+  private meUser: User;
+  private opponentUser: User;
+  private mySide: SIDE;
   protected me: Player;
+  protected opponent: Player;
   protected sendedState = new GameState();
   protected timer: number;
 
@@ -71,10 +75,30 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     webSocketService.subscribe(4, this.onTower.bind(this)); // Tower
     webSocketService.subscribe(5, this.onBombInstall.bind(this)); // Bomb Installed
     webSocketService.subscribe(6, this.onShout.bind(this)); // Shout
-    // webSocketService.subscribe(8, this.onChangeCache.bind(this)); // Coins
 
     // Registration
     webSocketService.subscribe(7, this.onJoinApproved.bind(this)); // Join
+    webSocketService.subscribe(10, this.onNewUnitCreated.bind(this)); // Join
+  }
+
+  private onNewUnitCreated(data: any): void {
+    const userID = data[0];
+    const unitID = data[1];
+    const user = this.opponentUser.id === userID ? this.opponentUser : this.meUser;
+    const side = this.opponentUser.id === userID ? this.mySide : getOtherSide(this.mySide);
+
+    const player = new Player(user, new Unit(unitID, side));
+    this.state.players.push(player);
+    this.state.bases.push(new Base(unitID, side));
+    this.state.units.push(player.unit);
+
+    this.tryToStartGameLoop();
+  }
+
+  private tryToStartGameLoop(): void {
+    if (this.state.players.length === 2) {
+      this.startGameLoop();
+    }
   }
 
   private onShout(data: any): void {
@@ -156,31 +180,15 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   private onJoinApproved(data: any): void {
     const side: SIDE = data[0] === 0 ? SIDE.MAN : SIDE.ALIEN;
-    const enemyID = data[1];
+    const opponentID = data[1];
 
-    UserService.getUser(enemyID).then(enemy => {
-      const user = throwIfNull(userService.user);
-      this.me = this.addNewUser(user, side);
-      this.addNewUser(enemy, getOtherSide(side));
+    UserService.getUser(opponentID).then(opponent => {
+      this.meUser = throwIfNull(userService.user);
+      this.mySide = side;
+      this.opponentUser = opponent;
     }).catch(() => {
       // TODO
     });
-  }
-
-  private addNewUser(user: User, side: SIDE): Player {
-    const id = user.id || 0;
-    console.log(id);
-    const player = new Player(user, new Unit(id, side));
-    this.state.players.push(player);
-    this.state.bases.push(new Base(id, side));
-    this.state.units.push(player.unit);
-
-    // emitter.emit('Game.join', user, side);
-    if (this.state.players.length === 2) {
-      this.startGameLoop();
-    }
-
-    return player;
   }
 
   private rollbackEvent(event: any): void {
@@ -200,6 +208,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     switch (command) {
       case EVENT.FIRE:
         emitter.emit('Player.shout.' + this.me.unit.id);
+        this.sendToServer();
         webSocketService.send({
           class: 'ClientSnap',
           request: [
@@ -211,6 +220,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         break;
       case EVENT.TOWER:
         emitter.emit('Player.setTower.' + this.me.unit.id);
+        this.sendToServer();
         webSocketService.send({
           class: 'ClientSnap',
           request: [
