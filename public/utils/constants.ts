@@ -63,7 +63,7 @@ const BOT = {
 };
 
 const FPS = 120;
-const RPS = 0.5;
+const RPS = 20;
 const SMOOTH_COEF = 10; // Фреймов коррекции координат
 
 const COIN = {
