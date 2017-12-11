@@ -6,7 +6,7 @@ import {Router} from '../modules/router';
 
 class UserService {
   private static instance = new UserService();
-  user: User | null = null;
+  user: User | null = new User('Admin', 'spaceinvasionlab@yandex.ru', '********');
   users: Array<User> = [];
 
   constructor() {
