@@ -14,6 +14,7 @@ function changeThemeForMan(): void {
   const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
+  const navbar = document.querySelector('.navbar');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('alien');
@@ -30,7 +31,14 @@ function changeThemeForMan(): void {
     leaderboard.classList.add('man');
   }
 
-  sessionStorage.setItem('theme', 'man');
+  if (navbar !== null) {
+      navbar.classList.remove('alien');
+      navbar.classList.add('man');
+  }
+
+
+
+    sessionStorage.setItem('theme', 'man');
 }
 
 function changeThemeForAlien(): void {
@@ -47,6 +55,7 @@ function changeThemeForAlien(): void {
   const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
+  const navbar = document.querySelector('.navbar');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('man');
@@ -62,6 +71,12 @@ function changeThemeForAlien(): void {
     leaderboard.classList.remove('man');
     leaderboard.classList.add('alien');
   }
+
+  if (navbar !== null) {
+      navbar.classList.remove('man');
+      navbar.classList.add('alien');
+  }
+
 
   sessionStorage.setItem('theme', 'alien');
 }

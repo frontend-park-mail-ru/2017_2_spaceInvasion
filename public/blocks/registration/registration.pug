@@ -1,11 +1,11 @@
 html
 body
-    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration
-        .ui.card.ui__card__registration
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration.testWidth
+        .ui.card.ui__card__registration.form_style
             .content.left.aligned
-                .header Registration
+                .header.testCenter Registration
                 .description
-                    form.ui.form.formWithValidation
+                    form.ui.form.formWithValidation.testInput
                         .field(name = "emailField")
                             span(class = "message message__error_message", hidden=true)
                             label Email
@@ -22,4 +22,4 @@ body
                             span(class = "message message__error_message", hidden=true)
                             label Repeat password
                             input(type="password", name="repeatedPassword", placeholder="Repeat password")
-                        button.ui.positive.button.ui__button__register.man.validateBtn(type="submit", name="ValidateBtn") Register
+                        button.ui.positive.button.ui__button__register.man.validateBtn.testRegisterButton.testInput(type="submit", name="ValidateBtn") Register

@@ -1,5 +1,5 @@
 body.man {
-    background: url(/images/background2.jpg) no-repeat center center fixed;
+    background: url(/images/cartoon-moon_blue.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -15,8 +15,21 @@ body.man {
 }
 
 .ui.table.ui__selectable__celled__table__leaderboard {
+    margin-top: -80px;
+    width: 800px;
+    font-size: 35px;
+    background-color: #260058;
+    color: white;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
+    font-style: normal;
+    font-variant: small-caps;
+
 }
 
 .ui.button.ui__button__register.man {
-    background-color: #2185d0;
+    background-color: #260058;
+}
+
+.navbar.man {
+    background: #7180cd !important;
 }
