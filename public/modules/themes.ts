@@ -15,6 +15,7 @@ function changeThemeForMan(): void {
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
   const navbar = document.querySelector('.navbar');
+  const chooseRace = document.querySelector('.selectRaceStyle');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('alien');
@@ -34,6 +35,10 @@ function changeThemeForMan(): void {
   if (navbar !== null) {
       navbar.classList.remove('alien');
       navbar.classList.add('man');
+  }
+  if (chooseRace !== null) {
+      chooseRace.classList.remove('alien');
+      chooseRace.classList.add('man');
   }
 
 
@@ -56,6 +61,7 @@ function changeThemeForAlien(): void {
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
   const navbar = document.querySelector('.navbar');
+  const chooseRace = document.querySelector('.selectRaceStyle');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('man');
@@ -77,7 +83,10 @@ function changeThemeForAlien(): void {
       navbar.classList.add('alien');
   }
 
-
+  if (chooseRace !== null) {
+      chooseRace.classList.remove('man');
+      chooseRace.classList.add('alien');
+  }
   sessionStorage.setItem('theme', 'alien');
 }
 

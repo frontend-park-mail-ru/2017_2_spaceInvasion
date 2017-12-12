@@ -7,7 +7,7 @@ body.alien {
 }
 
 .ui.button.alien#signupBtn {
-    background-color: #495385;
+    background-color: #1e4229;
 }
 
 .ui.submit.ui__submit__login.ui__submit__login__button.button.alien {
@@ -32,5 +32,9 @@ body.alien {
 
 .navbar.alien{
     background: #42b880 !important;
+}
+
+.selectRaceStyle.alien {
+    background: #378b5e !important;
 }
 

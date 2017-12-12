@@ -7,14 +7,14 @@ body.man {
 }
 
 .ui.button.man#signupBtn {
-    background-color: #2185d0;
+    background-color: #260058;
 }
 
 .ui.submit.ui__submit__login.ui__submit__login__button.button.man {
     background-color: #e0e1e2 none;
 }
 
-.ui.table.ui__selectable__celled__table__leaderboard {
+.ui.table.ui__selectable__celled__table__leaderboard.man {
     margin-top: -80px;
     width: 800px;
     font-size: 35px;
@@ -23,7 +23,6 @@ body.man {
     font-family: Arial Black,Arial Bold,Gadget,sans-serif;
     font-style: normal;
     font-variant: small-caps;
-
 }
 
 .ui.button.ui__button__register.man {
@@ -32,4 +31,8 @@ body.man {
 
 .navbar.man {
     background: #7180cd !important;
+}
+
+.selectRaceStyle.man {
+    background: #5763a2 !important;
 }

@@ -20,6 +20,6 @@ app
   .append(Navigator.sections.game);
 
 initThemes();
-// registerServiceWorker();
+registerServiceWorker();
 router.start();
 userService.fetch();
