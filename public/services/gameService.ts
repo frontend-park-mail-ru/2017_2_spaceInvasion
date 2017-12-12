@@ -1,6 +1,7 @@
 import {dismissAllMessages, default as PNotify} from '../utils/notifications';
 import User from '../models/user';
 import GameScene from '../models/game/gameScene';
+import GameJoystick from '../modules/game/controllers/joystick'
 import {ConstructableController, default as ControllerInterface} from '../modules/game/controllers/controllerInterface';
 import {ConstructableStrategy, default as StrategyInterface} from '../modules/game/strateges/strategyInterface';
 import {EVENT, SIDE} from '../utils/constants';
@@ -15,6 +16,7 @@ class GameService extends SubscriptableMixin {
   protected controllers: ControllerInterface;
   protected running = false;
   protected requestID: number;
+  protected joystick: GameJoystick;
 
   constructor() {
     super();
@@ -34,6 +36,8 @@ class GameService extends SubscriptableMixin {
     this.scene = new GameScene(canvas);
     this.controllers = new controller;
     this.running = true;
+    this.joystick = new GameJoystick();
+    this.joystick.init();
   }
 
   join(user: User, side: SIDE): void {
