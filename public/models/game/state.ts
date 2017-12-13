@@ -6,28 +6,21 @@ import Player from './player';
 import Base from './sprites/base';
 import Bomb from './sprites/bomb';
 import Sprite from './sprites/sprite';
+import User from '../user';
 
 class GameState {
-  public players: Player[];
-  public bases: Base[];
-  public units: Unit[];
-  public towers: Tower[];
-  public coins: Coin[];
-  public bullets: Bullet[];
-  public bombs: Bomb[];
-
-  constructor() {
-    this.players = [];
-    this.bases = [];
-    this.units = [];
-    this.towers = [];
-    this.coins = [];
-    this.bullets = [];
-    this.bombs = [];
-  }
+  public players: Player[] = [];
+  public users: User[] = [];
+  public bases: Base[] = [];
+  public units: Unit[] = [];
+  public towers: Tower[] = [];
+  public coins: Coin[] = [];
+  public bullets: Bullet[] = [];
+  public bombs: Bomb[] = [];
 
   static copy(state: GameState): GameState {
     const newState = new GameState();
+    newState.users = state.users.map(u => User.copy(u));
     newState.players = state.players.map(p => Player.copy(p));
     newState.bases = state.bases.map(b => Base.copy(b));
     newState.units = state.units.map(u => Unit.copy(u));

@@ -93,7 +93,7 @@ class WebSocketsService {
       this.eventStack.push(data);
       this.socket.send(JSON.stringify(data));
     } else {
-      throw Error('Server is not responding for a long time, check your Internet connection');
+      // throw Error('Server is not responding for a long time, check your Internet connection');
     }
   }
 

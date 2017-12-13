@@ -49,6 +49,7 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
       this.emitterInit();
       this.interval = window.setInterval(this.gameLoop.bind(this), 1000 / FPS);
       this.running = true;
+      emitter.emit('GameService.start');
     }
   }
 

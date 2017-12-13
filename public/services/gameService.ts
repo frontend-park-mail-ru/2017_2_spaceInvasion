@@ -30,23 +30,25 @@ class GameService extends SubscriptableMixin {
       this.destroy();
     }
 
+    this.subscribe('GameService.start', this.start.bind(this));
     this.strategy = new strategy();
     this.scene = new GameScene(canvas);
     this.controllers = new controller;
     this.running = true;
   }
 
+  start(): void {
+    dismissAllMessages();
+    this.bind();
+  }
+
   join(user: User, side: SIDE): void {
-    if (this.strategy.join(user, side)) {
-      dismissAllMessages();
-      this.bind();
-    } else {
-      new PNotify({
-        title: 'Пожалуйста, подождите...',
-        type: 'notice',
-        text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
-      });
-    }
+    this.strategy.join(user, side);
+    new PNotify({
+      title: 'Пожалуйста, подождите...',
+      type: 'notice',
+      text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
+    });
   }
 
   gameLoop(): void {

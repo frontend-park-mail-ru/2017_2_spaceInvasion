@@ -6,5 +6,5 @@ require('./css/man.css');
 require('./css/alien.css');
 
 // ===Scripts===
-require('./common/semantic/dist/semantic.min.js');
+// require('./common/semantic/dist/semantic.min.js');
 require('./main.ts');
