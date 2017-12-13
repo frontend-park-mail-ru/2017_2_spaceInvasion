@@ -207,8 +207,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           return;
         }
       }
-      sprite1.bumpInto(sprite2);
       sprite2.bumpInto(sprite1);
+      sprite1.bumpInto(sprite2);
     }
     console.log('------END COLLISION------');
   }
