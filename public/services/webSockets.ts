@@ -9,6 +9,7 @@ import {isNumber} from '../utils/utils';
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
   protected handlers = new Map< number, Array<(...data: any[]) => void> >();
+  protected wsEvents: Map< string, (event: Event) => any > = new Map();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
   private static instance: WebSocketsService;
@@ -25,15 +26,29 @@ class WebSocketsService {
     return (data instanceof Array) && data.every((el: any) => isNumber(el)); // && data.data.length >= 1;
   }
 
+  private addEventListener(name: string, handler: (event: Event) => any): void {
+    const bindedHandler = handler.bind(this);
+    this.wsEvents.set(name, bindedHandler);
+    this.socket.addEventListener(name, bindedHandler);
+  }
+
+  destroy(): void {
+    this.wsEvents.forEach((handler, name) => {
+      this.socket.removeEventListener(name, handler);
+    });
+    this.socket.close();
+  }
+
   init(): void {
     this.socket = new WebSocket(WebSocketsService.BaseUrl);
 
-    this.socket.onopen = () => {
+    this.addEventListener('open', () => {
       const user = userService.user;
       emitter.emit('Game.join', user, getTheme() === 'man' ? SIDE.MAN : SIDE.ALIEN);
-    };
+    });
 
-    this.socket.onclose = (event) => {
+    this.addEventListener('close', e => {
+      const event = e as CloseEvent;
       let victory = false;
       if (!event.wasClean) {
         // Error on server side
@@ -42,14 +57,15 @@ class WebSocketsService {
           type: 'error',
           message: `${event.reason} (${event.code})`
         });
-        victory = true;
       }
       // You are lose, because you are disconnected
       emitter.emit('Game.onFinishGame', victory);
-    };
+    });
 
-    this.socket.onmessage = (function (this: WebSocketsService, event: MessageEvent) {
+    this.addEventListener('message', e => {
+      const event = e as MessageEvent;
       const data = JSON.parse(event.data);
+      if (~[1, 4, 5, 6, 10].indexOf(data[1]))
       console.log(data);
 
       // Rollback
@@ -66,9 +82,9 @@ class WebSocketsService {
 
       this.eventStack = this.eventStack.slice(data.data[0]);
       handlers.forEach(h => h(data.data.slice(2)));
-    }).bind(this);
+    });
 
-    this.socket.onerror = WebSocketsService.error;
+    this.addEventListener('error', () => WebSocketsService.error);
   }
 
   subscribe(type: number, handler: (data: any) => void): void {

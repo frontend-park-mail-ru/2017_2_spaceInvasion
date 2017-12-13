@@ -7,7 +7,7 @@ import Base from './sprites/base';
 import Bomb from './sprites/bomb';
 import Sprite from './sprites/sprite';
 import User from '../user';
-import Collidable from "./interfaces/collidable";
+import Collidable from './interfaces/collidable';
 
 class GameState {
   public players: Player[] = [];
