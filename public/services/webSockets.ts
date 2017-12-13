@@ -64,6 +64,7 @@ class WebSocketsService {
 
     this.addEventListener('message', e => {
       const event = e as MessageEvent;
+      console.log('<-', event.data);
       const data = JSON.parse(event.data);
       if (~[1, 4, 5, 6, 10].indexOf(data[1]))
       console.log(data);
@@ -105,6 +106,7 @@ class WebSocketsService {
   }
 
   send(data: any): void {
+    console.log('->', data);
     if (this.eventStack.length <= MAX_EVENTS) {
       this.eventStack.push(data);
       this.socket.send(JSON.stringify(data));
