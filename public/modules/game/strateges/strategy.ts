@@ -74,7 +74,7 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
   protected newBullet(...data: any[]): void {
     let direction = data[0] as Coords;
     const coords = data[1] as Coords;
-    this.state.bullets.push(new Bullet(this.lastID++, direction, coords));
+    this.state.bullets.push(new Bullet(this.lastID += 2, direction, coords));
   }
 
   protected setTower(...data: any[]): void {
@@ -83,7 +83,7 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
     const side = data[2] as SIDE;
     this.state.towers.push(
       new Tower(
-        this.lastID++, Coords.copy(coords), direction, side
+        this.lastID += 2, Coords.copy(coords), direction, side
       )
     );
   }
@@ -92,7 +92,7 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
     const side = data[0] as SIDE;
     this.state.towers.push(
       new Tower(
-        this.lastID++,
+        this.lastID += 2,
         new Coords(
           side === SIDE.MAN ? BOT.TOWER_OFFSET : emitter.emit('Strategy.width') - BOT.TOWER_OFFSET,
           Math.random() * (emitter.emit('Strategy.height') - TOWER.HEIGHT) + TOWER.HEIGHT / 2

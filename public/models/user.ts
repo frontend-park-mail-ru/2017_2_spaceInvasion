@@ -1,13 +1,13 @@
 import {validationRulesForRegistration as rules} from '../utils/validationRules';
 
 class User {
-  public id?: number;
+  public id: number;
   public username: string;
   public email: string;
   public password: string;
   public score ?: number;
 
-  constructor(username: string, email: string, password: string, score: number = 0, id?: number) {
+  constructor(id: number, username: string, email: string, password: string, score: number = 0) {
     this.id = id;
     this.username = username;
     this.email = email;
@@ -26,7 +26,7 @@ class User {
   }
 
   static copy(user: User): User {
-    return new User(user.username, user.email, user.password, user.score, user.id);
+    return new User(user.id, user.username, user.email, user.password, user.score);
   }
 }
 

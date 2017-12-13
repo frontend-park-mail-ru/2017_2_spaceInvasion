@@ -1,7 +1,7 @@
 import User from '../../public/models/user';
 
 describe('User test', () => {
-  let user = new User('username', 'email', 'password');
+  let user = new User(0, 'username', 'email', 'password');
   it('constructor', () => {
     expect(user).toEqual({
       username: 'username',
@@ -31,23 +31,23 @@ describe('User test', () => {
     it('validate correct user objects', () => {
       expect(() => {
         // Обычная проверка
-        const user1 = new User('username', 'login@mail.com', 'usual_123_password');
+        const user1 = new User(0, 'username', 'login@mail.com', 'usual_123_password');
         expect(User.validate(user1)).toEqual(user1);
 
         // Проверка русского эмейла и случайного пароля
-        const user2 = new User('usual_login',
+        const user2 = new User(0, 'usual_login',
           'русский-логин@юникод-рулит.домен-нного-уровня.поддомен.рф',
           'Jl3hlc;KE@KLVNLWEI vw 2v m');
 
         // Допустимые обычные символы
         expect(User.validate(user2)).toEqual(user2);
-        const user3 = new User('long_username-with@enabled12345symbols67890',
+        const user3 = new User(0, 'long_username-with@enabled12345symbols67890',
           'login@mail.usa.museum',
           'password_with all 01234 .enabled 56789 symbols');
         expect(User.validate(user3)).toEqual(user3);
 
         // Поддержка юникод
-        const unicode_user = new User('latin_login',
+        const unicode_user = new User(0, 'latin_login',
           '☺☺☺☺☺@mail.ru',
           '㮨㑠 㑡 㑢 㑣㑤㑥㑦 㑧㑨 㑩㑪 㑫㑬 㑭㑮');
         expect(User.validate(unicode_user)).toEqual(unicode_user);
@@ -56,7 +56,7 @@ describe('User test', () => {
 
     it('validate broken user objects', () => {
       const errorRegExp = /Broken User object: /;
-      const user = new User('login', 'login@mail.ru', 'password');
+      const user = new User(0, 'login', 'login@mail.ru', 'password');
 
       // Проверка начальных данных
       expect(() => User.validate(user)).not.toThrow();

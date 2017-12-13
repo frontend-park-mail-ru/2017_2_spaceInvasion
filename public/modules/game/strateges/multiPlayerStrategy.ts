@@ -42,6 +42,13 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     super.startGameLoop();
   }
 
+  stopGameLoop(): void {
+    if (this.running) {
+      clearInterval(this.timer);
+    }
+    super.stopGameLoop();
+  }
+
   protected sendToServer(): void {
     const me = this.sendedState.players.filter(p => p.unit.side === this.mySide)[0];
     const newMe = this.state.players.filter(p => p.unit.side === this.mySide)[0];
@@ -50,7 +57,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
       webSocketService.send({
         class: 'ClientSnap',
         request: [
-          this.lastID++,
+          this.lastID += 2,
           0,
           newMe.unit.getCoords().x - me.unit.getCoords().x,
           newMe.unit.getCoords().y - me.unit.getCoords().y,
@@ -87,13 +94,14 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onCoinSpawned(data: any): void {
+    const x = data[0];
+    const y = data[1];
+    const ID = data[2];
+
     this.state.coins.push(
       new Coin(
-        this.lastID++,
-        new Coords(
-          data[0],
-          data[1]
-        )
+        ID,
+        new Coords(x, y)
       )
     );
   }
@@ -102,10 +110,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     console.log(this.joinedUserIDs, this.state);
     if (this.joinedUserIDs.size === 2 && this.state.users.length === 2) {
       this.state.users.forEach(u => {
-        if (u.id === undefined) {
-          throw Error('Internal Error');
-        }
-
         const unitID = this.joinedUserIDs.get(u.id);
         if (unitID === undefined) {
           throw Error('Internal Error');
@@ -120,7 +124,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
         const player = new Player(u, new Unit(unitID, side));
         this.state.players.push(player);
-        this.state.bases.push(new Base(unitID, side));
+        this.state.bases.push(new Base(this.lastID += 2, side));
         this.state.units.push(player.unit);
       });
       this.startGameLoop();
@@ -131,10 +135,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     const x = data[0];
     const y = data[1];
     const dirCode = data[2];
+    const ID = data[3];
 
     this.state.bullets.push(
       new Bullet(
-        this.lastID++,
+        ID,
         getDirByCode(dirCode),
         new Coords(x, y)
       )
@@ -145,22 +150,16 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     const x = data[0];
     const y = data[1];
     const dirCode = data[2];
+    const ID = data[3];
 
     this.state.towers.push(
       new Tower(
-        this.lastID++,
+        ID,
         new Coords(x, y),
         getDirByCode(dirCode),
         getOtherSide(this.mySide)
       )
     );
-  }
-
-  private onChangeCache(data: any): void {
-    const ID = data[0];
-    const coins = data[1];
-    const player = this.state.players.filter(p => p.unit.id === ID)[0];
-    player.reward(coins - player.coins);
   }
 
   private onMove(data: any): void {
@@ -180,28 +179,30 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     )
   }
 
-  private onBombBoom(data: any): void {
-    const targetID = data[0];
-    const bomb = this.state.bombs.filter(bomb => bomb.id === targetID)[0];
-    bomb.destroy();
-  }
-
   private onCollision(data: any): void {
     const sprite1 = this.state.findSpriteByID(data[0]);
     const sprite2 = this.state.findSpriteByID(data[1]);
-
+    console.log('------COLLISION------');
+    console.log(data);
+    console.log(this.state);
+    console.log(sprite1, sprite2);
     if (sprite1 && sprite2) {
-      if (sprite1 instanceof Bomb) {
-        this.onBombBoom([sprite2.id]);
-        return;
+      if (sprite1 instanceof Tower) {
+        console.log('COLLISION WITH TOWER (' + data[2] + ')');
+        const bullets = this.state.bullets.filter(b => b.id === sprite2.id);
+        bullets.sort((b1, b2) => b1.getTime() - b2.getTime());
+        const bullet = bullets[data[2] - 1];
+        console.log(bullet);
+        if (bullet) {
+          collisionService.append(sprite1, bullet);
+          collisionService.run();
+        }
+      } else {
+        collisionService.append(sprite1, sprite2);
+        collisionService.run();
       }
-      if (sprite2 instanceof  Bomb) {
-        this.onBombBoom([sprite1.id]);
-        return;
-      }
-      collisionService.append(sprite1, sprite2);
-      collisionService.run();
     }
+    console.log('------END COLLISION------');
   }
 
   private onJoinApproved(data: any): void {
@@ -209,9 +210,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     const opponentID = data[1];
 
     UserService.getUser(opponentID).then(opponent => {
-      this.state.users.push(throwIfNull(userService.user));
+      const me = throwIfNull(userService.user);
+      this.state.users.push(me);
       this.state.users.push(opponent);
       this.mySide = side;
+      this.lastID = opponent.id > me.id ? 1 : 2;
       this.tryToStartGameLoop();
     }).catch(() => {
       // TODO
@@ -241,7 +244,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         webSocketService.send({
           class: 'ClientSnap',
           request: [
-            this.lastID++,
+            this.lastID += 2,
             3, // Shout
             getCodeByDir(me.unit.getDirection())
           ]
@@ -249,15 +252,17 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         break;
       case EVENT.TOWER:
         emitter.emit('Player.setTower.' + me.unit.id);
-        this.sendToServer();
-        webSocketService.send({
-          class: 'ClientSnap',
-          request: [
-            this.lastID++,
-            1, // Tower
-            getCodeByDir(me.unit.getDirection())
-          ]
-        });
+        if (this.state.players.filter(p => p.unit.side === this.mySide)[0].unit.onHisHalf()) {
+          this.sendToServer();
+          webSocketService.send({
+            class: 'ClientSnap',
+            request: [
+              this.lastID += 2,
+              1, // Tower
+              getCodeByDir(me.unit.getDirection())
+            ]
+          });
+        }
         break;
       case EVENT.DOWN:
       case EVENT.UP:
@@ -306,7 +311,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
   gameLoop(): void {
     const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
-    const q = this.state.players.filter(p => p.unit.side === this.mySide)[0];
+    const opponent = this.state.players.filter(p => p.unit.side === this.mySide)[0];
 
     // Движение пуль
     this.state.bullets.forEach(blt => {
@@ -331,11 +336,11 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         webSocketService.send({
           class: 'ClientSnap',
           request: [
-            this.lastID++,
+            this.lastID += 2,
             2 // Bomb
           ]
         });
-        const bomb = new Bomb(this.lastID++, base);
+        const bomb = new Bomb(this.lastID += 2, base);
         bomb.cancelDestruction();
         this.state.bombs.push(bomb);
       }
@@ -343,7 +348,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // За каждую убитую башню добавить монетки
     this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
-      this.state.coins.push(new Coin(this.lastID++, tower.getCoords()));
+      this.state.coins.push(new Coin(this.lastID += 2, tower.getCoords()));
     });
 
     // Если умирает юнит, респавним его

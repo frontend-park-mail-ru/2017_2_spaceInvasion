@@ -71,9 +71,9 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     const side: SIDE = data[1];
     const oppositeSide = getOtherSide(side);
 
-    this.state.players.push(new Player(user, new Unit(this.lastID++, side)));
-    this.state.players.push(new Player(new User('Bot', TEAM.EMAIL, '********'),
-      new Bot(this.lastID++, oppositeSide)));
+    this.state.players.push(new Player(user, new Unit(this.lastID += 2, side)));
+    this.state.players.push(new Player(new User(this.lastID += 2, 'Bot', TEAM.EMAIL, '********'),
+      new Bot(this.lastID += 2, oppositeSide)));
     this.state.players.forEach(p => {
       this.state.bases.push(new Base(p.unit.id, p.unit.side));
       this.state.units.push(p.unit)
@@ -82,8 +82,8 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     // Две башни противника уже стоят
     const oppositeDir = oppositeSide === SIDE.MAN ? new Coords(-1, 0) : new Coords(1, 0);
     const oppositeX = oppositeSide === SIDE.MAN ? BOT.TOWER_OFFSET : this.width - BOT.TOWER_OFFSET;
-    this.state.towers.push(new Tower(this.lastID++, new Coords(oppositeX, 120), oppositeDir, oppositeSide));
-    this.state.towers.push(new Tower(this.lastID++, new Coords(oppositeX, 400), oppositeDir, oppositeSide));
+    this.state.towers.push(new Tower(this.lastID += 2, new Coords(oppositeX, 120), oppositeDir, oppositeSide));
+    this.state.towers.push(new Tower(this.lastID += 2, new Coords(oppositeX, 400), oppositeDir, oppositeSide));
 
     this.startGameLoop();
     return true;
@@ -113,7 +113,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
     this.state.bases.filter(base => base.underAttack).forEach(
       base => {
         if (!this.state.bombs.some(bomb => bomb.target.id === base.id)) {
-          this.state.bombs.push(new Bomb(this.lastID++, base))
+          this.state.bombs.push(new Bomb(this.lastID += 2, base))
         }
       }
     );
@@ -123,7 +123,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
 
     // За каждую убитую башню добавить монетки
     this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
-      this.state.coins.push(new Coin(this.lastID++, tower.getCoords()));
+      this.state.coins.push(new Coin(this.lastID += 2, tower.getCoords()));
     });
 
     // Если умирает юнит, респавним его и дамажим его дом
