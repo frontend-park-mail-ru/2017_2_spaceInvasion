@@ -6,6 +6,7 @@ import {throwIfNull} from '../../utils/utils';
 import userService from '../../services/userService';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
+import {refreshTheme} from '../../modules/themes'
 
 class RegistrationBlock extends Form {
   constructor(el: HTMLElement) {
@@ -14,6 +15,7 @@ class RegistrationBlock extends Form {
 
   show(): void {
     this.el.innerHTML = registrationTemplate();
+    refreshTheme();
     if (!Navigator.sections.registration.ready) {
       Navigator.sections.registration.onSubmit(this.onSubmitRegistrationForm);
       Navigator.sections.registration.ready = true;

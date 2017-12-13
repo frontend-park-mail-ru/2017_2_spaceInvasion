@@ -1,12 +1,14 @@
 import {ACTION_MAPPER, EVENT} from '../../../utils/constants';
 import ControllerInterface from './controllerInterface';
 import { debug } from 'util';
+import {getTheme} from '../../../modules/themes'
 
 class GameJoystick implements ControllerInterface {
     
+
     private options = {
         zone: document.querySelector(".game-section div"),                  // active zone
-        color: 'blue',
+        color: getTheme() == 'man' ? '#2185d0' : '#00b5ad',
         size: 150,
         threshold: 0.1,               // before triggering a directional event
         fadeTime: 250,              // transition time
@@ -31,6 +33,7 @@ class GameJoystick implements ControllerInterface {
     init(): void {
 
         var lastKey:any = undefined;
+        var lastDegree:any = undefined;
 
         const topMove = new KeyboardEvent("keydown", {
             key: "ArrowUp",
@@ -49,10 +52,11 @@ class GameJoystick implements ControllerInterface {
         });
         this.joystickManager.on('move',(evt:any,pad:any)=>{
             var angle = pad.angle.degree;
-            if(lastKey != pad.direction.angle){
+            if(lastKey != pad.direction.angle || angle!=pad.angle.degree){
                 this.dropKeys();
             }
             lastKey = pad.direction.angle;
+            lastDegree = angle;
             switch(lastKey){
                 case "up":
                 if(angle > 90 && angle < 180)document.dispatchEvent(leftMove);
@@ -64,10 +68,10 @@ class GameJoystick implements ControllerInterface {
                 if(angle < 270 && angle > 180)document.dispatchEvent(leftMove);
                 document.dispatchEvent(bottomMove);
                 break;
-                case "left":
-                if(angle < 180 && angle > 90)document.dispatchEvent(topMove);
-                if(angle > 180 && angle < 223)document.dispatchEvent(bottomMove);
+                case "left":                
                 document.dispatchEvent(leftMove);
+                if(angle > 180) document.dispatchEvent(bottomMove);
+                if(angle < 180) document.dispatchEvent(topMove);
                 break;
                 case "right":
                 if(angle < 45 && angle > 0)document.dispatchEvent(topMove);

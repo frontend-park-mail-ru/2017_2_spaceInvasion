@@ -80,4 +80,67 @@
         height: 100px;
         margin-right: 50px;
     }
+
+    .front{
+        background: white !important;
+        opacity: 1 !important;
+    }
+    
+    .front{
+background: white;
+opacity: 1;
+    }
+    .nipple.collection_0{
+        top:125% !important;
+        left: 15% !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+.canvas#game{
+    width: 753px;
+    height: 500px;
+}
+
+.leaderboard-section{
+    width: 750px;
+}
+.playerpage-section{
+    width: 750px;
+}
+.game-section{
+    width: 752px;
+}
+}
+
+@media only screen and (orientation:landscape) and (max-width:736px){
+
+    .nipple.collection_0{
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .back{
+        width:80px !important;
+        height: 80px !important;
+        opacity: 1 !important;
+    }
+    .front{
+        width: 50px !important;
+        background: white !important;
+        opacity: 1 !important;
+        height: 50px !important;
+    }
+
+.nipple.collection_0{
+    top:132% !important;
+}
+
+    .game-section{
+        width: 684px;
+    }
+    #game{
+        height: 100% !important;
+        width: 100% !important;
+    }
 }
