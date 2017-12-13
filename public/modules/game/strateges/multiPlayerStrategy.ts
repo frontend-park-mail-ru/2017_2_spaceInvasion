@@ -3,12 +3,11 @@ import Player from '../../../models/game/player';
 import Bomb from '../../../models/game/sprites/bomb';
 import Coin from '../../../models/game/sprites/coin';
 import {EVENT, SIDE, RPS} from '../../../utils/constants';
-import User from '../../../models/user';
 import SubscriptableMixin from '../../../models/game/mixins/subscriptableMixin';
 import StrategyInterface from './strategyInterface';
 import emitter from '../../emitter';
 import {
-  getCodeByDir, getDirByCode, getEventsByCode, getEventsByDir, getOtherSide, mapEventDirection, subDirs, sumDirs,
+  getCodeByDir, getDirByCode, getEventsByDir, getOtherSide, mapEventDirection, subDirs, sumDirs,
   throwIfNull
 } from '../../../utils/utils';
 import Base from '../../../models/game/sprites/base';
@@ -17,7 +16,6 @@ import {default as userService, UserService} from '../../../services/userService
 import Unit from '../../../models/game/sprites/unit';
 import Coords from '../../../models/game/coords';
 import GameState from '../../../models/game/state';
-import collisionService from '../../../services/collisionService';
 import Tower from '../../../models/game/sprites/tower';
 import Bullet from '../../../models/game/sprites/bullet';
 
@@ -89,8 +87,22 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onNewUnitCreated(data: any): void {
-    this.joinedUserIDs.set(data[0], data[1]);
-    this.tryToStartGameLoop();
+    const userID = data[0];
+    const unitID = data[1];
+    if (!this.running) {
+      this.joinedUserIDs.set(userID, unitID);
+      this.tryToStartGameLoop();
+    } else {
+      const playerId = this.state.players.findIndex(p => p.user.id === userID);
+      const unitIdx = this.state.units.findIndex(u => u.id === this.state.players[playerId].unit.id);
+      this.state.players[playerId].destroy();
+      this.state.players[playerId] = new Player(
+        this.state.players[playerId].user,
+        new Unit(unitID, this.state.players[playerId].unit.side)
+      );
+      this.state.units[unitIdx].destroy();
+      this.state.units[unitIdx] = this.state.players[playerId].unit;
+    }
   }
 
   private onCoinSpawned(data: any): void {
@@ -180,12 +192,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onCollision(data: any): void {
-    const sprite1 = this.state.findSpriteByID(data[0]);
-    const sprite2 = this.state.findSpriteByID(data[1]);
-    console.log('------COLLISION------');
-    console.log(data);
-    console.log(this.state);
-    console.log(sprite1, sprite2);
+    const sprite1 = this.state.findEntitiesByID(data[0]);
+    const sprite2 = this.state.findEntitiesByID(data[1]);
     if (sprite1 && sprite2) {
       if (sprite1 instanceof Tower) {
         console.log('COLLISION WITH TOWER (' + data[2] + ')');
@@ -193,14 +201,12 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         bullets.sort((b1, b2) => b1.getTime() - b2.getTime());
         const bullet = bullets[data[2] - 1];
         console.log(bullet);
-        if (bullet) {
-          collisionService.append(sprite1, bullet);
-          collisionService.run();
+        if (!bullet) {
+          return;
         }
-      } else {
-        collisionService.append(sprite1, sprite2);
-        collisionService.run();
       }
+      sprite1.bumpInto(sprite2);
+      sprite2.bumpInto(sprite1);
     }
     console.log('------END COLLISION------');
   }

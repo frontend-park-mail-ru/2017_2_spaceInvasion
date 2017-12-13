@@ -7,6 +7,7 @@ import Base from './sprites/base';
 import Bomb from './sprites/bomb';
 import Sprite from './sprites/sprite';
 import User from '../user';
+import Collidable from "./interfaces/collidable";
 
 class GameState {
   public players: Player[] = [];
@@ -31,15 +32,14 @@ class GameState {
     return newState;
   }
 
-  findSpriteByID(ID: number): Sprite|null {
+  findEntitiesByID(ID: number): Collidable&Sprite|null {
     return ([
       this.bases,
       this.units,
       this.towers,
       this.coins,
       this.bullets,
-      this.bombs,
-    ] as Sprite[][])
+    ] as (Collidable&Sprite)[][])
       .filter(sprites => sprites.filter(s => s.id === ID).length > 0)
       .map(sprites => sprites[0])[0] || null;
   }

@@ -54,6 +54,10 @@ class Player extends SubscriptableMixin {
       emitter.emit('Tower', this.unit.getCoords(), direction, this.unit.side);
     }
   }
+
+  destroy(): void {
+    super.destroy();
+  }
 }
 
 export default Player;
