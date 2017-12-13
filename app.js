@@ -7,7 +7,7 @@ const app = express()
 require('morgan')
 require('url')
 
-const port = process.env.PORT || 8081
+const port = process.env.PORT || 8082
 app.use('/', express.static(`${__dirname}/public`))
 
 app.set('views', path.join(__dirname, '/public/templates'))

@@ -36,3 +36,10 @@ body.man {
 .selectRaceStyle.man {
     background: #5763a2 !important;
 }
+.registration_form_style.man {
+    background: #7180cd !important;
+}
+
+.registerBtn.man {
+    background: #260058;
+}

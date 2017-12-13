@@ -35,6 +35,14 @@ body.alien {
 }
 
 .selectRaceStyle.alien {
-    background: #378b5e !important;
+    background: #399060 !important;
+}
+.registration_form_style.alien {
+    background: #42b880 !important;
+
+}
+
+.registerBtn.alien {
+    background: #214a2e;
 }
 
