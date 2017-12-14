@@ -53,7 +53,7 @@
     },
     "browser": true,
     "setupFiles": [
-      "<rootDir>/public/index.ts"
+      "<rootDir>/mocks/init.js"
     ],
     "testRegex": "(<rootDir>/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [

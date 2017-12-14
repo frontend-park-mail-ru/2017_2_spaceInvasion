@@ -3,9 +3,13 @@ import {EVENT} from '../../public/utils/constants';
 
 describe('utils', () => {
   it('throwIfNull', () => {
-    expect(() => {throwIfNull(null)}).toThrow('Variable must not be null');
+    expect(() => {
+      throwIfNull(null)
+    }).toThrow('Variable must not be null');
     let a: boolean | null = null;
-    expect(() => {throwIfNull(a)}).toThrow('Variable must not be null');
+    expect(() => {
+      throwIfNull(a)
+    }).toThrow('Variable must not be null');
     a = true;
     expect(() => {
       let b: boolean;
@@ -15,12 +19,12 @@ describe('utils', () => {
   });
 
   it('mapEventDirection', () => {
-    expect(mapEventDirection(EVENT.DOWN)).toBe(180);
-    expect(mapEventDirection(EVENT.UP)).toBe(0);
-    expect(mapEventDirection(EVENT.LEFT)).toBe(270);
-    expect(mapEventDirection(EVENT.RIGHT)).toBe(90);
-    expect(mapEventDirection(EVENT.FIRE)).toBe(null);
-    expect(mapEventDirection(EVENT.TOWER)).toBe(null);
-    expect(mapEventDirection(EVENT.NO)).toBe(null);
+    expect(mapEventDirection(EVENT.DOWN)).toEqual({x: 0, y: 1});
+    expect(mapEventDirection(EVENT.UP)).toEqual({x: 0, y: -1});
+    expect(mapEventDirection(EVENT.LEFT)).toEqual({x: -1, y: 0});
+    expect(mapEventDirection(EVENT.RIGHT)).toEqual({x: 1, y: 0});
+    expect(() => mapEventDirection(EVENT.FIRE)).toThrow('Wrong direction event: ' + EVENT.FIRE);
+    expect(() => mapEventDirection(EVENT.TOWER)).toThrow('Wrong direction event: ' + EVENT.TOWER);
+    expect(() => mapEventDirection(EVENT.NO)).toThrow('Wrong direction event: ' + EVENT.NO);
   });
 });

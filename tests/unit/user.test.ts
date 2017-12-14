@@ -4,6 +4,7 @@ describe('User test', () => {
   let user = new User(0, 'username', 'email', 'password');
   it('constructor', () => {
     expect(user).toEqual({
+      id: 0,
       username: 'username',
       email: 'email',
       password: 'password',

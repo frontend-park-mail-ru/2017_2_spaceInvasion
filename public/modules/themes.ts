@@ -30,7 +30,7 @@ function changeThemeForMan(): void {
     leaderboard.classList.add('man');
   }
 
-  sessionStorage.setItem('theme', 'man');
+  window.sessionStorage.setItem('theme', 'man');
 }
 
 function changeThemeForAlien(): void {
@@ -63,11 +63,11 @@ function changeThemeForAlien(): void {
     leaderboard.classList.add('alien');
   }
 
-  sessionStorage.setItem('theme', 'alien');
+  window.sessionStorage.setItem('theme', 'alien');
 }
 
 function getTheme(): string {
-  return sessionStorage.getItem('theme') || 'man';
+  return window.sessionStorage.getItem('theme') || 'man';
 }
 
 function refreshTheme(): void {

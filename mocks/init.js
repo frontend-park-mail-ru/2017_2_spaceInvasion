@@ -1,7 +1,16 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-const pug = require('pug');
-global.fetch = require('jest-fetch-mock');
+let store = {};
+const sessionStorageMock = {
+  getItem: key => store[key],
+  setItem: (key, value) => {
+    store[key] = value.toString();
+  },
+  clear: () => {
+    store = {};
+  },
+  removeItem: (key) => {
+    delete store[key];
+  },
+};
+Object.defineProperty(window, 'sessionStorage', { value: sessionStorageMock });
 
-const pathToIndexPug = '../public/templates/index.pug';
-document.body.innerHTML = pug.renderFile(pathToIndexPug, { filename: pathToIndexPug });
-require('../public/main.ts');
+// require('../public/main.ts');
