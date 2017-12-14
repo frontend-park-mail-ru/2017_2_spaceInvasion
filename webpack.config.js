@@ -1,8 +1,8 @@
-const debug = process.env.NODE_ENV !== 'production'
-const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const CheckerPlugin = require('awesome-typescript-loader')
-require('webpack')
+const debug = process.env.NODE_ENV !== 'production';
+const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CheckerPlugin = require('awesome-typescript-loader');
+require('webpack');
 
 module.exports = {
   context: path.join(__dirname, '/public'),
@@ -21,10 +21,10 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.css$/, use: ['style-loader', 'css-loader']},
-      {test: /\.pug$/, use: ['pug-loader']},
-      {test: /\.tsx?$/, use: ['awesome-typescript-loader'], exclude: /node_modules/},
-      {test: /\.png|woff2?|eot|ttf|svg$/, use: ['url-loader']},
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.pug$/, use: ['pug-loader'] },
+      { test: /\.tsx?$/, use: ['awesome-typescript-loader'], exclude: /node_modules/ },
+      { test: /\.png|woff2?|eot|ttf|svg$/, use: ['url-loader'] },
     ],
   },
-}
+};
