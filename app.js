@@ -15,6 +15,14 @@ app.engine('html', require('pug').renderFile);
 
 app.set('view engine', 'pug');
 
+app.get('/404',(req,res)=>{
+  res.render('404.pug');
+});
+
+app.get('/winlose',(req,res)=>{
+  res.render('winlose.pug');
+});
+
 app.get('*', (req, res) => {
   res.render('index.pug');
 });

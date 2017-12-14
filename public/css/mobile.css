@@ -1,0 +1,83 @@
+@media only screen and (max-width: 414px){
+    .ui.huge.menu{
+        width: 750px;
+        font-size: large;
+        height: 96px;
+    }
+
+    .stopimg{
+        width: 750px;
+    }
+    .stopmessage{
+        width: 750px;
+    }
+    .developertitle{
+        font-size: 80px !important;
+        color: white;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__about{
+        width: 764px;
+    }
+
+    .ui.one.column.centered.grid.one__column__login__grid{
+        width: 764px;
+    }
+
+    .ui.card.ui__card__login {
+        width: 427px !important;
+        font-size: x-large !important;
+    }
+    .field{
+        font-size: x-large !important;
+    }
+
+    .ui.submit.ui__submit__login.ui__submit__login__button.button{
+        font-size: x-large !important;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration{
+        width: 764px;
+    }
+
+    .ui.positive.button.ui__button__register{
+        font-size: x-large !important;
+    }
+
+    .description{
+        padding-top: 25px !important;
+    }
+
+    .header{
+        font-size: x-large !important;
+    }
+
+    .winloseimg{
+        width: 750px;
+        height: 750px;
+    }
+
+    .matchdetailsmessage{
+        color: white;
+        font-size: 45px;
+        width: 750px;
+        text-align: center;
+    }
+
+    .controls{
+        width: 750px;
+    }
+
+    .ui.playagain{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+
+    .ui.leave{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+    }
+}
