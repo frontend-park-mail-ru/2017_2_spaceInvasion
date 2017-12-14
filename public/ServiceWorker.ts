@@ -2,7 +2,7 @@ function  registerServiceWorker(): void {
     console.log("Try register service worker");
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-            .register("/services/SW.js", { scope: "/services/" })
+            .register("/public/SW.js", { scope: "/public/" })
             .then(function(reg) {
             if (reg.installing) {
                 console.log("Service worker installing");
@@ -18,3 +18,4 @@ function  registerServiceWorker(): void {
 }
 
 export {registerServiceWorker};
+// /SpaceInvasionFrontend/public/

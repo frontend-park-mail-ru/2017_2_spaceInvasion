@@ -4,7 +4,7 @@ import router from './modules/router';
 import {throwIfNull} from './utils/utils';
 import {initThemes} from './modules/themes';
 import Navigator from './modules/navigator';
-import {registerServiceWorker} from './services/ServiceWorker';
+import {registerServiceWorker} from './ServiceWorker';
 
 const app = new Block(throwIfNull(document.getElementById('application')));
 

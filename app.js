@@ -15,6 +15,10 @@ app.engine('html', require('pug').renderFile)
 
 app.set('view engine', 'pug')
 
+app.get('/public/SW.js', (req, res) => {
+  res.sendfile('./public/SW.js')
+})
+
 app.get('*', (req, res) => {
   res.render('index.pug')
 })
