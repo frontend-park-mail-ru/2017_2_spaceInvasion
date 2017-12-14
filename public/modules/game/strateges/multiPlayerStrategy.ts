@@ -19,6 +19,9 @@ import GameState from '../../../models/game/state';
 import Tower from '../../../models/game/sprites/tower';
 import Bullet from '../../../models/game/sprites/bullet';
 
+let globalX = 0;
+let globalY = 0;
+
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
   private mySide: SIDE;
   private joinedUserIDs: Map<number, number> = new Map;
@@ -66,7 +69,12 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           newMe.unit.getCoords().y - me.unit.getCoords().y,
         ]
       });
+
+      globalX += newMe.unit.getCoords().x - me.unit.getCoords().x;
+      globalY += newMe.unit.getCoords().y - me.unit.getCoords().y;
+      console.log(globalX, globalY);
     }
+
     this.sendedState = GameState.copy(this.state);
   }
 
