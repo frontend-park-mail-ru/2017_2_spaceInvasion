@@ -40,7 +40,8 @@ class GameState {
       this.coins,
       this.bullets,
     ] as (Collidable&Sprite)[][])
-      .filter(sprites => sprites.filter(s => s.id === ID).length > 0)
+      .map(sprites => sprites.filter(s => s.id === ID))
+      .filter(sprites => sprites.length > 0)
       .map(sprites => sprites[0])[0] || null;
   }
 

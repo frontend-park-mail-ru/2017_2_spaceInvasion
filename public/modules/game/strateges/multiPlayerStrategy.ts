@@ -31,6 +31,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
     // Subscribes
     this.subscribe('Strategy.rollbackEvent', this.rollbackEvent.bind(this)); // event: string
+    this.subscribe('Strategy.lastID', () => this.lastID); // event: string
   }
 
   destroy(): void {
@@ -99,11 +100,14 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     } else {
       const playerId = this.state.players.findIndex(p => p.user.id === userID);
       const unit = new Unit(unitID, this.state.players[playerId].unit.side);
-      this.state.players[playerId].destroy();
+      const oldPlayer = this.state.players[playerId];
+      oldPlayer.unit.destroy();
+      oldPlayer.destroy();
       this.state.players[playerId] = new Player(
         this.state.players[playerId].user,
         unit
       );
+      this.state.players[playerId].reward(oldPlayer.coins - this.state.players[playerId].coins);
       this.state.units.push(unit);
     }
   }
@@ -138,7 +142,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
 
         const player = new Player(u, new Unit(unitID, side));
         this.state.players.push(player);
-        this.state.bases.push(new Base(this.lastID += 2, side));
+        this.state.bases.push(new Base(u.id, side));
         this.state.units.push(player.unit);
       });
       this.startGameLoop();
@@ -184,11 +188,12 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
   }
 
   private onBombInstall(data: any): void {
-    const ID = data[0];
+    const userID = data[0];
+
     this.state.bombs.push(
       new Bomb(
-        ID,
-        this.state.bases.filter(b => b.side === this.mySide)[0]
+        this.lastID += 2,
+        this.state.bases.filter(b => b.id === userID)[0]
       )
     )
   }
@@ -353,11 +358,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         });
       }
     );
-
-    // За каждую убитую башню добавить монетки
-    this.state.towers.filter(tower => !tower.alive()).forEach(tower => {
-      this.state.coins.push(new Coin(this.lastID += 2, tower.getCoords()));
-    });
 
     // Удаляем пропавших юнитов
     this.state.units = this.state.units.filter(u => u.alive());

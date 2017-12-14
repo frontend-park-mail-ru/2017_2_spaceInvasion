@@ -122,6 +122,14 @@ class WebSocketsService {
     notAppliedEvents.forEach(event => {
       emitter.emit('Strategy.rollbackEvent', event.data);
     });
+
+    this.send({
+      class: 'ClientSnap',
+      request: [
+        emitter.emit('Strategy.lastID')[0],
+        5 // AcceptRollback
+      ]
+    });
   }
 
   private static error(): void {
