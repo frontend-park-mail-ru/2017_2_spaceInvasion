@@ -1,11 +1,11 @@
 html
 body
     .ui.one.column.centered.grid.one__column__login__grid
-        .ui.card.ui__card__login
+        .ui.card.ui__card__login.registration_form_style
             .content.left.aligned
-                .header Welcome
+                .header.formHeader Welcome
                 .description
-                    form.ui.form.formWithValidation
+                    form.ui.form.formWithValidation.formText
                         .field(name = "loginField")
                             span(class = "message message__error_message", hidden=true)
                             label Login
@@ -18,5 +18,5 @@ body
                             .ui.left.icon.input
                                 input(type="password", name="password", placeholder="Password")
                                 i.lock.icon
-                        button.ui.submit.ui__submit__login.ui__submit__login__button.button(type="submit", name="ValidateBtn") Log in
+                        button.ui.submit.ui__submit__login.ui__submit__login__button.button.formText(type="submit", name="ValidateBtn") Log in
                         .ui.error.message.message__error_message
