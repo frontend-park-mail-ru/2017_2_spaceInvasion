@@ -101,7 +101,9 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
       const playerId = this.state.players.findIndex(p => p.user.id === userID);
       const unit = new Unit(unitID, this.state.players[playerId].unit.side);
       const oldPlayer = this.state.players[playerId];
-      oldPlayer.unit.destroy();
+      if (oldPlayer.unit.visible) {
+        oldPlayer.unit.destroy();
+      }
       oldPlayer.destroy();
       this.state.players[playerId] = new Player(
         this.state.players[playerId].user,
