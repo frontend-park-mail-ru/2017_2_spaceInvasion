@@ -24,13 +24,20 @@ class PlayerPageBlock extends Block {
   }
 
   private onLogoutBtnClick(el: HTMLElement): void {
-    throwIfNull(el.querySelector('.ui.button__logout')).addEventListener('click', () => {
+    // TODO: Show loading image
+    const element = throwIfNull(el.querySelector('.ui.button__logout'));
+    const listener = () => {
+      Navigator.sections.hide();
+      element.removeEventListener('click', listener);
       userService.logout().then(() => {
         Navigator.sections.hide();
         router.setPath('/');
         Router.route();
+        element.addEventListener('click', listener);
       });
-    });
+    };
+
+    element.addEventListener('click', listener);
   }
 
   private onPlayBtnClick(el: HTMLElement): void {

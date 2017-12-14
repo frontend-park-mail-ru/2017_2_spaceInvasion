@@ -15,7 +15,7 @@ class RegistrationBlock extends Form {
   show(): void {
     this.el.innerHTML = registrationTemplate();
     if (!Navigator.sections.registration.ready) {
-      Navigator.sections.registration.onSubmit(this.onSubmitRegistrationForm);
+      Navigator.sections.registration.onSubmitOnce(this.onSubmitRegistrationForm.bind(this));
       Navigator.sections.registration.ready = true;
     }
     router.setPath('/signup');
@@ -45,8 +45,12 @@ class RegistrationBlock extends Form {
             showError('Internal Error');
             break;
         }
+        Navigator.sections.registration.onSubmitOnce(this.onSubmitRegistrationForm.bind(this));
         regBtn.classList.remove('loading');
-      }).catch(() => regBtn.classList.remove('loading'));
+      }).catch(() => {
+      Navigator.sections.registration.onSubmitOnce(this.onSubmitRegistrationForm.bind(this));
+      regBtn.classList.remove('loading')
+    });
   }
 }
 

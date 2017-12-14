@@ -16,7 +16,7 @@ class LoginBlock extends Form {
     throwIfNull(document.getElementById('signupBtn')).setAttribute('style', '');
     if (!Navigator.sections.login.ready) {
       this.el.innerHTML = loginTemplate();
-      Navigator.sections.login.onSubmit(this.onSubmitLoginForm);
+      Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
       Navigator.sections.login.ready = true;
     }
 
@@ -47,8 +47,12 @@ class LoginBlock extends Form {
             showError('Internal Error');
             break;
         }
+        Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
         loginBtn.classList.remove('loading');
-      }).catch(() => loginBtn.classList.remove('loading'));
+      }).catch(() => {
+      Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
+      loginBtn.classList.remove('loading');
+    });
   }
 }
 
