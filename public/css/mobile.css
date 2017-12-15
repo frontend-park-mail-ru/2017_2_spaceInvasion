@@ -1,4 +1,4 @@
-@media only screen and (max-width: 414px){
+@media only screen and (max-width: 440px){
     .ui.huge.menu{
         width: 750px;
         font-size: large;
@@ -120,6 +120,10 @@ opacity: 1;
         visibility: visible !important;
     }
 
+.ui.huge.menu{
+    display: none !important;
+}
+
     .back{
         width:80px !important;
         height: 80px !important;
@@ -133,7 +137,7 @@ opacity: 1;
     }
 
 .nipple.collection_0{
-    top:132% !important;
+    top:94% !important;
 }
 
     .game-section{
@@ -143,4 +147,50 @@ opacity: 1;
         height: 100% !important;
         width: 100% !important;
     }
+}
+
+@media only screen and (orientation:landscape) and (max-width:1024px){
+
+    .nipple.collection_0{
+        opacity: 1 !important;
+        visibility: visible !important;
+        top:87% !important;
+    }
+
+    .back{
+        width:120px !important;
+        height: 120px !important;
+        opacity: 1 !important;
+    }
+    .front{
+        width: 60px !important;
+        background: white !important;
+        opacity: 1 !important;
+        height: 60px !important;
+    }
+
+    .lbtitle{
+        font-size: 61px !important;
+    }
+
+    .developertitle{
+        font-size: 61px !important;
+    }
+
+    .lbheader{
+        font-size: 32px;
+    }
+
+    .ui.card.ui__card__login{
+        font-size: 32px;
+    }
+
+    .lbbody{
+        font-size: 32px;
+    }
+
+    .content.lb.left.aligned{
+        width: 548px !important;
+    }
+
 }
