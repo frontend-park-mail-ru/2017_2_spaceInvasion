@@ -1,5 +1,5 @@
-const BASE_URL = 'http://space-invasion.ru:8080/v1';
-const WEB_SOCKETS_BASE_URL = 'ws://space-invasion.ru:8080/game';
+const BASE_URL = 'https://space-invasion.ru:8080/v1';
+const WEB_SOCKETS_BASE_URL = 'wss://space-invasion.ru:8080/game';
 const MAX_EVENTS = 100;
 const RESPAWN_DAMAGE = 1;
 
