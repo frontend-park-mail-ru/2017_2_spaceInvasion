@@ -1,7 +1,6 @@
 const debug = process.env.NODE_ENV !== 'production';
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CheckerPlugin = require('awesome-typescript-loader');
 require('webpack');
 
 module.exports = {
@@ -9,7 +8,6 @@ module.exports = {
   devtool: debug ? 'source-map' : false,
   plugins: debug ? [] : [
     new UglifyJsPlugin(),
-    new CheckerPlugin(),
   ],
   entry: './index.ts',
   output: {

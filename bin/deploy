@@ -1,0 +1,10 @@
+#!/bin/bash
+add-apt-repository ppa:certbot/certbot -y
+apt-get update
+cat requirements.txt | xargs apt install -y
+mkdir -p /etc/nginx
+mkdir -p /etc/ssl/certs
+mkdir -p /var/log/SpaceInvasion
+bin/gen_nginx_config -s nginx -c conf/config.ini -t conf/proxy_params -o /etc/nginx/proxy_params
+bin/gen_nginx_config -s nginx -c conf/config.ini -t conf/nginx.conf -o /etc/nginx/nginx.conf
+certbot -n --nginx --nginx-server-root /etc/nginx/ -d www.space-invasion.ru -d space-invasion.ru --agree-tos --email spaceinvasionlab@yandex.ru
