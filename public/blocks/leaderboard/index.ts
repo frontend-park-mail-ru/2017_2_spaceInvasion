@@ -6,6 +6,7 @@ import {throwIfNull} from '../../utils/utils';
 import {refreshTheme} from '../../modules/themes';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
+import { debug } from 'util';
 
 class LeaderboardBlock extends Block {
   show(): void {
@@ -18,11 +19,14 @@ class LeaderboardBlock extends Block {
   }
 
   private fetchLeaderboard(el: HTMLElement): void {
+    debugger
     el.classList.add('ui', 'active', 'loader');
     Http.Fetch('GET', '/leaderboard')
       .then(data => throwIfNull(data).json())
       .then((res) => {
+        debugger;
         el.classList.remove('ui', 'active', 'loader');
+        debugger;
         el.innerHTML = leaderboardTemplate({data: res, you: userService.user});
         refreshTheme();
       }).catch(() => {
