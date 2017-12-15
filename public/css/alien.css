@@ -1,5 +1,5 @@
 body.alien {
-    background: url(/images/background.jpg) no-repeat center center fixed;
+    background: url(/images/cartoon-moon_green.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -7,19 +7,42 @@ body.alien {
 }
 
 .ui.button.alien#signupBtn {
-    background-color: #00b5ad;
+    background-color: #1e4229;
 }
 
 .ui.submit.ui__submit__login.ui__submit__login__button.button.alien {
-    background-color: #00b5ad;
+    background-color: #495385;
     color: white;
 }
 
 .ui.table.ui__selectable__celled__table__leaderboard.alien {
-    background-color: #00b5ad;
+    margin-top: -80px;
+    width: 800px;
+    font-size: 35px;
+    background-color: #214a2e;
     color: white;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
+    font-style: normal;
+    font-variant: small-caps;
 }
 
 .ui.button.ui__button__register.alien {
-    background-color: #00b5ad;
+    background-color: #214a2e;
 }
+
+.navbar.alien{
+    background: #42b880 !important;
+}
+
+.selectRaceStyle.alien {
+    background: #399060 !important;
+}
+.registration_form_style.alien {
+    background: #42b880 !important;
+
+}
+
+.registerBtn.alien {
+    background: #214a2e;
+}
+

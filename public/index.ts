@@ -8,6 +8,4 @@ require('./css/mobile.css');
 
 // ===Scripts===
 require('./main.ts');
-require('./common/semantic/dist/semantic.min.js');
-require('./main.ts');
 require('./modules/game/controllers/joystick.ts')

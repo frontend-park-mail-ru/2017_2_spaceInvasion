@@ -23,6 +23,10 @@ app.get('/winlose', (req, res) => {
   res.render('winlose.pug');
 });
 
+app.get('/public/SW.js', (req, res) => {
+  res.sendfile('./public/SW.js')
+})
+
 app.get('*', (req, res) => {
   res.render('index.pug');
 });

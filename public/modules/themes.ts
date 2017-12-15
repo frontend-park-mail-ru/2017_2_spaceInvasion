@@ -14,6 +14,10 @@ function changeThemeForMan(): void {
   const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
+  const navbar = document.querySelector('.navbar');
+  const chooseRace = document.querySelector('.selectRaceStyle');
+  const registrationForm = document.querySelector('.registration_form_style');
+  const registrationFormBtn = document.querySelector('.registerBtn');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('alien');
@@ -30,7 +34,27 @@ function changeThemeForMan(): void {
     leaderboard.classList.add('man');
   }
 
-  window.sessionStorage.setItem('theme', 'man');
+  if (navbar !== null) {
+      navbar.classList.remove('alien');
+      navbar.classList.add('man');
+  }
+
+  if (chooseRace !== null) {
+      chooseRace.classList.remove('alien');
+      chooseRace.classList.add('man');
+  }
+
+  if (registrationForm !== null) {
+      registrationForm.classList.remove('alien');
+      registrationForm.classList.add('man');
+  }
+
+  if (registrationFormBtn !== null) {
+      registrationFormBtn.classList.remove('alien');
+      registrationFormBtn.classList.add('man');
+  }
+
+  sessionStorage.setItem('theme', 'man');
 }
 
 function changeThemeForAlien(): void {
@@ -47,6 +71,10 @@ function changeThemeForAlien(): void {
   const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
   const registerBtn = document.querySelector('.ui.button.ui__button__register');
   const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
+  const navbar = document.querySelector('.navbar');
+  const chooseRace = document.querySelector('.selectRaceStyle');
+  const registrationForm = document.querySelector('.registration_form_style');
+  const registrationFormBtn = document.querySelector('.registerBtn');
 
   if (loginBtn !== null) {
     loginBtn.classList.remove('man');
@@ -63,7 +91,27 @@ function changeThemeForAlien(): void {
     leaderboard.classList.add('alien');
   }
 
-  window.sessionStorage.setItem('theme', 'alien');
+  if (navbar !== null) {
+      navbar.classList.remove('man');
+      navbar.classList.add('alien');
+  }
+
+  if (chooseRace !== null) {
+      chooseRace.classList.remove('man');
+      chooseRace.classList.add('alien');
+  }
+
+  if (registrationForm !== null) {
+      registrationForm.classList.remove('man');
+      registrationForm.classList.add('alien');
+  }
+
+  if (registrationFormBtn !== null) {
+      registrationFormBtn.classList.remove('man');
+      registrationFormBtn.classList.add('alien');
+  }
+
+  sessionStorage.setItem('theme', 'alien');
 }
 
 function getTheme(): string {
