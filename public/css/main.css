@@ -98,3 +98,7 @@ canvas#game {
     width: 150px;
     height: 50px;
 }
+
+.nipple.collection_0{
+    visibility: hidden !important;
+}
