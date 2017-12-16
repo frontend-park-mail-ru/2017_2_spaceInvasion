@@ -5,6 +5,11 @@ import {throwIfNull} from './utils/utils';
 import {initThemes} from './modules/themes';
 import Navigator from './modules/navigator';
 import {registerServiceWorker} from './ServiceWorker';
+import navbarTemplate from './templates/navbar.pug';
+
+const navbar = document.createElement('div');
+navbar.innerHTML = navbarTemplate();
+document.body.insertBefore(navbar, document.body.firstChild);
 
 const app = new Block(throwIfNull(document.getElementById('application')));
 

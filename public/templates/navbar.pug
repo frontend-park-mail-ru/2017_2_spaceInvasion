@@ -1,23 +1,21 @@
-html
-body
-    .ui.huge.menu.navbar
-        a#homeBtn.item.testButton
-            | Home
-        a#leaderboardBtn.item
-            | Leaderboard
-        a#aboutBtn.item
-            | About
-        .right.menu
-            include chooserace.pug
-            //.ui.simple.dropdown.item
-            //    | Language
-            //    i.dropdown.icon
-            //    .menu
-            //        a.item
-            //            i.us.flag
-            //            | English
-            //        a.item
-            //            i.ru.flag
-            //            | Русский
-            .item#signupBtn
-                #signupBtn.ui.primary.button Sign Up
+.ui.huge.menu.navbar
+    a#homeBtn.item.testButton
+        | Home
+    a#leaderboardBtn.item
+        | Leaderboard
+    a#aboutBtn.item
+        | About
+    .right.menu
+        include chooserace.pug
+        .ui.simple.dropdown.item
+            | Language
+            i.dropdown.icon
+            .menu
+                a.item
+                    i.us.flag
+                    | English
+                a.item
+                    i.ru.flag
+                    | Русский
+        .item#signupBtn
+            #signupBtn.ui.primary.button Sign Up

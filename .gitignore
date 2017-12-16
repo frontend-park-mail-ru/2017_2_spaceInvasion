@@ -89,9 +89,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Secret data
-secrets.json
-
 # IDE's specials
 .idea
 .vscode
@@ -105,9 +102,6 @@ secrets.json
 public/dist/**
 tests/**/*.js
 public/**/*.js
-!public/pnotify.custom.min.js
-!public/common/semantic/dist/semantic.min.js
 
 # TypeScript compiler cache
 .awcache
-

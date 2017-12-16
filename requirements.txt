@@ -1,3 +1,0 @@
-software-properties-common
-nginx
-python-certbot-nginx
