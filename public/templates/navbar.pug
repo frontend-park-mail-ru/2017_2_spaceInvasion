@@ -1,23 +1,15 @@
 html
-body
+  body
     .ui.huge.menu
-        a#homeBtn.item
-            | Home
-        a#leaderboardBtn.item
-            | Leaderboard
-        a#aboutBtn.item
-            | About
-        .right.menu
-            include chooserace.pug
-            .ui.simple.dropdown.item
-                | Language 
-                i.dropdown.icon
-                .menu
-                    a.item
-                        i.us.flag
-                        | English
-                    a.item
-                        i.ru.flag
-                        | Русский
-            .item#signupBtn
-                #signupBtn.ui.primary.button Sign Up
+      a#homeBtn.item Home
+      a#leaderboardBtn.item Leaderboard
+      a#aboutBtn.item About
+      .right.menu
+        .ui.simple.dropdown.ui__dropdown.item
+          | Select race
+          i.dropdown.ui__dropdown.icon
+          .menu
+            .active.selected.item.man(data-race='man') Man
+            .item.alien(data-race='alien') Alien
+        #signupBtn.item
+          #signupBtn.ui.primary.button Sign Up
