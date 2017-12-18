@@ -4,6 +4,7 @@ import {throwIfNull} from '../utils/utils';
 import {refreshTheme} from './themes';
 import {PATH_MAP} from '../utils/constants';
 import LoginBlock from '../blocks/login/index';
+import NotFoundBlock from '../blocks/notFound/index';
 
 class Router {
   protected path: string;
@@ -63,7 +64,7 @@ class Router {
         break;
       default:
         // 404
-        Navigator.sections.notFound.show(); // TODO: Сверстать homepage
+        (Navigator.sections.notFound as NotFoundBlock).show(); // TODO: Сверстать homepage
         break;
     }
   }
