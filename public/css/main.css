@@ -119,12 +119,12 @@ canvas#game {
     font-size: 60px;
 }
 
-.navbar {
+/* .navbar {
     font-size: 34px !important;
     font-variant: small-caps !important;
     font-weight: 700 !important;
     font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
-}
+} */
 
 .animated_btn {
     transition-property: transform;
@@ -142,9 +142,9 @@ canvas#game {
     font-variant: small-caps;
 }
 
-.selectRaceStyle {
+/* .selectRaceStyle {
     font-size: 34px !important;
-}
+} */
 
 .formHeader {
     text-align: center;
