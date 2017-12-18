@@ -121,9 +121,9 @@ opacity: 1;
         visibility: visible !important;
     }
 
-.ui.huge.menu{
+/* .ui.huge.menu{
     display: none !important;
-}
+} */
 
     .back{
         width:80px !important;
@@ -157,6 +157,10 @@ opacity: 1;
         visibility: visible !important;
         top:63% !important;
         left: 10% !important;
+    }
+
+    .ui.selectable.celled.table.ui__selectable__celled__table__leaderboard.man{
+        width:500px !important;
     }
 
     div.joystick-area{
