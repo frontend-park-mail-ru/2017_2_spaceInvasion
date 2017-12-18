@@ -43,8 +43,8 @@ class UserService {
     //Notification example
     swal({
       position: 'top-right',
-      width:200,
-      height: 200,
+      width: 200,
+      //      height: 200,
       type: 'error',
       title: "Can't login",
       showConfirmButton: false,

@@ -7,7 +7,6 @@ import {ConstructableStrategy, default as StrategyInterface} from '../modules/ga
 import {EVENT, SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
-var Mousetrap = require('mousetrap');
 
 class GameService extends SubscriptableMixin {
   private static instance = new GameService();

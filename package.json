@@ -18,7 +18,7 @@
     "test": "jest && eslint .",
     "fix-lint": "eslint . --fix"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/jest": "^21.1.8",
     "@types/node": "^8.5.1",
     "awesome-typescript-loader": "^3.4.0",
@@ -98,8 +98,5 @@
       "jsx",
       "json"
     ]
-  },
-  "dependencies": {
-    "express": "^4.16.2"
   }
 }
