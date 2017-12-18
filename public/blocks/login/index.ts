@@ -54,7 +54,6 @@ class LoginBlock extends Form {
       }).catch(() => {
       swal({
         position: 'top-right',
-        width: 200,
         type: 'error',
         titleText: "Can't login",
         showCloseButton: true,

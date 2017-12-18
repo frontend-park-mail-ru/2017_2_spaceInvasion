@@ -4,7 +4,6 @@ const swal = require('sweetalert2');
 function showError(message: string): void {
   swal({
     position: 'top-right',
-    width: 200,
     type: 'error',
     titleText: 'Error',
     text: message,

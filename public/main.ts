@@ -22,6 +22,7 @@ app
   .append(Navigator.sections.about)
   .append(Navigator.sections.leaderboard)
   .append(Navigator.sections.playerPage)
+  .append(Navigator.sections.notFound)
   .append(Navigator.sections.game);
 
 initThemes();
