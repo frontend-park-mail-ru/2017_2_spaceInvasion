@@ -63,7 +63,7 @@ class Router {
         break;
       default:
         // 404
-        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        Navigator.sections.notFound.show(); // TODO: Сверстать homepage
         break;
     }
   }

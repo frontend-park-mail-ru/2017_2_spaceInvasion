@@ -5,8 +5,8 @@ import {ConstructableController} from '../modules/game/controllers/controllerInt
 import {SIDE} from '../utils/constants';
 import SubscriptableMixin from './game/mixins/subscriptableMixin';
 import LoginBlock from '../blocks/login/index';
-import PNotify from '../utils/notifications';
 import Navigator from '../modules/navigator';
+const swal = require('sweetalert2');
 
 class Game extends SubscriptableMixin {
   public users: User[];
@@ -34,13 +34,10 @@ class Game extends SubscriptableMixin {
     this.destroy();
     Navigator.sections.hide();
     (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
-    new PNotify({
-      title: 'Игра окончена',
-      type: (victory ? 'success' : 'notice'),
+    swal({
+      titleText: 'Игра окончена',
+      type: (victory ? 'success' : 'info'),
       text: (victory ? 'Вы победили!' : 'Вы проиграли!'),
-      buttons: {
-        sticker: false,
-      },
     });
   }
 

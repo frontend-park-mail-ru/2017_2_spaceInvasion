@@ -6,6 +6,7 @@ import userService from '../../services/userService';
 import {showError} from '../../utils/notifications';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
+const swal = require('sweetalert2');
 
 class LoginBlock extends Form {
   constructor(el: HTMLElement) {
@@ -51,6 +52,15 @@ class LoginBlock extends Form {
         Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
         loginBtn.classList.remove('loading');
       }).catch(() => {
+      swal({
+        position: 'top-right',
+        width: 200,
+        type: 'error',
+        titleText: "Can't login",
+        showCloseButton: true,
+        showConfirmButton: false,
+        timer: 1500
+      });
       Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
       loginBtn.classList.remove('loading');
     });

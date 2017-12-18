@@ -20,7 +20,7 @@ class LeaderboardBlock extends Block {
 
   private fetchLeaderboard(el: HTMLElement): void {
     el.classList.add('ui', 'active', 'loader');
-    Http.Fetch('GET', '/leaderboard')
+    Http.Fetch('GET', '/leaderboard/top')
       .then(data => throwIfNull(data).json())
       .then((res) => {
         el.classList.remove('ui', 'active', 'loader');

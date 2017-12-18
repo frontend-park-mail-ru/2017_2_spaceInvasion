@@ -7,6 +7,7 @@ import RegistrationBlock from '../blocks/registration/index';
 import PlayerPageBlock from '../blocks/playerPage/index';
 import gameService from '../services/gameService';
 import Block from '../blocks/block/index';
+import NotFoundBlock from '../blocks/notFound/index';
 
 class Sections {
   public home: Block;
@@ -16,6 +17,7 @@ class Sections {
   public login: LoginBlock;
   public registration: RegistrationBlock;
   public playerPage: PlayerPageBlock;
+  public notFound: NotFoundBlock;
 
   constructor() {
     this.about = Block.Create('section', ['about-section'], AboutBlock);
@@ -24,6 +26,7 @@ class Sections {
     this.login = Block.Create('section', ['login-section'], LoginBlock);
     this.registration = Block.Create('section', ['registration-section'], RegistrationBlock);
     this.playerPage = Block.Create('section', ['playerpage-section'], PlayerPageBlock);
+    this.notFound = Block.Create('section', ['404-section'], NotFoundBlock);
     this.home = this.login; // TODO: Сверстать домашнюю страницу
   }
 
@@ -35,6 +38,7 @@ class Sections {
     this.registration.hide();
     this.playerPage.hide();
     this.home.hide();
+    this.notFound.hide();
 
     if (gameService.isRunning()) {
       showLeaveGameNotification();
