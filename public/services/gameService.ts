@@ -7,6 +7,7 @@ import {ConstructableStrategy, default as StrategyInterface} from '../modules/ga
 import {EVENT, SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
+var Mousetrap = require('mousetrap');
 
 class GameService extends SubscriptableMixin {
   private static instance = new GameService();
@@ -38,7 +39,9 @@ class GameService extends SubscriptableMixin {
     this.controllers = new controller;
     this.running = true;
     this.joystick = new GameJoystick();
-    this.joystick.init();
+    if(screen.width <= 1024) this.joystick.init();
+    this.buildTowerBtnInit();
+    this.shoot();
   }
 
   start(): void {
@@ -54,6 +57,21 @@ class GameService extends SubscriptableMixin {
       text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
     });
   }
+
+shoot():void{
+  const shootBtn:any = document.querySelector(".shoot_btn");
+  shootBtn.addEventListener("click",()=>{
+    console.log("shoot me!");
+  });
+}
+
+buildTowerBtnInit():void{
+  const buildTowerBtn:any = document.querySelector(".create_tower_btn");
+  var shift_on = false;
+  buildTowerBtn.addEventListener('click',()=>{
+    console.log("Build Tower HERE!");
+  });
+}
 
   gameLoop(): void {
     const diff = this.controllers.diff();

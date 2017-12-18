@@ -19,14 +19,11 @@ class LeaderboardBlock extends Block {
   }
 
   private fetchLeaderboard(el: HTMLElement): void {
-    debugger
     el.classList.add('ui', 'active', 'loader');
     Http.Fetch('GET', '/leaderboard')
       .then(data => throwIfNull(data).json())
       .then((res) => {
-        debugger;
         el.classList.remove('ui', 'active', 'loader');
-        debugger;
         el.innerHTML = leaderboardTemplate({data: res, you: userService.user});
         refreshTheme();
       }).catch(() => {

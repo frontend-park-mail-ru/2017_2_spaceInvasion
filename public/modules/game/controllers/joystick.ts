@@ -7,7 +7,7 @@ class GameJoystick implements ControllerInterface {
     
 
     private options = {
-        zone: document.querySelector(".game-section div"),                  // active zone
+        zone: document.querySelector("div.joystick-area"),                  // active zone
         color: getTheme() == 'man' ? '#2185d0' : '#00b5ad',
         size: 150,
         threshold: 0.1,               // before triggering a directional event

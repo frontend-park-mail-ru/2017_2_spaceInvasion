@@ -116,6 +116,7 @@ opacity: 1;
 @media only screen and (orientation:landscape) and (max-width:736px){
 
     .nipple.collection_0{
+        left: 10% !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
@@ -154,8 +155,26 @@ opacity: 1;
     .nipple.collection_0{
         opacity: 1 !important;
         visibility: visible !important;
-        top:87% !important;
+        top:63% !important;
+        left: 10% !important;
     }
+
+    div.joystick-area{
+        width: 130px;
+        height: 130px;
+        position: absolute;
+        left: 10%;
+        top: 77%;
+        border-radius: 65px;
+    }
+
+    .create_tower_btn{
+        display: inline-block;
+      }
+
+      .shoot_btn{
+        display: inline-block;
+      }
 
     .back{
         width:120px !important;

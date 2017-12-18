@@ -170,3 +170,41 @@ canvas#game {
 .testWidth {
     width: 100%;
 }
+
+.create_tower_btn{
+  width:130px;
+  display: none;
+  height:130px;
+  outline: none;
+  position: absolute;
+  left: 60%;
+  top:77%;
+  background-color:rgb(0, 181, 173);
+  border: none;
+  background-image: url('../images/tower_round.svg');
+  border-radius: 65px;
+}
+
+.create_tower_btn:active {
+    background-color: #83b29e;
+    transform: translateY(4px);
+  }
+
+  .shoot_btn{
+    width:130px;
+    display: none;
+    height:130px;
+    outline: none;
+    position: absolute;
+    left: 85%;
+    top:77%;
+    background-color:rgb(0, 181, 173);
+    border: none;
+    background-image: url('../images/shoot.png');
+    border-radius: 65px;
+  }
+  
+  .shoot_btn:active {
+      background-color: #83b29e;
+      transform: translateY(4px);
+    }

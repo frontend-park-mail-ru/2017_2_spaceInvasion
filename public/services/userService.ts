@@ -4,6 +4,8 @@ import {throwIfNull} from '../utils/utils';
 import Navigator from '../modules/navigator';
 import {Router} from '../modules/router';
 
+const swal = require('sweetalert2');
+
 class UserService {
   private static instance = new UserService();
   user: User | null = null;
@@ -36,6 +38,20 @@ class UserService {
   }
 
   login(username: string, password: string): Promise<User | null> {
+
+
+    //Notification example
+    swal({
+      position: 'top-right',
+      width:200,
+      height: 200,
+      type: 'error',
+      title: "Can't login",
+      showConfirmButton: false,
+      timer: 1500
+    })
+    
+    
     return Http.Fetch('POST', '/user/signin', {username, password})
       .then(data => throwIfNull(data).json())
       .then((user: User) => this.user = User.validate(user));

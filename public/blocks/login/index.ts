@@ -44,6 +44,7 @@ class LoginBlock extends Form {
             Navigator.sections.playerPage.show();
             break;
           default:
+            loginBtn.classList.remove('loading');
             showError('Internal Error');
             break;
         }
