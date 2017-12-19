@@ -87,6 +87,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     // Common events
     webSocketService.subscribe(2, this.onCollision.bind(this)); // Collision
     webSocketService.subscribe(11, this.onCoinSpawned.bind(this)); // Coin spawned
+    webSocketService.subscribe(12, () => {}); // Ping
 
     // Opponent events
     webSocketService.subscribe(3, this.onMove.bind(this)); // Move
