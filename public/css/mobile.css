@@ -1,8 +1,9 @@
 @media only screen and (max-width: 440px){
     .ui.huge.menu{
-        width: 750px;
-        font-size: large;
-        height: 96px;
+        font-size: 10px !important;
+        width: 100% !important;
+        /* font-size: small !important; */
+        height: 50px !important;
     }
 
     .stopimg{
@@ -12,21 +13,23 @@
         width: 750px;
     }
     .developertitle{
-        font-size: 80px !important;
+        font-size: 50px !important;
         color: white;
     }
 
     .ui.one.column.centered.grid.ui__one__column__centered__grid__about{
-        width: 764px;
+        width: 394px !important;
     }
 
     .ui.one.column.centered.grid.one__column__login__grid{
-        width: 764px;
+        padding: 30px !important;
+        width: 394px !important;
     }
 
     .ui.card.ui__card__login {
-        width: 427px !important;
+        width: 100% !important;
         font-size: x-large !important;
+        margin-left: 15px !important;
     }
     .field{
         font-size: x-large !important;
@@ -37,7 +40,9 @@
     }
 
     .ui.one.column.centered.grid.ui__one__column__centered__grid__registration{
-        width: 764px;
+        padding: 30px !important;
+        margin-left: 15px !important;
+
     }
 
     .ui.positive.button.ui__button__register{
@@ -66,6 +71,10 @@
 
     .controls{
         width: 750px;
+    }
+
+    .ui.primary.button{
+        padding: 5px !important;
     }
 
     .ui.playagain{
@@ -111,6 +120,11 @@ opacity: 1;
 .game-section{
     width: 752px;
 }
+
+.registration-section{
+    width: 366px !important;
+}
+
 }
 
 @media only screen and (orientation:landscape) and (max-width:736px){
@@ -144,8 +158,9 @@ opacity: 1;
     .game-section{
         width: 684px;
     }
-    #game{
-        height: 100% !important;
+    canvas#game{
+        padding: 14px !important;
+        /* height: 100% !important; */
         width: 100% !important;
     }
 }
