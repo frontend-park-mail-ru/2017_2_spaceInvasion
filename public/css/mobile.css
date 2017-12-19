@@ -158,8 +158,9 @@ opacity: 1;
     .game-section{
         width: 684px;
     }
-    #game{
-        height: 100% !important;
+    canvas#game{
+        padding: 14px !important;
+        /* height: 100% !important; */
         width: 100% !important;
     }
 }
