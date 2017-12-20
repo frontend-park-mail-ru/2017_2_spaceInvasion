@@ -6,6 +6,7 @@ import {initThemes} from './modules/themes';
 import Navigator from './modules/navigator';
 import {registerServiceWorker} from './ServiceWorker';
 import navbarTemplate from './templates/navbar.pug';
+import initLocalization from './utils/localisation';
 
 const navbar = document.createElement('div');
 navbar.innerHTML = navbarTemplate();
@@ -28,4 +29,5 @@ app
 initThemes();
 registerServiceWorker();
 router.start();
+initLocalization();
 userService.fetch();
