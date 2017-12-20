@@ -1,10 +1,10 @@
-@media only screen and (max-width: 440px){
-    .ui.huge.menu{
+@media only screen and (max-width: 440px) and (min-width:375px){
+    /* .ui.huge.menu{
         font-size: 10px !important;
         width: 100% !important;
         /* font-size: small !important; */
-        height: 50px !important;
-    }
+        /* height: 50px !important; */
+    /* } */
 
     .lb.left.aligned{
         width: 500px !important;
@@ -96,9 +96,9 @@
         width: 750px;
     }
 
-    .ui.primary.button{
+    /* .ui.primary.button{
         padding: 5px !important;
-    }
+    } */
 
     .ui.playagain{
         width: 300px;
