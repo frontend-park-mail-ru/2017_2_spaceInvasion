@@ -6,6 +6,29 @@
         height: 50px !important;
     }
 
+    .lb.left.aligned{
+        width: 500px !important;
+    }
+
+    .header_shadow.lbtitle{
+        font-size: 40px !important;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard{
+        width:450px !important;
+    }
+
+    .unit_logo {
+        border-radius: 50%;
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .playerPage{
+        margin-right: 40% !important;
+        margin-top: 50px !important;
+    }
+
     .stopimg{
         width: 750px;
     }

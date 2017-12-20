@@ -7,6 +7,16 @@ section .ui.card.ui__card__login.container {
     width: 400px;
 }
 
+.unit_logo {
+    border-radius: 50%;
+    width: 350px;
+    height: 350px;
+}
+
+.playerPage{
+    margin-top: 50px;
+}
+
 section .ui.card.ui__card__registration {
     margin-top: 50px;
     width: 600px;
