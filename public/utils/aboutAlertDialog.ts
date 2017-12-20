@@ -13,16 +13,9 @@ function initDialog(): void {
   const closeDialogBtn = throwIfNull(document.querySelector('.closeBtn'));
 
   devDialog = <HTMLElement> dialog;
-  closeDialogBtn.setAttribute('style', 'color:#ffffff');
   closeDialogBtn.addEventListener('click', closeDialog);
   dialog.setAttribute('style', 'display: block !important; top: 265px;');
   dialog.classList.add('scrolling', 'transition', 'visible', 'active', 'animating', 'scale', 'in');
-}
-
-function showDialog(): void {
-  if (devDialog) {
-    devDialog.setAttribute('class', 'ui modal scrolling transition');
-  }
 }
 
 function alertDialog(): void {
@@ -54,4 +47,4 @@ function alertDialog(): void {
   });
 }
 
-export {alertDialog, showDialog, closeDialog};
+export {alertDialog, closeDialog};

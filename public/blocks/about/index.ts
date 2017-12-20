@@ -2,7 +2,7 @@ import Block from '../block/index';
 import aboutTemplate from './about.pug';
 import router from '../../modules/router';
 import Navigator from '../../modules/navigator';
-import {alertDialog, closeDialog, showDialog} from '../../utils/aboutAlertDialog';
+import {alertDialog, closeDialog} from '../../utils/aboutAlertDialog';
 
 class AboutBlock extends Block {
   show(): void {
