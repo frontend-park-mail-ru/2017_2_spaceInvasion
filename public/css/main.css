@@ -1,16 +1,15 @@
-section .ui.card.ui__card__login {
+section .ui.card.login {
     width: 600px;
     margin-top: 50px;
 }
 
-section .ui.card.ui__card__login.container {
+section .ui.card.login.container {
     width: 400px;
 }
 
-section .ui.card.ui__card__registration {
+section .ui.card.registration {
     margin-top: 50px;
     width: 600px;
-    /*height: 740px;*/
 }
 
 .ui.selectable.called.table.ui__selectable__celled__table__leaderboard {
@@ -41,7 +40,6 @@ section .ui.card.ui__card__registration {
 }
 
 .message.message__error_message {
-    /*background: #BABBBC;*/
     font-size: 20px;
     color: red;
     text-shadow: 1px 1px 2px black, 0 0 1em red;
@@ -59,55 +57,55 @@ canvas#game {
     overflow: hidden;
 }
 
-.stopmessage{
+.stopmessage {
     color: white;
     text-align: center;
 }
 
-.stopimg{
+.stopimg {
     margin-top: 100px;
     text-align: center;
 }
 
-.stopimgsrc{
+.stopimgsrc {
     width: 290px;
     height: 290px;
 }
 
-.developertitle{
+.developertitle {
     color: white;
 }
 
-.matchdetailsmessage{
-    margin-top: 0px;
+.matchdetailsmessage {
+    margin-top: 0;
     text-align: center;
     color: white;
 }
 
-.winloseimg{
+.winloseimg {
     width: 550px;
     height: 550px;
 }
 
-.matchresult{
+.matchresult {
     text-align: center;
 }
 
-.controls{
+.controls {
     text-align: center;
 }
 
-.ui.playagain{
+.ui.playagain {
     width: 150px;
     height: 50px;
 }
 
-.ui.leave{
+.ui.leave {
     width: 150px;
     height: 50px;
 }
 
-.nipple.collection_0{
+.nipple.collection_0 {
     visibility: hidden !important;
 }
 
@@ -119,13 +117,6 @@ canvas#game {
     color: black;
     font-size: 60px;
 }
-
-/* .navbar {
-    font-size: 34px !important;
-    font-variant: small-caps !important;
-    font-weight: 700 !important;
-    font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
-} */
 
 .animated_btn {
     transition-property: transform;
@@ -142,10 +133,6 @@ canvas#game {
     font-weight: 700 !important;
     font-variant: small-caps;
 }
-
-/* .selectRaceStyle {
-    font-size: 34px !important;
-} */
 
 .formHeader {
     text-align: center;
@@ -164,34 +151,29 @@ canvas#game {
     font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
 }
 
-.registerBtn{
-
-}
-
 .testWidth {
     width: 100%;
 }
 
-.create_tower_btn{
-  width:130px;
-  display: none;
-  height:130px;
-  outline: none;
-  position: absolute;
-  left: 60%;
-  top:77%;
-  background-color:rgb(0, 181, 173);
-  border: none;
-  background-image: url('../images/tower_round.svg');
-  border-radius: 65px;
+.create_tower_btn {
+    width:130px;
+    display: none;
+    height:130px;
+    outline: none;
+    position: absolute;
+    left: 60%;
+    top:77%;
+    border: none;
+    background: rgb(0, 181, 173) url('../images/tower_round.svg');
+    border-radius: 65px;
 }
 
 .create_tower_btn:active {
     background-color: #83b29e;
     transform: translateY(4px);
-  }
+}
 
-  .shoot_btn{
+.shoot_btn {
     width:130px;
     display: none;
     height:130px;
@@ -199,13 +181,16 @@ canvas#game {
     position: absolute;
     left: 85%;
     top:77%;
-    background-color:rgb(0, 181, 173);
     border: none;
-    background-image: url('../images/shoot.png');
+    background: rgb(0, 181, 173) url('../images/shoot.png');
     border-radius: 65px;
-  }
-  
-  .shoot_btn:active {
-      background-color: #83b29e;
-      transform: translateY(4px);
-    }
+}
+
+.shoot_btn:active {
+    background-color: #83b29e;
+    transform: translateY(4px);
+}
+
+.user_logo {
+    border-radius: 50%
+}

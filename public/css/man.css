@@ -6,12 +6,14 @@ body.man {
     background-size: cover;
 }
 
-.ui.button.man#signupBtn {
+.ui.button.man {
     background-color: #260058;
+    color: white;
 }
 
-.ui.submit.ui__submit__login.ui__submit__login__button.button.man {
-    background-color: #e0e1e2 none;
+.ui.button.man:hover {
+    background-color: #330570;
+    color: white;
 }
 
 .ui.table.ui__selectable__celled__table__leaderboard.man {
@@ -25,21 +27,10 @@ body.man {
     font-variant: small-caps;
 }
 
-.ui.button.ui__button__register.man {
-    background-color: #260058;
-}
-
 .navbar.man {
     background: #7180cd !important;
 }
 
-.selectRaceStyle.man {
-    background: #5763a2 !important;
-}
 .registration_form_style.man {
     background: #7180cd !important;
-}
-
-.registerBtn.man {
-    background: #260058;
 }
