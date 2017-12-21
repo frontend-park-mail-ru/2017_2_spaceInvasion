@@ -40,6 +40,7 @@ class UserService {
   login(username: string, password: string): Promise<User | null> {
     return Http.Fetch('POST', '/user/signin', {username, password})
       .then(data => throwIfNull(data).json())
+      .then(user => this.user = user);
   }
 
   isLoggedIn(): boolean {
