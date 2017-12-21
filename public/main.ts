@@ -23,7 +23,8 @@ app
   .append(Navigator.sections.leaderboard)
   .append(Navigator.sections.playerPage)
   .append(Navigator.sections.notFound)
-  .append(Navigator.sections.game);
+  .append(Navigator.sections.game)
+  .append(Navigator.sections.winlose);
 
 initThemes();
 registerServiceWorker();

@@ -51,13 +51,6 @@ class GameService extends SubscriptableMixin {
 
   join(user: User, side: SIDE): void {
     this.strategy.join(user, side);
-    swal({
-      position: 'top-right',
-      type: 'info',
-      titleText: 'Пожалуйста, подождите...',
-      text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
-      showConfirmButton: false,
-    });
   }
 
   shoot():void{
