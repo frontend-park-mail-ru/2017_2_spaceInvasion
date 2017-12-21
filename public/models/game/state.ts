@@ -18,6 +18,7 @@ class GameState {
   public coins: Coin[] = [];
   public bullets: Bullet[] = [];
   public bombs: Bomb[] = [];
+  // public mushrooms: Mushroom[] = [];
 
   static copy(state: GameState): GameState {
     const newState = new GameState();

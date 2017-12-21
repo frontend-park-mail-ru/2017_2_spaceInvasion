@@ -76,7 +76,7 @@ class SinglePlayerStrategy extends Strategy implements SubscriptableMixin, Strat
       new Bot(this.lastID += 2, oppositeSide)));
     this.state.players.forEach(p => {
       this.state.bases.push(new Base(p.unit.id, p.unit.side));
-      this.state.units.push(p.unit)
+      this.state.units.push(p.unit);
     });
 
     // Две башни противника уже стоят
