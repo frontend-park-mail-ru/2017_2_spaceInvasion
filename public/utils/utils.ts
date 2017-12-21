@@ -146,4 +146,27 @@ function getEventsByDir(dir: Coords): EVENT[] {
   return getEventsByCode(getCodeByDir(dir));
 }
 
-export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber, getOtherSide, getDirByCode, getEventsByCode, getEventsByDir};
+function whenUserTochedScreen(): Promise<boolean> {
+  const promises: Promise<boolean>[] = [];
+  if ((/(iphone|ipod|ipad|android|iemobile|blackberry|bada)/).test(navigator.userAgent.toLowerCase())) {
+    promises.push(new Promise(resolve => resolve(true)));
+  }
+
+  promises.push(new Promise(resolve => {
+    window.addEventListener('touchstart', function onFirstTouch() {
+      window.removeEventListener('touchstart', onFirstTouch, false);
+      resolve(true);
+    }, false);
+  }));
+
+  promises.push(new Promise(resolve => {
+    window.addEventListener('pointerdown', function onFirstTouch() {
+      window.removeEventListener('pointerdown', onFirstTouch, false);
+      resolve(true);
+    }, false);
+  }));
+
+  return new Promise(resolve => Promise.race(promises).then(val => resolve(val)));
+}
+
+export {whenUserTochedScreen, throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber, getOtherSide, getDirByCode, getEventsByCode, getEventsByDir};
