@@ -1,0 +1,173 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name='viewport', content='width=device-width')
+        title Space Invasion
+        link(href="/common/semantic/dist/semantic.min.css" rel="stylesheet")
+head
+  // Standard Meta
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0')
+  // Site Properties
+  title Homepage - Semantic
+  style(type='text/css').
+    .hidden.menu {
+    display: none;
+    }
+    .masthead.segment {
+    min-height: 700px;
+    padding: 1em 0em;
+    }
+    .masthead .logo.item img {
+    margin-right: 1em;
+    }
+    .masthead .ui.menu .ui.button {
+    margin-left: 0.5em;
+    }
+    .masthead h1.ui.header {
+    margin-top: 3em;
+    margin-bottom: 0em;
+    font-size: 4em;
+    font-weight: normal;
+    }
+    .masthead h2 {
+    font-size: 1.7em;
+    font-weight: normal;
+    }
+    .ui.vertical.stripe {
+    padding: 8em 0em;
+    }
+    .ui.vertical.stripe h3 {
+    font-size: 2em;
+    }
+    .ui.vertical.stripe .button+h3,
+    .ui.vertical.stripe p+h3 {
+    margin-top: 3em;
+    }
+    .ui.vertical.stripe .floated.image {
+    clear: both;
+    }
+    .ui.vertical.stripe p {
+    font-size: 1.33em;
+    }
+    .ui.vertical.stripe .horizontal.divider {
+    margin: 3em 0em;
+    }
+    .quote.stripe.segment {
+    padding: 0em;
+    }
+    .quote.stripe.segment .grid .column {
+    padding-top: 5em;
+    padding-bottom: 5em;
+    }
+    .footer.segment {
+    padding: 5em 0em;
+    }
+    .secondary.pointing.menu .toc.item {
+    display: none;
+    }
+    @media only screen and (max-width: 700px) {
+    .ui.fixed.menu {
+    display: none !important;
+    }
+    .secondary.pointing.menu .item,
+    .secondary.pointing.menu .menu {
+    display: none;
+    }
+    .secondary.pointing.menu .toc.item {
+    display: block;
+    }
+    .masthead.segment {
+    min-height: 350px;
+    }
+    .masthead h1.ui.header {
+    font-size: 2em;
+    margin-top: 1.5em;
+    }
+    .masthead h2 {
+    margin-top: 0.5em;
+    font-size: 1.5em;
+    }
+    }
+  script.
+    $(document)
+    .ready(function() {
+    // fix menu when passed
+    $('.masthead')
+    .visibility({
+    once: false,
+    onBottomPassed: function() {
+    $('.fixed.menu').transition('fade in');
+    },
+    onBottomPassedReverse: function() {
+    $('.fixed.menu').transition('fade out');
+    }
+    });
+    // create sidebar and attach to menu open
+    $('.ui.sidebar')
+    .sidebar('attach events', '.toc.item');
+    });
+  link(rel='stylesheet', type='text/css', href='chrome-extension://immhpnclomdloikkpcefncmfgjbkojmh/css/emoji.css')
+// Following Menu
+.ui.large.top.fixed.menu.transition.hidden
+  .ui.container
+    a.active.item Home
+    a.item Work
+    a.item Company
+    a.item Careers
+    .right.menu
+      .item
+        a.ui.button Log in
+      .item
+        a.ui.primary.button Sign Up
+// Sidebar Menu
+.ui.vertical.inverted.sidebar.menu.left
+  a.active.item Home
+  a.item Work
+  a.item Company
+  a.item Careers
+  a.item Login
+  a.item Signup
+// Page Contents
+.pusher
+  .ui.inverted.vertical.masthead.center.aligned.segment
+    .ui.container
+      .ui.large.secondary.inverted.pointing.menu
+        a.toc.item
+          i.sidebar.icon
+        a.active.item Главная
+        a.item Рейтинг
+        a.item О нас
+        .right.item
+          a.ui.inverted.button Войти
+          a.ui.inverted.button Регистрация
+    .ui.text.container
+      h1.ui.inverted.header Space-Inavsion
+      h2 Доминируй! Властвуй! Унижай!
+      .ui.huge.primary.button
+        | ИГРАТЬ БЕЗ РЕГИСТРАЦИИ И СМС! 
+        i.right.arrow.icon
+  .ui.vertical.stripe.segment
+    .ui.middle.aligned.stackable.grid.container
+      .row
+        .eight.wide.column
+          h3.ui.header Цель игры
+          p Три раза взорвать базу противника и остаться в живых
+          h3.ui.header Правила
+          p
+            | Ваша база находится на (правой/левой) половине поля, а
+            | ваш юнит стоит рядом с базой и ждет указаний. Чтобы заставить его ходить, воспользуйтесь стрелками
+            | или клавишами AWSD. Уворачивайтесь от файерболлов, они уменьшают ваше здоровье! Ваши очки здоровья находятся в правой верхней части экрана.
+            | Чтобы выстрелить, нажмите пробел. Файербол летит в сторону вашего движения по горизонтали. Стрелять нужно в башни противника и в самого противника.
+            | Если башня убита, то на ее месте появляется монетка. Чтобы собрать монетку, подойдите к ней. Количество ваших монеток также находится в (правой/левой) верхней части экрана.
+            | Игра заканчивается, когда база противника убита 3 раза. Чтобы убить базу противника, взорвите на ней бомбу.
+            | Чтобы поставить бомбу, просто зайдите на базу.
+            | Также у вас есть возможность ставить свои башни. Башни можно ставить только на вашей (правой/левой) половине.
+            | Чтобы поставить башню нажмите Shift, башня появится там же, где стоит ваш юнит.
+        .six.wide.right.floated.column
+          img.ui.large.bordered.rounded.image(src='images/cartoon-moon_red.png',style="max-width:50% !important;")
+      .row
+        .center.aligned.column
+          a.ui.huge.button(style='visibility:  hidden;') ПОДРОБНЕЕ
