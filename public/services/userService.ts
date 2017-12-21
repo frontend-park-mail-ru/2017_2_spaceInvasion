@@ -2,9 +2,7 @@ import Http from '../modules/http';
 import User from '../models/user';
 import {throwIfNull} from '../utils/utils';
 import Navigator from '../modules/navigator';
-import {Router} from '../modules/router';
-
-const swal = require('sweetalert2');
+import router from '../modules/router';
 
 class UserService {
   private static instance = new UserService();
@@ -23,38 +21,25 @@ class UserService {
     return Http.Fetch('POST', '/user/logout');
   }
 
-  register(email: string, username: string, password: string): Promise<User | null> {
+  register(email: string, username: string, password: string): Promise<any> {
     return Http.Fetch('POST', '/user/signup', {email, username, password})
       .then(data => throwIfNull(data).json())
-      .then((user: User) => {
-        this.user = user;
-        if (this.user.username && !this.users.find((el: User) => {
-            return this.user !== null && el.username === this.user.username;
-          })) {
-          this.users.push(this.user);
+      .then(data => {
+        if (data.status === undefined) {
+          this.user = data;
+          if (this.user && this.user.username && !this.users.find((el: User) => {
+              return this.user !== null && el.username === this.user.username;
+            })) {
+            this.users.push(this.user);
+          }
         }
-        return this.user;
+        return data;
       });
   }
 
   login(username: string, password: string): Promise<User | null> {
-
-
-    //Notification example
-    swal({
-      position: 'top-right',
-      width: 200,
-      //      height: 200,
-      type: 'error',
-      title: "Can't login",
-      showConfirmButton: false,
-      timer: 1500
-    })
-    
-    
     return Http.Fetch('POST', '/user/signin', {username, password})
       .then(data => throwIfNull(data).json())
-      .then((user: User) => this.user = User.validate(user));
   }
 
   isLoggedIn(): boolean {
@@ -65,20 +50,26 @@ class UserService {
     Http.Fetch('GET', '/user')
       .then(data => throwIfNull(data).json())
       .then(data => {
-        if (data.result !== 'Unauthorized') {
+        if (data.status !== 'bad request') {
           this.user = data;
         }
         Navigator.sections.hide();
-        Router.route();
+        router.route();
       }).catch(() => {
         Navigator.sections.hide();
-        Router.route();
+        router.route();
       });
   }
 
   static getUser(id: number): Promise<User> {
     return Http.Fetch('GET', '/user/' + id)
-      .then(data => throwIfNull(data).json());
+      .then(data => throwIfNull(data).json())
+      .then(data => {
+        if (data.status === 'not found') {
+          throw Error('User not found: ' + id);
+        }
+        return data;
+      });
   }
 }
 

@@ -1,4 +1,4 @@
-import {dismissAllMessages, default as PNotify} from '../utils/notifications';
+import {dismissAllMessages} from '../utils/notifications';
 import User from '../models/user';
 import GameScene from '../models/game/gameScene';
 import GameJoystick from '../modules/game/controllers/joystick'
@@ -7,6 +7,7 @@ import {ConstructableStrategy, default as StrategyInterface} from '../modules/ga
 import {EVENT, SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
+const swal = require('sweetalert2');
 
 class GameService extends SubscriptableMixin {
   private static instance = new GameService();
@@ -50,27 +51,21 @@ class GameService extends SubscriptableMixin {
 
   join(user: User, side: SIDE): void {
     this.strategy.join(user, side);
-    new PNotify({
-      title: 'Пожалуйста, подождите...',
-      type: 'notice',
-      text: 'Подождите, пока другой игрок зайдёт в игру против Вас...',
+  }
+
+  shoot():void{
+    const shootBtn:any = document.querySelector(".shoot_btn");
+    shootBtn.addEventListener("click",()=>{
+      console.log("shoot me!");
     });
   }
 
-shoot():void{
-  const shootBtn:any = document.querySelector(".shoot_btn");
-  shootBtn.addEventListener("click",()=>{
-    console.log("shoot me!");
-  });
-}
-
-buildTowerBtnInit():void{
-  const buildTowerBtn:any = document.querySelector(".create_tower_btn");
-  var shift_on = false;
-  buildTowerBtn.addEventListener('click',()=>{
-    console.log("Build Tower HERE!");
-  });
-}
+  buildTowerBtnInit():void{
+    const buildTowerBtn:any = document.querySelector(".create_tower_btn");
+    buildTowerBtn.addEventListener('click',()=>{
+      console.log("Build Tower HERE!");
+    });
+  }
 
   gameLoop(): void {
     const diff = this.controllers.diff();
@@ -79,8 +74,8 @@ buildTowerBtnInit():void{
       try {
         emitter.emit('Strategy.onNewCommand', cmd);
       } catch (e) {
-        new PNotify({
-          title: 'Не получилось выполнить действие',
+        swal({
+          titleText: 'Не получилось выполнить действие',
           type: 'error',
           text: e.message
         });

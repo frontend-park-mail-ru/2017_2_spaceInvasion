@@ -1,10 +1,10 @@
 import {SIDE, WEB_SOCKETS_BASE_URL, MAX_EVENTS} from '../utils/constants';
 import emitter from '../modules/emitter';
-import PNotify from '../utils/notifications';
 import userService from './userService';
 import {getTheme} from '../modules/themes';
 import Strategy from '../modules/game/strateges/strategy';
 import {isNumber} from '../utils/utils';
+const swal = require('sweetalert2');
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
@@ -52,10 +52,10 @@ class WebSocketsService {
       let victory = false;
       if (!event.wasClean) {
         // Error on server side
-        new PNotify({
-          title: 'Server is unavailable',
+        swal({
+          titleText: 'Server is unavailable',
           type: 'error',
-          message: `${event.reason} (${event.code})`
+          text: `${event.reason} (${event.code})`
         });
       }
       // You are lose, because you are disconnected
@@ -133,10 +133,10 @@ class WebSocketsService {
   }
 
   private static error(): void {
-    new PNotify({
-      title: 'Error occurred',
+    swal({
+      titleText: 'Error occurred',
       type: 'error',
-      message: 'Protocol Error'
+      text: 'Protocol Error'
     });
   }
 }

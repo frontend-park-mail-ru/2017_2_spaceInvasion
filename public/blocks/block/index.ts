@@ -1,3 +1,5 @@
+import {refreshTheme} from '../../modules/themes';
+
 /**
  * Базовый класс блока
  * @module Block
@@ -74,6 +76,7 @@ class Block {
   show(): void {
     this.el.removeAttribute('hidden');
     this.childrens.forEach(ch => ch.show());
+    refreshTheme();
   }
 
   /**

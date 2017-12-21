@@ -4,8 +4,6 @@ import User from './user';
 import {ConstructableController} from '../modules/game/controllers/controllerInterface';
 import {SIDE} from '../utils/constants';
 import SubscriptableMixin from './game/mixins/subscriptableMixin';
-import LoginBlock from '../blocks/login/index';
-import PNotify from '../utils/notifications';
 import Navigator from '../modules/navigator';
 
 class Game extends SubscriptableMixin {
@@ -33,15 +31,7 @@ class Game extends SubscriptableMixin {
     const victory = data[0] as boolean;
     this.destroy();
     Navigator.sections.hide();
-    (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
-    new PNotify({
-      title: 'Игра окончена',
-      type: (victory ? 'success' : 'notice'),
-      text: (victory ? 'Вы победили!' : 'Вы проиграли!'),
-      buttons: {
-        sticker: false,
-      },
-    });
+    Navigator.sections.winlose.show(victory);
   }
 
   destroy(): void {

@@ -30,27 +30,27 @@ class LoginBlock extends Form {
     loginBtn.classList.add('loading');
     userService.login(formdata.login, formdata.password)
       .then((data: any) => {
+      console.log(data.status);
         switch (data.status) {
-          case 400:
-            if (data.result && data.result === 'Bad request') {
-              showError(data.description);
-            } else {
-              showError('Already authorized as ' + data.username || 'Guest')
-            }
+          case 'forbidden':
+            showError('Wrong login or password');
             break;
-          case 200:
+          case 'bad request':
+            showError('Already authorized as ' + (userService.user || { username: 'Guest' }).username);
+            break;
+          case undefined:
             Navigator.sections.login.reset();
-            Navigator.sections.registration.hide();
+            Navigator.sections.hide();
             Navigator.sections.playerPage.show();
             break;
           default:
-            loginBtn.classList.remove('loading');
-            showError('Internal Error');
+            showError('Sorry, something went wrong...');
             break;
         }
         Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
         loginBtn.classList.remove('loading');
       }).catch(() => {
+      showError('Sorry, something went wrong...');
       Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
       loginBtn.classList.remove('loading');
     });

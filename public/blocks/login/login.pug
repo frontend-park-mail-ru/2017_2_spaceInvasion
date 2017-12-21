@@ -1,22 +1,20 @@
-html
-body
-    .ui.one.column.centered.grid.one__column__login__grid
-        .ui.card.ui__card__login.registration_form_style
-            .content.left.aligned
-                .header.formHeader Welcome
-                .description
-                    form.ui.form.formWithValidation.formText
-                        .field(name = "loginField")
-                            span(class = "message message__error_message", hidden=true)
-                            label Login
-                            .ui.left.icon.input
-                                input(type="text", name="login", placeholder="Login",autocapitalize="off")
-                                i.user.icon
-                        .field(name = "passwordField")
-                            span(class = "message message__error_message", hidden=true)
-                            label Password
-                            .ui.left.icon.input
-                                input(type="password", name="password", placeholder="Password")
-                                i.lock.icon
-                        button.ui.submit.ui__submit__login.ui__submit__login__button.button.formText(type="submit", name="ValidateBtn") Log in
-                        .ui.error.message.message__error_message
+.ui.one.column.centered.grid
+    .ui.card.login.registration_form_style
+        .content.left.aligned
+            .header.formHeader Welcome
+            .description
+                form.ui.form.formWithValidation.formText
+                    .field(name = "loginField")
+                        span(class = "message message__error_message", hidden=true)
+                        label Login
+                        .ui.left.icon.input
+                            input(type="text", name="login", placeholder="Login")
+                            i.user.icon
+                    .field(name = "passwordField")
+                        span(class = "message message__error_message", hidden=true)
+                        label Password
+                        .ui.left.icon.input
+                            input(type="password", name="password", placeholder="Password")
+                            i.lock.icon
+                    button.ui.submit.ui__submit__login.ui__submit__login__button.button.formText(type="submit", name="ValidateBtn") Log in
+                    .ui.error.message.message__error_message

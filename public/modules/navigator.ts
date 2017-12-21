@@ -7,6 +7,9 @@ import RegistrationBlock from '../blocks/registration/index';
 import PlayerPageBlock from '../blocks/playerPage/index';
 import gameService from '../services/gameService';
 import Block from '../blocks/block/index';
+import NotFoundBlock from '../blocks/notFound/index';
+import WinLoseBlock from '../blocks/winlose/index';
+import GameBlock from '../blocks/game/index';
 
 class Sections {
   public home: Block;
@@ -16,14 +19,18 @@ class Sections {
   public login: LoginBlock;
   public registration: RegistrationBlock;
   public playerPage: PlayerPageBlock;
+  public notFound: NotFoundBlock;
+  public winlose: WinLoseBlock;
 
   constructor() {
     this.about = Block.Create('section', ['about-section'], AboutBlock);
-    this.game = Block.Create('section', ['game-section'], Block);
+    this.game = Block.Create('section', ['game-section'], Block) as GameBlock;
     this.leaderboard = Block.Create('section', ['leaderboard-section'], LeaderboardBlock);
     this.login = Block.Create('section', ['login-section'], LoginBlock);
     this.registration = Block.Create('section', ['registration-section'], RegistrationBlock);
     this.playerPage = Block.Create('section', ['playerpage-section'], PlayerPageBlock);
+    this.notFound = Block.Create('section', ['404-section'], NotFoundBlock);
+    this.winlose = Block.Create('section', ['winlose-section'], WinLoseBlock);
     this.home = this.login; // TODO: Сверстать домашнюю страницу
   }
 
@@ -34,7 +41,9 @@ class Sections {
     this.login.hide();
     this.registration.hide();
     this.playerPage.hide();
+    this.winlose.hide();
     this.home.hide();
+    this.notFound.hide();
 
     if (gameService.isRunning()) {
       showLeaveGameNotification();
@@ -81,7 +90,6 @@ class Navigator {
         break;
       case 'signupBtn':
         menu.setAttribute('data-tab', 'signup');
-        Navigator.clearSelectionOrThrow();
         Navigator.sections.registration.show();
         break;
       case 'leaderboardBtn':

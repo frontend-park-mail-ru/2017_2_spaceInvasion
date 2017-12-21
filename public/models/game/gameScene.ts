@@ -33,6 +33,7 @@ class GameScene extends SubscriptableMixin {
   }
 
   bind(): void {
+    this.canvas.hidden = false;
     this.handlers.forEach((val, key) => window.addEventListener(key, val));
   }
 

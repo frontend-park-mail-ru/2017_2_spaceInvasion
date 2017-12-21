@@ -1,150 +1,43 @@
-import {throwIfNull} from '../utils/utils';
-
-function changeThemeForMan(): void {
-  const menuItems = document.querySelectorAll('.ui.dropdown.ui__dropdown .menu div.item');
-
-  throwIfNull(document.querySelector('body')).setAttribute('class', 'man');
-  menuItems[1].classList.remove('active', 'selected');
-  menuItems[0].classList.add('active', 'selected');
-
-  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signupBtn'));
-  signUpBtn.classList.remove('alien');
-  signUpBtn.classList.add('man');
-
-  const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
-  const registerBtn = document.querySelector('.ui.button.ui__button__register');
-  const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
-  const navbar = document.querySelector('.navbar');
-  const chooseRace = document.querySelector('.selectRaceStyle');
-  const registrationForm = document.querySelector('.registration_form_style');
-  const registrationFormBtn = document.querySelector('.registerBtn');
-
-  if (loginBtn !== null) {
-    loginBtn.classList.remove('alien');
-    loginBtn.classList.add('man');
-  }
-
-  if (registerBtn !== null) {
-    registerBtn.classList.remove('alien');
-    registerBtn.classList.add('man');
-  }
-
-  if (leaderboard !== null) {
-    leaderboard.classList.remove('alien');
-    leaderboard.classList.add('man');
-  }
-
-  if (navbar !== null) {
-      navbar.classList.remove('alien');
-      navbar.classList.add('man');
-  }
-
-  if (chooseRace !== null) {
-      chooseRace.classList.remove('alien');
-      chooseRace.classList.add('man');
-  }
-
-  if (registrationForm !== null) {
-      registrationForm.classList.remove('alien');
-      registrationForm.classList.add('man');
-  }
-
-  if (registrationFormBtn !== null) {
-      registrationFormBtn.classList.remove('alien');
-      registrationFormBtn.classList.add('man');
-  }
-
-  sessionStorage.setItem('theme', 'man');
-}
-
-function changeThemeForAlien(): void {
-  const menuItems = document.querySelectorAll('.ui.dropdown.ui__dropdown.item .menu .item');
-
-  throwIfNull(document.querySelector('body')).setAttribute('class', 'alien');
-  menuItems[0].classList.remove('active', 'selected');
-  menuItems[1].classList.add('active', 'selected');
-
-  const signUpBtn = throwIfNull(document.querySelector('.ui.button#signupBtn'));
-  signUpBtn.classList.remove('man');
-  signUpBtn.classList.add('alien');
-
-  const loginBtn = document.querySelector('.ui.submit.ui__submit__login.ui__submit__login__button.button');
-  const registerBtn = document.querySelector('.ui.button.ui__button__register');
-  const leaderboard = document.querySelector('.ui__selectable__celled__table__leaderboard');
-  const navbar = document.querySelector('.navbar');
-  const chooseRace = document.querySelector('.selectRaceStyle');
-  const registrationForm = document.querySelector('.registration_form_style');
-  const registrationFormBtn = document.querySelector('.registerBtn');
-
-  if (loginBtn !== null) {
-    loginBtn.classList.remove('man');
-    loginBtn.classList.add('alien');
-  }
-
-  if (registerBtn !== null) {
-    registerBtn.classList.remove('man');
-    registerBtn.classList.add('alien');
-  }
-
-  if (leaderboard !== null) {
-    leaderboard.classList.remove('man');
-    leaderboard.classList.add('alien');
-  }
-
-  if (navbar !== null) {
-      navbar.classList.remove('man');
-      navbar.classList.add('alien');
-  }
-
-  if (chooseRace !== null) {
-      chooseRace.classList.remove('man');
-      chooseRace.classList.add('alien');
-  }
-
-  if (registrationForm !== null) {
-      registrationForm.classList.remove('man');
-      registrationForm.classList.add('alien');
-  }
-
-  if (registrationFormBtn !== null) {
-      registrationFormBtn.classList.remove('man');
-      registrationFormBtn.classList.add('alien');
-  }
-
-  sessionStorage.setItem('theme', 'alien');
-}
+const selectors = [
+  '.ui.button',
+  '.navbar',
+  '.ui__selectable__celled__table__leaderboard',
+  '.registration_form_style',
+  'body'
+];
 
 function getTheme(): string {
   return window.sessionStorage.getItem('theme') || 'man';
 }
 
-function refreshTheme(): void {
-  switch (getTheme()) {
-    case 'alien':
-      changeThemeForAlien();
-      break;
-    default: // man
-      changeThemeForMan();
-      break;
+function refreshTheme(theme?: string): void {
+  const t = theme || getTheme() || 'man';
+  const otherT = (t === 'man' ? 'alien' : 'man');
+  let menuItems = Array.from(document.querySelectorAll('.ui.dropdown.item.races .menu .item'));
+
+  if (t !== 'man') {
+    menuItems = menuItems.reverse();
   }
+  menuItems[0].classList.add('active', 'selected');
+  menuItems[1].classList.remove('active', 'selected');
+
+  selectors.forEach(sel => {
+    const elems = document.querySelectorAll(sel);
+    elems.forEach(elem => {
+      elem.classList.remove(otherT);
+      elem.classList.add(t);
+    });
+  });
+  sessionStorage.setItem('theme', t);
 }
 
 function init(): void {
   const races = document.querySelectorAll('.right.menu .ui.dropdown.ui__dropdown.item .menu .item');
   races.forEach((el: Element) => {
     el.addEventListener('click', () => {
-      switch ((el as HTMLElement).dataset['race']) {
-        case 'man':
-          changeThemeForMan();
-          break;
-        case 'alien':
-          changeThemeForAlien();
-          break;
-        default:
-          throw Error('Wrong theme identifier');
-      }
+      refreshTheme((el as HTMLElement).dataset['race']);
     });
   });
 }
 
-export {changeThemeForAlien, changeThemeForMan, getTheme, refreshTheme, init as initThemes};
+export {getTheme, refreshTheme, init as initThemes};

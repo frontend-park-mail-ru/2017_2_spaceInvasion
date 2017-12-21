@@ -1,42 +1,33 @@
 import Navigator from '../modules/navigator';
+const swal = require('sweetalert2');
 
-class PNotify {
-  constructor(data: any) {
-    console.log(data);
-  }
-
-  static removeAll(): void {
-    console.log('remove it');
-  }
+function showError(message: string): void {
+  swal({
+    type: 'error',
+    titleText: 'Error',
+    text: message,
+    showConfirmButton: false,
+    showCloseButton: true,
+    backdrop: false,
+    timer: 2000
+  });
 }
 
 function dismissAllMessages(): void {
-  PNotify.removeAll();
-}
-
-function showError(message: string): void {
-  new PNotify({
-    buttons: {
-      sticker: false
-    },
-    title: 'Error',
-    text: message,
-    type: 'error',
-  });
+  swal.close();
 }
 
 function showLeaveGameNotification(): void {
   const backToGameID = 'backToGame';
-  new PNotify({
-    title: 'Игра идёт',
+  swal({
+    backdrop: false,
+    position: 'top-right',
+    width: 200,
     type: 'info',
-    text: '<a id=' + backToGameID + '>Вернитесь в игру!</a>',
-    nonblock: {
-      nonblock: true,
-    },
-    animation: 'none',  // NOTE: Bug in PNotify (https://github.com/sciactive/pnotify/issues/241#issuecomment-340626073)
-    hide: false,
-    after_open: () => {
+    titleText: 'Игра идёт',
+    html: '<a id=' + backToGameID + '>Вернитесь в игру!</a>',
+    showConfirmButton: false,
+    onOpen: () => {
       const link = document.getElementById(backToGameID);
       if (link !== null) {
         link.addEventListener('click', Navigator.sections.game.show);
@@ -46,5 +37,4 @@ function showLeaveGameNotification(): void {
   });
 }
 
-export default PNotify;
 export {dismissAllMessages, showError, showLeaveGameNotification};

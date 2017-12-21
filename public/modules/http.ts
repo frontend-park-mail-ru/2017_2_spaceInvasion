@@ -15,7 +15,7 @@ class Http {
         'Content-Type': 'application/json; charset=utf-8',
       }),
     }).catch(() => {
-      showError('Network is unreachable. Check your internet connection');
+      showError('Server is unreachable. Check your internet connection');
       return null;
     }).then((r: Response | null) => {
       if (r && r.status >= 500) {

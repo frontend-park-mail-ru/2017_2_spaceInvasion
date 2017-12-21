@@ -18,25 +18,22 @@ abstract class GameBlock extends Block {
     dismissAllMessages();
     if (!Navigator.sections.game.ready) {
       this.el.innerHTML = gameTemplate();
+
       if (!this.game) {
         this.game = new Game(
           this.strategy,
           KeyboardController,
           <HTMLCanvasElement>throwIfNull(document.querySelector('canvas#game'))
         );
-        this.init();
-        Navigator.sections.game.ready = true;
       }
+
+      this.init();
+      Navigator.sections.game.ready = true;
     }
 
     gameService.bind();
     router.setPath('/game');
     super.show();
-  }
-
-  hide(): void {
-    gameService.unbind();
-    super.hide();
   }
 }
 
