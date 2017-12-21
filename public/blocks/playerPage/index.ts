@@ -4,16 +4,16 @@ import playerPageTemplate from './playerPage.pug';
 import {throwIfNull} from '../../utils/utils';
 import {default as router, Router} from '../../modules/router';
 import Navigator from '../../modules/navigator';
-import LoginBlock from '../login/index';
 import MultiPlayerGameBlock from '../game/multiPlayerGameBlock';
 import SinglePlayerGameBlock from '../game/singlePlayerGameBlock';
+import {getTheme} from '../../modules/themes';
 
 class PlayerPageBlock extends Block {
   private initialized = false;
 
   show(): void {
     if (!Navigator.sections.playerPage.ready) {
-      this.el.innerHTML = playerPageTemplate({user: userService.user || 'Guest'});
+      this.el.innerHTML = playerPageTemplate({theme: getTheme(), user: userService.user || {username: 'Guest'}});
       this.onLogoutBtnClick(this.el);
       this.onPlayBtnClick(this.el);
       Navigator.sections.playerPage.ready = true;
@@ -31,8 +31,7 @@ class PlayerPageBlock extends Block {
       element.removeEventListener('click', listener);
       userService.logout().then(() => {
         Navigator.sections.hide();
-        router.setPath('/');
-        Router.route();
+        router.route('/');
         element.addEventListener('click', listener);
       });
     };
@@ -50,7 +49,7 @@ class PlayerPageBlock extends Block {
         }
         Navigator.sections.game.show();
       } else {
-        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        Navigator.sections.home.show(); // TODO: Сверстать homepage
       }
     });
   }

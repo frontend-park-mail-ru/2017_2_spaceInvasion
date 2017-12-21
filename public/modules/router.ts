@@ -10,10 +10,12 @@ class Router {
   protected path: string;
   protected tabs: Array<string> = [];
 
-  static route(path ?: string): void {
+  route(path ?: string): void {
     refreshTheme();
+    Navigator.sections.hide();
 
     path = path || window.location.pathname;
+    this.setPath(path);
 
     const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
     const btnClass = (PATH_MAP.get(path) || '').toLowerCase();
@@ -80,7 +82,7 @@ class Router {
   }
 
   start(): void {
-    Router.route();
+    this.route();
 
     window.onpopstate = () => {
       let path = '';
@@ -103,7 +105,7 @@ class Router {
       }
 
       path = path || '/';
-      Router.route(path);
+      this.route(path);
     };
   }
 }

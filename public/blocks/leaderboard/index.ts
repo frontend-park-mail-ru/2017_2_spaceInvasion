@@ -6,7 +6,6 @@ import {throwIfNull} from '../../utils/utils';
 import {refreshTheme} from '../../modules/themes';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
-import { debug } from 'util';
 
 class LeaderboardBlock extends Block {
   show(): void {
