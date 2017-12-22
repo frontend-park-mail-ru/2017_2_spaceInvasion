@@ -4,3 +4,6 @@ Leaderboard=Таблица лидеров
 About=О нас
 Language=Язык
 Signup=Зарегистрироваться
+SelectRace=Выбор расы
+Man=Люди
+Alien=Твари

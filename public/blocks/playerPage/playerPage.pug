@@ -1,7 +1,7 @@
 .ui.one.column.centered.grid
   .playerPage
       h1(style='color: white') Welcome, #{user.username}
-      img.unit_logo(src='../../images/game/' + (user.side === 0 ? 'manUnitLeft.png' : 'alienUnitLeft.png'))
+      img.unit_logo(src='/images/game/' + (user.side === 0 ? 'manUnitLeft.png' : 'alienUnitLeft.png'))
       p
       p
           button.ui.button.animated_btn.rules Rules

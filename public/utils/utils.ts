@@ -153,17 +153,15 @@ function whenUserTochedScreen(): Promise<boolean> {
   }
 
   promises.push(new Promise(resolve => {
-    window.addEventListener('touchstart', function onFirstTouch() {
-      window.removeEventListener('touchstart', onFirstTouch, false);
+    window.addEventListener('touchstart', () => {
       resolve(true);
-    }, false);
+    }, {once: true});
   }));
 
   promises.push(new Promise(resolve => {
     window.addEventListener('pointerdown', function onFirstTouch() {
-      window.removeEventListener('pointerdown', onFirstTouch, false);
       resolve(true);
-    }, false);
+    }, {once: true});
   }));
 
   return new Promise(resolve => Promise.race(promises).then(val => resolve(val)));

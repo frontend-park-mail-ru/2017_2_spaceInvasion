@@ -4,8 +4,6 @@ import {debug} from 'util';
 import {getTheme} from '../../../modules/themes'
 
 class GameJoystick implements ControllerInterface {
-
-
   private options = {
     zone: document.querySelector("div.joystick-area"),                  // active zone
     color: getTheme() == 'man' ? '#2185d0' : '#00b5ad',
@@ -54,32 +52,35 @@ class GameJoystick implements ControllerInterface {
     });
     this.joystickManager.on('move', (evt: any, pad: any) => {
       var angle = pad.angle.degree;
-      if (lastKey != pad.direction.angle || angle != pad.angle.degree) {
+      if (pad.direction && lastKey != pad.direction.angle || pad.angle && angle != pad.angle.degree) {
         this.dropKeys();
       }
-      lastKey = pad.direction.angle;
-      lastDegree = angle;
-      switch (lastKey) {
-        case "up":
-          if (angle > 90 && angle < 180) document.dispatchEvent(leftMove);
-          if (angle < 90 && angle > 0) document.dispatchEvent(rightMove);
-          document.dispatchEvent(topMove);
-          break;
-        case "down":
-          if (angle > 0 && angle > 270) document.dispatchEvent(rightMove);
-          if (angle < 270 && angle > 180) document.dispatchEvent(leftMove);
-          document.dispatchEvent(bottomMove);
-          break;
-        case "left":
-          document.dispatchEvent(leftMove);
-          if (angle > 180) document.dispatchEvent(bottomMove);
-          if (angle < 180) document.dispatchEvent(topMove);
-          break;
-        case "right":
-          if (angle < 45 && angle > 0) document.dispatchEvent(topMove);
-          if (angle < 270 && angle > 315) document.dispatchEvent(bottomMove);
-          document.dispatchEvent(rightMove);
-          break;
+
+      if (pad.direction) {
+        lastKey = pad.direction.angle;
+        lastDegree = angle;
+        switch (lastKey) {
+          case "up":
+            if (angle > 90 && angle < 180) document.dispatchEvent(leftMove);
+            if (angle < 90 && angle > 0) document.dispatchEvent(rightMove);
+            document.dispatchEvent(topMove);
+            break;
+          case "down":
+            if (angle > 0 && angle > 270) document.dispatchEvent(rightMove);
+            if (angle < 270 && angle > 180) document.dispatchEvent(leftMove);
+            document.dispatchEvent(bottomMove);
+            break;
+          case "left":
+            document.dispatchEvent(leftMove);
+            if (angle > 180) document.dispatchEvent(bottomMove);
+            if (angle < 180) document.dispatchEvent(topMove);
+            break;
+          case "right":
+            if (angle < 45 && angle > 0) document.dispatchEvent(topMove);
+            if (angle < 270 && angle > 315) document.dispatchEvent(bottomMove);
+            document.dispatchEvent(rightMove);
+            break;
+        }
       }
     });
     this.joystickManager.on('end', (evt: any, pad: any) => {

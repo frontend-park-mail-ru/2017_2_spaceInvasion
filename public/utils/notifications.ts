@@ -31,7 +31,7 @@ function showLeaveGameNotification(): void {
     onOpen: () => {
       const link = document.getElementById(backToGameID);
       if (link !== null) {
-        link.addEventListener('click', Navigator.sections.game.show);
+        link.addEventListener('click', Navigator.sections.game.show.bind(Navigator.sections.game));
       }
       return true;
     }
