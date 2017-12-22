@@ -12,7 +12,6 @@ import Navigator from '../../modules/navigator';
 abstract class GameBlock extends Block {
   protected game: Game;
   protected strategy: ConstructableStrategy;
-  protected abstract init(): void;
 
   show(): void {
     dismissAllMessages();
@@ -35,6 +34,8 @@ abstract class GameBlock extends Block {
     router.setPath('/game');
     super.show();
   }
+
+  protected abstract init(): void;
 }
 
 export default GameBlock;

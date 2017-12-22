@@ -19,14 +19,11 @@ import GameState from '../../../models/game/state';
 import Tower from '../../../models/game/sprites/tower';
 import Bullet from '../../../models/game/sprites/bullet';
 
-let globalX = 0;
-let globalY = 0;
-
 class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, StrategyInterface {
-  private mySide: SIDE;
-  private joinedUserIDs: Map<number, number> = new Map;
   protected sendedState = new GameState();
   protected timer: number;
+  private mySide: SIDE;
+  private joinedUserIDs: Map<number, number> = new Map;
 
   constructor() {
     super();
@@ -55,6 +52,141 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     super.stopGameLoop();
   }
 
+  onNewCommand(...data: any[]): void {
+    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
+    const command = data[0] as EVENT;
+    switch (command) {
+      case EVENT.FIRE:
+        emitter.emit('Player.shout.' + me.unit.id);
+        this.sendToServer();
+        webSocketService.send({
+          class: 'ClientSnap',
+          request: [
+            this.lastID,
+            3, // Shout
+            getCodeByDir(me.unit.getDirection())
+          ]
+        });
+        break;
+      case EVENT.TOWER:
+        emitter.emit('Player.setTower.' + me.unit.id);
+        if (me.unit.onHisHalf()) {
+          this.sendToServer();
+          webSocketService.send({
+            class: 'ClientSnap',
+            request: [
+              this.lastID,
+              1, // Tower
+              getCodeByDir(me.unit.getDirection())
+            ]
+          });
+        }
+        break;
+      case EVENT.DOWN:
+      case EVENT.UP:
+      case EVENT.LEFT:
+      case EVENT.RIGHT:
+        emitter.emit(
+          'Player.setDirection.' + me.unit.id,
+          sumDirs(me.unit.getDirection(), mapEventDirection(command)),
+        );
+        break;
+      case EVENT.NO:
+        break;
+      default:
+        throw Error('Action is not support by SinglePlayerStrategy');
+    }
+  }
+
+  onStopCommand(...data: any[]): void {
+    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
+    const command = data[0] as EVENT;
+    switch (command) {
+      case EVENT.LEFT:
+      case EVENT.RIGHT:
+      case EVENT.DOWN:
+      case EVENT.UP:
+        // Cancel moving by this direction
+        emitter.emit(
+          'Player.setDirection.' + me.unit.id,
+          subDirs(me.unit.getDirection(), mapEventDirection(command)),
+        );
+        break;
+      case EVENT.FIRE:
+      case EVENT.TOWER:
+      case EVENT.NO:
+        // Do nothing
+        break;
+      default:
+        throw Error('Action is not support by SinglePlayerStrategy');
+    }
+  }
+
+  join(...data: any[]): boolean {
+    webSocketService.send({class: 'JoinRequest'});
+    return false;
+  }
+
+  gameLoop(): void {
+    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
+    const opponent = this.state.players.filter(p => p.unit.side === this.mySide)[0];
+
+    // Движение пуль
+    this.state.bullets.forEach(blt => {
+      blt.move();
+    });
+
+    // Движение игроков
+    const myPreveousSpeed = me.unit.getSpeed();
+    this.state.units.forEach(unit => {
+      unit.move();
+    });
+
+    // Включаем игнор клавиш, если юнит упёрся в стену
+    if (me.unit.getSpeed() === 0 && myPreveousSpeed !== 0) {
+      getEventsByDir(me.unit.getDirection())
+        .forEach(event => emitter.emit('Game.undoAction', event));
+    }
+
+    // Установка бомб
+    this.state.bases.filter(base => base.underAttack).forEach(
+      base => {
+        const bomb = new Bomb(this.lastID += 2, base);
+        bomb.cancelDestruction();
+        this.state.bombs.push(bomb);
+        webSocketService.send({
+          class: 'ClientSnap',
+          request: [
+            this.lastID,
+            2 // Bomb
+          ]
+        });
+      }
+    );
+
+    // Удаляем пропавших юнитов
+    this.state.units = this.state.units.filter(u => u.alive());
+
+    // Удаляем пропавшие пули
+    this.state.bullets = this.state.bullets.filter(blt => blt.visible);
+
+    // Удаляем пропавшие башни
+    this.state.towers = this.state.towers.filter(tower => tower.alive());
+
+    // Удаляем пропавшие монетки
+    this.state.coins = this.state.coins.filter(coin => coin.visible);
+
+    // Удаляем пропавшие бомбы
+    this.state.bombs = this.state.bombs.filter(bomb => bomb.visible);
+
+    // Проверяем, не закончилась ли игра
+    const deadBases = this.state.bases.filter(base => !base.alive());
+    if (deadBases.length > 0) {
+      emitter.emit('Game.onFinishGame', deadBases[0].side !== this.mySide);
+      return;
+    }
+  }
+
   protected sendToServer(): void {
     const me = this.sendedState.players.filter(p => p.unit.side === this.mySide)[0];
     const newMe = this.state.players.filter(p => p.unit.side === this.mySide)[0];
@@ -69,10 +201,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
           newMe.unit.getCoords().y - me.unit.getCoords().y,
         ]
       });
-
-      globalX += newMe.unit.getCoords().x - me.unit.getCoords().x;
-      globalY += newMe.unit.getCoords().y - me.unit.getCoords().y;
-      console.log(globalX, globalY);
     }
 
     this.sendedState = GameState.copy(this.state);
@@ -87,7 +215,8 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     // Common events
     webSocketService.subscribe(2, this.onCollision.bind(this)); // Collision
     webSocketService.subscribe(11, this.onCoinSpawned.bind(this)); // Coin spawned
-    webSocketService.subscribe(12, () => {}); // Ping
+    webSocketService.subscribe(12, () => {
+    }); // Ping
 
     // Opponent events
     webSocketService.subscribe(3, this.onMove.bind(this)); // Move
@@ -214,11 +343,9 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
     const sprite2 = this.state.findEntitiesByID(data[1]);
     if (sprite1 && sprite2) {
       if (sprite1 instanceof Tower) {
-        console.log('COLLISION WITH TOWER (' + data[2] + ')');
         const bullets = this.state.bullets.filter(b => b.id === sprite2.id);
         bullets.sort((b1, b2) => b1.getTime() - b2.getTime());
         const bullet = bullets[data[2] - 1];
-        console.log(bullet);
         if (!bullet) {
           return;
         }
@@ -226,7 +353,6 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
       sprite2.bumpInto(sprite1);
       sprite1.bumpInto(sprite2);
     }
-    console.log('------END COLLISION------');
   }
 
   private onJoinApproved(data: any): void {
@@ -254,142 +380,7 @@ class MultiPlayerStrategy extends Strategy implements SubscriptableMixin, Strate
         me.unit.correctCoords(coords);
         break;
       default:
-        throw Error('Internal Error')
-    }
-  }
-
-  onNewCommand(...data: any[]): void {
-    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
-    const command = data[0] as EVENT;
-    switch (command) {
-      case EVENT.FIRE:
-        emitter.emit('Player.shout.' + me.unit.id);
-        this.sendToServer();
-        webSocketService.send({
-          class: 'ClientSnap',
-          request: [
-            this.lastID,
-            3, // Shout
-            getCodeByDir(me.unit.getDirection())
-          ]
-        });
-        break;
-      case EVENT.TOWER:
-        emitter.emit('Player.setTower.' + me.unit.id);
-        if (me.unit.onHisHalf()) {
-          this.sendToServer();
-          webSocketService.send({
-            class: 'ClientSnap',
-            request: [
-              this.lastID,
-              1, // Tower
-              getCodeByDir(me.unit.getDirection())
-            ]
-          });
-        }
-        break;
-      case EVENT.DOWN:
-      case EVENT.UP:
-      case EVENT.LEFT:
-      case EVENT.RIGHT:
-        emitter.emit(
-          'Player.setDirection.' + me.unit.id,
-          sumDirs(me.unit.getDirection(), mapEventDirection(command)),
-        );
-        break;
-      case EVENT.NO:
-        break;
-      default:
-        throw Error('Action is not support by SinglePlayerStrategy');
-    }
-  }
-
-  onStopCommand(...data: any[]): void {
-    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
-    const command = data[0] as EVENT;
-    switch (command) {
-      case EVENT.LEFT:
-      case EVENT.RIGHT:
-      case EVENT.DOWN:
-      case EVENT.UP:
-        // Cancel moving by this direction
-        emitter.emit(
-          'Player.setDirection.' + me.unit.id,
-          subDirs(me.unit.getDirection(), mapEventDirection(command)),
-        );
-        break;
-      case EVENT.FIRE:
-      case EVENT.TOWER:
-      case EVENT.NO:
-        // Do nothing
-        break;
-      default:
-        throw Error('Action is not support by SinglePlayerStrategy');
-    }
-  }
-
-  join(...data: any[]): boolean {
-    webSocketService.send({class:'JoinRequest'});
-    return false;
-  }
-
-  gameLoop(): void {
-    const me = this.state.players.filter(p => p.unit.side === this.mySide)[0];
-    const opponent = this.state.players.filter(p => p.unit.side === this.mySide)[0];
-
-    // Движение пуль
-    this.state.bullets.forEach(blt => {
-      blt.move();
-    });
-
-    // Движение игроков
-    const myPreveousSpeed = me.unit.getSpeed();
-    this.state.units.forEach(unit => {
-      unit.move();
-    });
-
-    // Включаем игнор клавиш, если юнит упёрся в стену
-    if (me.unit.getSpeed() === 0 && myPreveousSpeed !== 0) {
-      getEventsByDir(me.unit.getDirection())
-        .forEach(event => emitter.emit('Game.undoAction', event));
-    }
-
-    // Установка бомб
-    this.state.bases.filter(base => base.underAttack).forEach(
-      base => {
-        const bomb = new Bomb(this.lastID += 2, base);
-        bomb.cancelDestruction();
-        this.state.bombs.push(bomb);
-        webSocketService.send({
-          class: 'ClientSnap',
-          request: [
-            this.lastID,
-            2 // Bomb
-          ]
-        });
-      }
-    );
-
-    // Удаляем пропавших юнитов
-    this.state.units = this.state.units.filter(u => u.alive());
-
-    // Удаляем пропавшие пули
-    this.state.bullets = this.state.bullets.filter(blt => blt.visible);
-
-    // Удаляем пропавшие башни
-    this.state.towers = this.state.towers.filter(tower => tower.alive());
-
-    // Удаляем пропавшие монетки
-    this.state.coins = this.state.coins.filter(coin => coin.visible);
-
-    // Удаляем пропавшие бомбы
-    this.state.bombs = this.state.bombs.filter(bomb => bomb.visible);
-
-    // Проверяем, не закончилась ли игра
-    const deadBases = this.state.bases.filter(base => !base.alive());
-    if (deadBases.length > 0) {
-      emitter.emit('Game.onFinishGame', deadBases[0].side !== this.mySide);
-      return;
+        // throw Error('Internal Error')
     }
   }
 }

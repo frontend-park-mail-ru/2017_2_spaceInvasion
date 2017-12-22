@@ -1,4 +1,4 @@
-import {throwIfNull, mapEventDirection} from '../../public/utils/utils';
+import {mapEventDirection, throwIfNull} from '../../public/utils/utils';
 import {EVENT} from '../../public/utils/constants';
 
 describe('utils', () => {

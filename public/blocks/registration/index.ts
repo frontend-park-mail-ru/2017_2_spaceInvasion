@@ -18,6 +18,13 @@ class RegistrationBlock extends Form {
       Navigator.sections.registration.onSubmitOnce(this.onSubmitRegistrationForm.bind(this));
       Navigator.sections.registration.ready = true;
     }
+
+    throwIfNull(document.querySelector('#loginLink'))
+      .addEventListener('click', () => {
+        Navigator.sections.hide();
+        Navigator.sections.login.show();
+      });
+
     router.setPath('/signup');
     super.show();
   }
@@ -36,7 +43,7 @@ class RegistrationBlock extends Form {
             showError('Wrong user data');
             break;
           case 'bad request':
-            showError('Already authorized as ' + (userService.user || { username: 'Guest' }).username);
+            showError('Already authorized as ' + (userService.user || {username: 'Guest'}).username);
             break;
           case undefined:
             Navigator.sections.registration.reset();

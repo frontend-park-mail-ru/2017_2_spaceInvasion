@@ -1,4 +1,5 @@
 import Navigator from '../modules/navigator';
+
 const swal = require('sweetalert2');
 
 function showError(message: string): void {

@@ -34,8 +34,8 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
       this.rightImagePath = UNIT.MAN_IMAGE_PATH_RIGHT;
       this.leftImagePath = UNIT.MAN_IMAGE_PATH_LEFT;
     } else {
-        this.rightImagePath = UNIT.ALIEN_IMAGE_PATH_RIGHT;
-        this.leftImagePath = UNIT.ALIEN_IMAGE_PATH_LEFT;
+      this.rightImagePath = UNIT.ALIEN_IMAGE_PATH_RIGHT;
+      this.leftImagePath = UNIT.ALIEN_IMAGE_PATH_LEFT;
     }
     this.spawn();
   }
@@ -133,11 +133,11 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
   }
 
   changeImage(direction: Coords): void {
-      if (this.direction.x < 0) {
-          this.setImage(this.leftImagePath);
-      } else if (this.direction.x > 0)  {
-          this.setImage(this.rightImagePath);
-      }
+    if (this.direction.x < 0) {
+      this.setImage(this.leftImagePath);
+    } else if (this.direction.x > 0) {
+      this.setImage(this.rightImagePath);
+    }
   }
 
   run(): void {

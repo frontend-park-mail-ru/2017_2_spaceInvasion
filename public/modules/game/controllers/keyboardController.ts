@@ -2,10 +2,10 @@ import {ACTION_MAPPER, EVENT} from '../../../utils/constants';
 import ControllerInterface from './controllerInterface';
 
 class KeyboardController implements ControllerInterface {
+  private static nextIgnoreAction: EVENT | null = null;
   protected keys = new Map<EVENT, boolean>();
   protected previousKeys = new Map<EVENT, boolean>();
   private handlers = new Map<string, (...args: any[]) => any>();
-  private static nextIgnoreAction: EVENT|null = null;
 
   protected static map(event: KeyboardEvent): EVENT {
     event.preventDefault();

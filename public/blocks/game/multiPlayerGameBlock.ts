@@ -1,6 +1,7 @@
 import GameBlock from './index';
 import webSocketService from '../../services/webSockets';
 import MultiPlayerStrategy from '../../modules/game/strateges/multiPlayerStrategy';
+
 const swal = require('sweetalert2');
 
 class MultiPlayerGameBlock extends GameBlock {

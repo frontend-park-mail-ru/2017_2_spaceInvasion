@@ -80,11 +80,11 @@ const COIN = {
 };
 
 const MUSHROOM = {
-    IMAGE_PATH: '../../../images/game/bombMushroom.png',
-    WIDTH: 100,
-    HEIGHT: 50,
-    LIFE_TIME: 1000 * 3, // Гриб живет 3 секунды
-    TICKS: 10,
+  IMAGE_PATH: '../../../images/game/bombMushroom.png',
+  WIDTH: 100,
+  HEIGHT: 50,
+  LIFE_TIME: 1000 * 3, // Гриб живет 3 секунды
+  TICKS: 10,
 };
 
 const BULLET = {

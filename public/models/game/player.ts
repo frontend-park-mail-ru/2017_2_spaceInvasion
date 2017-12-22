@@ -44,6 +44,10 @@ class Player extends SubscriptableMixin {
     this.coins -= coins;
   }
 
+  destroy(): void {
+    super.destroy();
+  }
+
   protected setTower(...data: any[]): void {
     if (this.unit.onHisHalf()) {
       let direction = this.unit.getDirection();
@@ -53,10 +57,6 @@ class Player extends SubscriptableMixin {
       this.pay(TOWER.COST);
       emitter.emit('Tower', this.unit.getCoords(), direction, this.unit.side);
     }
-  }
-
-  destroy(): void {
-    super.destroy();
   }
 }
 

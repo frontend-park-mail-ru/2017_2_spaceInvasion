@@ -10,9 +10,11 @@ import Block from '../blocks/block/index';
 import NotFoundBlock from '../blocks/notFound/index';
 import WinLoseBlock from '../blocks/winlose/index';
 import GameBlock from '../blocks/game/index';
+import HomePageBlock from '../blocks/home/index';
+import userService from '../services/userService';
 
 class Sections {
-  public home: Block;
+  public home: HomePageBlock;
   public about: AboutBlock;
   public game: Block;
   public leaderboard: LeaderboardBlock;
@@ -23,6 +25,7 @@ class Sections {
   public winlose: WinLoseBlock;
 
   constructor() {
+    this.home = Block.Create('section', ['home-section'], HomePageBlock);
     this.about = Block.Create('section', ['about-section'], AboutBlock);
     this.game = Block.Create('section', ['game-section'], Block) as GameBlock;
     this.leaderboard = Block.Create('section', ['leaderboard-section'], LeaderboardBlock);
@@ -31,7 +34,6 @@ class Sections {
     this.playerPage = Block.Create('section', ['playerpage-section'], PlayerPageBlock);
     this.notFound = Block.Create('section', ['404-section'], NotFoundBlock);
     this.winlose = Block.Create('section', ['winlose-section'], WinLoseBlock);
-    this.home = this.login; // TODO: Сверстать домашнюю страницу
   }
 
   hide(): void {
@@ -72,7 +74,7 @@ class Navigator {
 
     Navigator.clearSelectionOrThrow();
 
-    if (this.id !== 'signupBtn') {
+    if (this.id !== 'signupBtn' && this.id !== 'loginBtn') {
       Navigator.setSelectionOrThrow(this.id);
     }
 
@@ -82,11 +84,19 @@ class Navigator {
     switch (this.id) {
       case 'homeBtn':
         menu.setAttribute('data-tab', 'home');
-        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        if (userService.isLoggedIn()) {
+          Navigator.sections.playerPage.show();
+        } else {
+          Navigator.sections.home.show();
+        }
         break;
       case 'aboutBtn':
         menu.setAttribute('data-tab', 'about');
         Navigator.sections.about.show();
+        break;
+      case 'loginBtn':
+        menu.setAttribute('data-tab', 'login');
+        Navigator.sections.login.show();
         break;
       case 'signupBtn':
         menu.setAttribute('data-tab', 'signup');
@@ -114,4 +124,4 @@ class Navigator {
 }
 
 export default Navigator;
-export {Sections}
+export {Sections};

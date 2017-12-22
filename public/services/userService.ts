@@ -16,6 +16,17 @@ class UserService {
     UserService.instance = this;
   }
 
+  static getUser(id: number): Promise<User> {
+    return Http.Fetch('GET', '/user/' + id)
+      .then(data => throwIfNull(data).json())
+      .then(data => {
+        if (data.status === 'not found') {
+          throw Error('User not found: ' + id);
+        }
+        return data;
+      });
+  }
+
   logout(): Promise<Response | null> {
     this.user = null;
     return Http.Fetch('POST', '/user/logout');
@@ -40,7 +51,12 @@ class UserService {
   login(username: string, password: string): Promise<User | null> {
     return Http.Fetch('POST', '/user/signin', {username, password})
       .then(data => throwIfNull(data).json())
-      .then(user => this.user = user);
+      .then(user => {
+        if (user.status === undefined) {
+          this.user = user
+        }
+        return user;
+      });
   }
 
   isLoggedIn(): boolean {
@@ -57,20 +73,9 @@ class UserService {
         Navigator.sections.hide();
         router.route();
       }).catch(() => {
-        Navigator.sections.hide();
-        router.route();
-      });
-  }
-
-  static getUser(id: number): Promise<User> {
-    return Http.Fetch('GET', '/user/' + id)
-      .then(data => throwIfNull(data).json())
-      .then(data => {
-        if (data.status === 'not found') {
-          throw Error('User not found: ' + id);
-        }
-        return data;
-      });
+      Navigator.sections.hide();
+      router.route();
+    });
   }
 }
 

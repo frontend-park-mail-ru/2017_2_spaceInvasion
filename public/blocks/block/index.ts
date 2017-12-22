@@ -6,6 +6,7 @@ import {refreshTheme} from '../../modules/themes';
  */
 class Block {
   public ready: boolean;
+  public initialized = false;
   protected el: HTMLElement;
   protected childrens: Block[] = [];
 

@@ -1,6 +1,6 @@
-const pug = require('pug');
-const pathToIndexPug = './public/templates/index.pug';
-document.body.innerHTML = pug.renderFile(pathToIndexPug, { filename: pathToIndexPug });
+import * as fs from 'fs';
+
+document.body.innerHTML = fs.readFileSync('./public/index.htm').toString();
 
 import userService from '../../public/services/userService';
 import User from '../../public/models/user';
@@ -85,32 +85,32 @@ describe('UserService test', () => {
     // expect(userService.fetch()).toEqual(user);
   });
 
- it('login', () => {
-   refresh();
-   expect(!userService.isLoggedIn()).toBeTruthy();
-   userService.login('username', 'password').then(data => {
-     expect(data).toBeNull();
-     userService.register('email', 'username', 'password').then(data => {
-       expect(data).toEqual({
-         username: 'username', email: 'email', score: 0,
-       });
-       expect(userService.isLoggedIn()).toBeTruthy();
-     });
-   });
- });
+  it('login', () => {
+    refresh();
+    expect(!userService.isLoggedIn()).toBeTruthy();
+    userService.login('username', 'password').then(data => {
+      expect(data).toBeNull();
+      userService.register('email', 'username', 'password').then(data => {
+        expect(data).toEqual({
+          username: 'username', email: 'email', score: 0,
+        });
+        expect(userService.isLoggedIn()).toBeTruthy();
+      });
+    });
+  });
 
- it('logout', () => {
-   refresh();
-   let user: User | null = null;
-   userService.register('email', 'username', 'password')
-     .then(data => {
-       expect(user).toEqual({
-         username: 'username', email: 'email', score: 0,
-       });
-       expect(userService.isLoggedIn()).toBeTruthy();
-       expect(userService.logout()).toBeTruthy();
-       expect(!userService.isLoggedIn()).toBeTruthy();
-       expect(!userService.logout()).toBeTruthy();
-     });
- });
+  it('logout', () => {
+    refresh();
+    let user: User | null = null;
+    userService.register('email', 'username', 'password')
+      .then(data => {
+        expect(user).toEqual({
+          username: 'username', email: 'email', score: 0,
+        });
+        expect(userService.isLoggedIn()).toBeTruthy();
+        expect(userService.logout()).toBeTruthy();
+        expect(!userService.isLoggedIn()).toBeTruthy();
+        expect(!userService.logout()).toBeTruthy();
+      });
+  });
 });

@@ -18,6 +18,7 @@ class GameState {
   public coins: Coin[] = [];
   public bullets: Bullet[] = [];
   public bombs: Bomb[] = [];
+
   // public mushrooms: Mushroom[] = [];
 
   static copy(state: GameState): GameState {
@@ -33,14 +34,14 @@ class GameState {
     return newState;
   }
 
-  findEntitiesByID(ID: number): Collidable&Sprite|null {
+  findEntitiesByID(ID: number): Collidable & Sprite | null {
     return ([
       this.bases,
       this.units,
       this.towers,
       this.coins,
       this.bullets,
-    ] as (Collidable&Sprite)[][])
+    ] as (Collidable & Sprite)[][])
       .map(sprites => sprites.filter(s => s.id === ID))
       .filter(sprites => sprites.length > 0)
       .map(sprites => sprites[0])[0] || null;

@@ -208,3 +208,7 @@ canvas#game {
 .ui.pagination.menu {
     margin-bottom: 60px;
 }
+
+.ui.text.container {
+    width: auto;
+}

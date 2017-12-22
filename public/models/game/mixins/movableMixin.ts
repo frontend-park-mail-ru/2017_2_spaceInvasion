@@ -36,8 +36,8 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
         timePassed = duration;
       }
 
-      this.coords.x = startCoords.x + timePassed/duration * (coords.x - startCoords.x);
-      this.coords.y = startCoords.y + timePassed/duration * (coords.y - startCoords.y);
+      this.coords.x = startCoords.x + timePassed / duration * (coords.x - startCoords.x);
+      this.coords.y = startCoords.y + timePassed / duration * (coords.y - startCoords.y);
 
       if (timePassed < duration) {
         requestAnimationFrame(animate.bind(this));
@@ -45,6 +45,19 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
     };
 
     requestAnimationFrame(animate.bind(this));
+  }
+
+  stop(): void {
+    this.speed = 0;
+  }
+
+  getDirection(): Coords {
+    return this.direction
+  }
+
+  destroy() {
+    super.destroy();
+    this.stop();
   }
 
   protected stopIfOut(): void {
@@ -75,19 +88,6 @@ class MovableMixin extends Sprite implements SubscriptableMixin, Movable, Orient
   }
 
   protected dontMove(): void {
-    this.stop();
-  }
-
-  stop(): void {
-    this.speed = 0;
-  }
-
-  getDirection(): Coords {
-    return this.direction
-  }
-
-  destroy() {
-    super.destroy();
     this.stop();
   }
 }

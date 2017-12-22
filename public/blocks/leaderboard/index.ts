@@ -59,7 +59,11 @@ class LeaderboardBlock extends Block {
     const offset = limit - ROWS_BY_PAGE;
     return Http.Fetch('GET', `/leaderboard/page?limit=${limit}&offset=${offset}`)
       .then(data =>
-        this.el.innerHTML = leaderboardTemplate({data: data || [], you: userService.user || 'Guest', page: this.page || 1})
+        this.el.innerHTML = leaderboardTemplate({
+          data: data || [],
+          you: userService.user || 'Guest',
+          page: this.page || 1
+        })
       );
   }
 
@@ -72,10 +76,10 @@ class LeaderboardBlock extends Block {
         el.innerHTML = leaderboardTemplate({data: res, you: userService.user, page: 1});
         refreshTheme();
       }).catch(() => {
-      el.classList.remove('ui', 'active', 'loader');
-      el.innerHTML = leaderboardTemplate({data: [], you: userService.user, page: 1});
-      refreshTheme();
-    });
+        el.classList.remove('ui', 'active', 'loader');
+        el.innerHTML = leaderboardTemplate({data: [], you: userService.user, page: 1});
+        refreshTheme();
+      });
   }
 }
 

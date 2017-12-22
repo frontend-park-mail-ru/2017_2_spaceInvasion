@@ -17,8 +17,15 @@ class LoginBlock extends Form {
     if (!Navigator.sections.login.ready) {
       this.el.innerHTML = loginTemplate();
       Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
+
       Navigator.sections.login.ready = true;
     }
+
+    throwIfNull(document.querySelector('#register'))
+      .addEventListener('click', () => {
+        Navigator.sections.hide();
+        Navigator.sections.registration.show();
+      });
 
     router.setPath('/login');
     super.show();
@@ -30,13 +37,12 @@ class LoginBlock extends Form {
     loginBtn.classList.add('loading');
     userService.login(formdata.login, formdata.password)
       .then((data: any) => {
-      console.log(data.status);
         switch (data.status) {
           case 'forbidden':
             showError('Wrong login or password');
             break;
           case 'bad request':
-            showError('Already authorized as ' + (userService.user || { username: 'Guest' }).username);
+            showError('Already authorized as ' + (userService.user || {username: 'Guest'}).username);
             break;
           case undefined:
             Navigator.sections.login.reset();

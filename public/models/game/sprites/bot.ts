@@ -27,8 +27,20 @@ class Bot extends Unit implements SubscriptableMixin, MovableMixin, Destructible
     this.towerTimer = window.setInterval(this.setTower.bind(this), BOT.TOWER_SPEED);
   }
 
-  protected setRandomTower(): void {
-    emitter.emit('Tower.random', this.side);
+  static copy(bot: Bot): Bot {
+    const newBot = new Bot(bot.id, bot.side);
+    newBot.coords = Coords.copy(bot.coords);
+    newBot._damage = bot._damage;
+    newBot.health = bot.health;
+    newBot.visible = bot.visible;
+    newBot.direction = Coords.copy(bot.direction);
+    newBot.handlers = new Map(bot.handlers);
+    newBot.speed = bot.speed;
+    newBot.cancel();
+    newBot.shoutTimer = bot.shoutTimer;
+    newBot.randomTowerTimer = bot.randomTowerTimer;
+    newBot.towerTimer = bot.towerTimer;
+    return newBot;
   }
 
   spawn(): void {
@@ -63,20 +75,8 @@ class Bot extends Unit implements SubscriptableMixin, MovableMixin, Destructible
     super.destroy();
   }
 
-  static copy(bot: Bot): Bot {
-    const newBot = new Bot(bot.id, bot.side);
-    newBot.coords = Coords.copy(bot.coords);
-    newBot._damage = bot._damage;
-    newBot.health = bot.health;
-    newBot.visible = bot.visible;
-    newBot.direction = Coords.copy(bot.direction);
-    newBot.handlers = new Map(bot.handlers);
-    newBot.speed = bot.speed;
-    newBot.cancel();
-    newBot.shoutTimer = bot.shoutTimer;
-    newBot.randomTowerTimer = bot.randomTowerTimer;
-    newBot.towerTimer = bot.towerTimer;
-    return newBot;
+  protected setRandomTower(): void {
+    emitter.emit('Tower.random', this.side);
   }
 
   protected setTower(): void {

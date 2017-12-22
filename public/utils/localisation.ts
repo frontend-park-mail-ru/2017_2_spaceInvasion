@@ -1,7 +1,7 @@
 import {throwIfNull} from './utils';
 
 type Language = {
-  elem: Element|null,
+  elem: Element | null,
   className: string,
   language: string,
   locale: string

@@ -30,16 +30,8 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
     this.subscribe('Strategy.width', () => this.width); // --No arguments--
   }
 
-  private emitterInit(): void {
-    // Subscribes
-    this.subscribe('Strategy.onNewCommand', this.onNewCommand.bind(this)); // command: EVENT
-    this.subscribe('Strategy.onStopCommand', this.onStopCommand.bind(this)); // command: EVENT
-    this.subscribe('Bullet', this.newBullet.bind(this)); // direction: Coords, coords: Coords, source: Shootable
-    this.subscribe('Tower', this.setTower.bind(this)); // coords: Coords, direction: Coords, side: SIDE
-    this.subscribe('Tower.random', this.setRandomTower.bind(this)); // --No arguments--
-  }
-
   abstract onNewCommand(...data: any[]): void;
+
   abstract onStopCommand(...data: any[]): void;
 
   abstract join(...data: any[]): boolean;
@@ -104,6 +96,15 @@ abstract class Strategy extends SubscriptableMixin implements StrategyInterface 
   }
 
   protected abstract gameLoop(): void;
+
+  private emitterInit(): void {
+    // Subscribes
+    this.subscribe('Strategy.onNewCommand', this.onNewCommand.bind(this)); // command: EVENT
+    this.subscribe('Strategy.onStopCommand', this.onStopCommand.bind(this)); // command: EVENT
+    this.subscribe('Bullet', this.newBullet.bind(this)); // direction: Coords, coords: Coords, source: Shootable
+    this.subscribe('Tower', this.setTower.bind(this)); // coords: Coords, direction: Coords, side: SIDE
+    this.subscribe('Tower.random', this.setRandomTower.bind(this)); // --No arguments--
+  }
 }
 
 export default Strategy;

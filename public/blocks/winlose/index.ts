@@ -2,7 +2,6 @@ import Block from '../block/index';
 import Navigator from '../../modules/navigator';
 import winloseTemplate from './winlose.pug';
 import {throwIfNull} from '../../utils/utils';
-import LoginBlock from '../login/index';
 
 class WinLoseBlock extends Block {
   show(victory?: boolean): void {
@@ -18,7 +17,7 @@ class WinLoseBlock extends Block {
       throwIfNull(document.querySelector('.ui.button.leave'))
         .addEventListener('click', () => {
           Navigator.sections.hide();
-          (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+          Navigator.sections.playerPage.show();
         });
 
       Navigator.sections.winlose.ready = true;

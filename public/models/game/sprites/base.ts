@@ -9,8 +9,8 @@ import emitter from '../../../modules/emitter';
 
 export default class Base extends Sprite implements Destructible, Collidable, Rect {
   public readonly side: SIDE;
-  protected health = BASE.HEALTH;
   public underAttack = false;
+  protected health = BASE.HEALTH;
 
   constructor(id: number, side: SIDE) {
     super(
@@ -23,6 +23,16 @@ export default class Base extends Sprite implements Destructible, Collidable, Re
 
     this.coords = this.getCoordsBySide(side);
     this.side = side;
+  }
+
+  static copy(base: Base): Base {
+    const newBase = new Base(base.id, base.side);
+    newBase.visible = base.visible;
+    newBase.handlers = new Map(base.handlers);
+    newBase.coords = Coords.copy(base.coords);
+    newBase.health = base.health;
+    newBase.underAttack = base.underAttack;
+    return newBase;
   }
 
   destroy(): void {
@@ -48,16 +58,6 @@ export default class Base extends Sprite implements Destructible, Collidable, Re
     if (obj instanceof Unit && obj.side !== this.side) {
       this.underAttack = true;
     }
-  }
-
-  static copy(base: Base): Base {
-    const newBase = new Base(base.id, base.side);
-    newBase.visible = base.visible;
-    newBase.handlers = new Map(base.handlers);
-    newBase.coords = Coords.copy(base.coords);
-    newBase.health = base.health;
-    newBase.underAttack = base.underAttack;
-    return newBase;
   }
 
   private getCoordsBySide(side: SIDE): Coords {

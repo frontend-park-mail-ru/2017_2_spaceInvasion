@@ -5,6 +5,7 @@ import {ConstructableController} from '../modules/game/controllers/controllerInt
 import {SIDE} from '../utils/constants';
 import SubscriptableMixin from './game/mixins/subscriptableMixin';
 import Navigator from '../modules/navigator';
+import {dismissAllMessages} from '../utils/notifications';
 
 class Game extends SubscriptableMixin {
   public users: User[];
@@ -28,6 +29,7 @@ class Game extends SubscriptableMixin {
   }
 
   onFinishGame(...data: any[]): void {
+    dismissAllMessages();
     const victory = data[0] as boolean;
     this.destroy();
     Navigator.sections.hide();

@@ -7,10 +7,9 @@ import {ConstructableStrategy, default as StrategyInterface} from '../modules/ga
 import {EVENT, SIDE} from '../utils/constants';
 import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
-import { emit } from 'cluster';
-import Coords from '../models/game/coords';
 import userService from '../services/userService';
 import {throwIfNull} from '../utils/utils';
+
 const swal = require('sweetalert2');
 
 class GameService extends SubscriptableMixin {
@@ -43,7 +42,7 @@ class GameService extends SubscriptableMixin {
     this.controllers = new controller;
     this.running = true;
     this.joystick = new GameJoystick();
-    if(screen.width <= 1024) this.joystick.init();
+    this.joystick.init();
     this.buildTowerBtnInit();
     this.shoot();
   }
@@ -57,17 +56,17 @@ class GameService extends SubscriptableMixin {
     this.strategy.join(user, side);
   }
 
-  shoot():void{
-    const shootBtn:any = document.querySelector(".shoot_btn");
+  shoot(): void {
+    const shootBtn: any = document.querySelector(".shoot_btn");
     shootBtn.addEventListener("click", () => {
       const me = this.strategy.getState().players.filter(p => p.user.id === throwIfNull(userService.user).id)[0].unit;
       emitter.emit("Player.shout." + me.id);
     });
   }
 
-  buildTowerBtnInit():void{
-    const buildTowerBtn:any = document.querySelector(".create_tower_btn");
-    buildTowerBtn.addEventListener('click',()=>{
+  buildTowerBtnInit(): void {
+    const buildTowerBtn: any = document.querySelector(".create_tower_btn");
+    buildTowerBtn.addEventListener('click', () => {
       const me = this.strategy.getState().players.filter(p => p.user.id === throwIfNull(userService.user).id)[0].unit;
       emitter.emit("Player.setTower." + me.id);
     });

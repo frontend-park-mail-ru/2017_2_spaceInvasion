@@ -1,13 +1,9 @@
-import {AREA, DEFAULT_FONT, HALF_LINE_COLOR, HALF_LINE_WIDTH, SIDE, TOWER, UNIT} from '../../utils/constants';
+import {AREA, DEFAULT_FONT, HALF_LINE_COLOR, HALF_LINE_WIDTH, SIDE, UNIT} from '../../utils/constants';
 import GameState from './state';
 import {throwIfNull} from '../../utils/utils';
-import Tower from './sprites/tower';
 import Destructible from './interfaces/destructible';
-import resize from '../../utils/imageResizer';
 import emitter from '../../modules/emitter';
 import SubscriptableMixin from './mixins/subscriptableMixin';
-import Mushroom from './sprites/mushroom';
-import Coords from './coords';
 import Sprite from "./sprites/sprite";
 
 class GameScene extends SubscriptableMixin {
@@ -51,12 +47,8 @@ class GameScene extends SubscriptableMixin {
   }
 
   render(state: GameState): void {
-    // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.renderBackground();
     this.renderHalfLine();
-
-    // this.ctx.scale(this.aspectRatio, this.aspectRatio);
 
     this.renderBases(state);
     this.renderTowers(state);
@@ -66,8 +58,6 @@ class GameScene extends SubscriptableMixin {
     this.renderBombs(state);
     this.renderText(state);
     // this.renderMushroom(state);
-
-    // this.ctx.scale(1 / this.aspectRatio, 1 / this.aspectRatio);
   }
 
   destroy(): void {
@@ -117,8 +107,10 @@ class GameScene extends SubscriptableMixin {
   }
 
   private renderUnits(state: GameState): void {
-    state.units.forEach(unit => {unit.render(this.ctx);
-    this.renderHealth(unit);})
+    state.units.forEach(unit => {
+      unit.render(this.ctx);
+      this.renderHealth(unit);
+    })
   }
 
   private renderTowers(state: GameState): void {
@@ -171,7 +163,6 @@ class GameScene extends SubscriptableMixin {
   }
 
 
-
   private renderBombs(state: GameState) {
     state.bombs.forEach((bomb, i) => {
       const text = `Bomb ${i + 1}: ${bomb.getTime()}`;
@@ -184,12 +175,10 @@ class GameScene extends SubscriptableMixin {
   // private renderMushroom(state: GameState) {
   //
   //     state.bombs.forEach((bomb, i) => {
-  //       console.log(bomb.getCoords());
   //       let coords = bomb.getCoords();
   //
   //       if (bomb.getTime() === 3){
   //         const m = new Mushroom(1, new Coords);
-  //         console.log(m);
   //       }
   //     });
   //   this.ctx.globalAlpha = 1;
@@ -202,20 +191,20 @@ class GameScene extends SubscriptableMixin {
   }
 
   private renderHealth(sprite: Destructible & Sprite) {
-      this.ctx.strokeStyle = 'red';
-      this.ctx.lineWidth = 4;
+    this.ctx.strokeStyle = 'red';
+    this.ctx.lineWidth = 4;
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(
-          (sprite.getCoords().x - sprite.getWidth() / 2) * this.aspectRatio,
-          (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
-      );
-      this.ctx.lineTo(
-          (sprite.getCoords().x - sprite.getWidth() / 2 + sprite.getWidth() * (sprite.getHealth() / UNIT.HEALTH)) * this.aspectRatio,
-          (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
-      );
-      this.ctx.stroke();
-      this.clearStyle();
+    this.ctx.beginPath();
+    this.ctx.moveTo(
+      (sprite.getCoords().x - sprite.getWidth() / 2) * this.aspectRatio,
+      (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
+    );
+    this.ctx.lineTo(
+      (sprite.getCoords().x - sprite.getWidth() / 2 + sprite.getWidth() * (sprite.getHealth() / UNIT.HEALTH)) * this.aspectRatio,
+      (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
+    );
+    this.ctx.stroke();
+    this.clearStyle();
   }
 
 }
