@@ -15,17 +15,17 @@ abstract class Form extends Block {
     return false;
   }
 
-  static validation(arr: HTMLFormControlsCollection, form: HTMLElement,
+  static validation(collection: HTMLFormControlsCollection, form: HTMLElement,
                     rules: Rules): number {
     let errCount = 0;
     let errorMessages: string[] = [];
     let pass: string | null = null;
 
-    for (let i = 0; i < arr.length; i += 1) {
-      const name = (arr[i] as HTMLInputElement).name;
-      const value = (arr[i] as HTMLInputElement).value;
+    Array.from(collection).forEach(el => {
+      const name = (el as HTMLInputElement).name;
+      const value = (el as HTMLInputElement).value;
       if (!name) {
-        continue;
+        return;
       }
 
       errorMessages = Form.validateField(value, rules.get(name) || []);
@@ -33,17 +33,17 @@ abstract class Form extends Block {
       if (name === 'repeatedPassword' || name === 'password') {
         if (pass !== null && pass !== value) {
           errorMessages.push(`Password doesn't match`);
-          throwIfNull(<Element>arr.namedItem('repeatedPassword')).classList.add('errorBorder');
+          throwIfNull(<Element>collection.namedItem('repeatedPassword')).classList.add('errorBorder');
         } else if (pass === null) {
           pass = value;
         }
       }
 
       if (errorMessages.length !== 0) {
-        Form.appendErrors(errorMessages, arr[i] as HTMLInputElement, form as HTMLFormElement);
+        Form.appendErrors(errorMessages, el as HTMLInputElement, form as HTMLFormElement);
         errCount += errorMessages.length;
       }
-    }
+    });
 
     return errCount;
   }
@@ -75,13 +75,13 @@ abstract class Form extends Block {
       const errors = Form.validation(elements, this.el, this.rules);
 
       if (!errors) {
-        for (let i = 0; i < elements.length; i += 1) {
-          const name = (elements[i] as HTMLInputElement).name;
-          const value = (elements[i] as HTMLInputElement).value;
+        Array.from(elements).forEach(el => {
+          const name = (el as HTMLInputElement).name;
+          const value = (el as HTMLInputElement).value;
           if (name !== 'ValidateBtn' && name !== 'repeatedPassword') {
             data[name] = value;
           }
-        }
+        });
 
         callback(data);
         this.el.removeEventListener('submit', bindedListener);

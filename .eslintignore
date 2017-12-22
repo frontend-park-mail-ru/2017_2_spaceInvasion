@@ -7,11 +7,5 @@ node_modules
 # Bundle
 **/dist/**
 
-# Common files
-**/common/**
-
-# PNotify
-**/pnotify*
-
 # Coverage
 **/coverage/**
