@@ -16,7 +16,7 @@ before_install:
 - ssh-add /tmp/deploy_rsa
 deploy:
   provider: script
-  script: "./deploy/bin/deploy"
+  script: ./deploy/bin/deploy.sh
   on:
     tags: true
     all_branches: true
