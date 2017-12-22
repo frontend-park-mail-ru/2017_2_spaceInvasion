@@ -4,3 +4,6 @@ Leaderboard=Leaderboard
 About=About
 Language=Language
 Signup=Sign up
+SelectRace=Select race
+Man=Man
+Alien=Alien
