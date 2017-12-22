@@ -1,8 +1,9 @@
 # Space Invasion the browser multiplayer MMORTS-shooter game
 
 [![Build Status](http://img.shields.io/travis/Nikita-Boyarskikh/SpaceInvasionFrontend.svg?style=flat-square)](https://travis-ci.org/Nikita-Boyarskikh/SpaceInvasionFrontend)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e9f4c132945c27002140/test_coverage)](https://codeclimate.com/github/Nikita-Boyarskikh/SpaceInvasionFrontend/test_coverage)
 [![Coverage Status](https://coveralls.io/repos/github/Nikita-Boyarskikh/SpaceInvasionFrontend/badge.svg?branch=master)](https://coveralls.io/github/Nikita-Boyarskikh/SpaceInvasionFrontend?branch=master)
-[![Code Climate](http://img.shields.io/codeclimate/github/Nikita-Boyarskikh/SpaceInvasionFrontend.svg?style=flat-square)](https://codeclimate.com/github/Nikita-Boyarskikh/SpaceInvasionFrontend)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e9f4c132945c27002140/maintainability)](https://codeclimate.com/github/Nikita-Boyarskikh/SpaceInvasionFrontend/maintainability)
 [![Github Issues](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/issues)
 [![Pending Pull-Requests](http://githubbadges.herokuapp.com/Nikita-Boyarskikh/SpaceInvasionFrontend/pulls.svg?style=flat-square)](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/pulls)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
@@ -23,6 +24,7 @@
     - [Backend](#backend)
 - [Copyright and license](#copyright-and-license)
 
+![SpaceInvasion](https://github.com/Nikita-Boyarskikh/SpaceInvasionFrontend/raw/master/public/images/mainPage.jpg)
 
 ## Story
 
@@ -45,73 +47,177 @@ npm test && npm start
 ```
 SpaceInvasionFrontend
 ├── LICENSE
-├── Procfile
 ├── README.md
-├── app.js
-├── bin
+├── declarations.d.ts
+├── deploy
+│   ├── Dockerfile
+│   ├── bin
+│   │   ├── deploy.sh
+│   │   └── gen_nginx_config
+│   ├── conf
+│   │   ├── config.ini
+│   │   ├── nginx.conf
+│   │   └── proxy_params
+│   ├── crontab
+│   └── deploy_rsa.enc
 ├── hooks
 │   └── pre-commit
 ├── mocks
-├── package-lock.json
+│   ├── emptyProcessor.js
+│   ├── init.js
+│   └── pugProcessor.js
 ├── package.json
 ├── public
+│   ├── ServiceWorker.ts
 │   ├── blocks
 │   │   ├── about
 │   │   │   ├── about.pug
-│   │   │   └── index.js
+│   │   │   └── index.ts
 │   │   ├── block
-│   │   │   └── index.js
+│   │   │   └── index.ts
 │   │   ├── form
-│   │   │   └── index.js
+│   │   │   └── index.ts
+│   │   ├── game
+│   │   │   ├── game.pug
+│   │   │   ├── index.ts
+│   │   │   ├── multiPlayerGameBlock.ts
+│   │   │   └── singlePlayerGameBlock.ts
+│   │   ├── home
+│   │   │   ├── homepage.pug
+│   │   │   └── index.ts
 │   │   ├── leaderboard
-│   │   │   ├── index.js
-│   │   │   └── leaderboard.pug
+│   │   │   ├── index.ts
+│   │   │   ├── leaderboard.pug
+│   │   │   └── pagination.pug
 │   │   ├── login
-│   │   │   ├── index.js
+│   │   │   ├── index.ts
 │   │   │   └── login.pug
+│   │   ├── notFound
+│   │   │   ├── 404.pug
+│   │   │   └── index.ts
 │   │   ├── playerPage
-│   │   │   ├── index.js
-│   │   │   ├── playerPage.pug
-│   │   │   └── templates
-│   │   │       ├── friendList.pug
-│   │   │       ├── matchesTable.pug
-│   │   │       └── playerStats.pug
-│   │   └── registration
-│   │       ├── index.js
-│   │       └── registration.pug
+│   │   │   ├── index.ts
+│   │   │   └── playerPage.pug
+│   │   ├── registration
+│   │   │   ├── index.ts
+│   │   │   └── registration.pug
+│   │   └── winlose
+│   │       ├── index.ts
+│   │       └── winlose.pug
 │   ├── css
+│   │   ├── alien.css
 │   │   ├── main.css
-│   │   └── pnotify.custom.min.css
+│   │   ├── man.css
+│   │   └── mobile.css
 │   ├── images
 │   │   ├── background.jpg
 │   │   ├── background2.jpg
+│   │   ├── cartoon-moon.png
+│   │   ├── cartoon-moon_blue.png
+│   │   ├── cartoon-moon_green.png
+│   │   ├── cartoon-moon_red.png
 │   │   ├── egor_kurakov.jpg
+│   │   ├── game
+│   │   │   ├── alienUnitLeft.png
+│   │   │   ├── alienUnitRight.png
+│   │   │   ├── base.png
+│   │   │   ├── bomb.png
+│   │   │   ├── bombMushroom.png
+│   │   │   ├── bullet.png
+│   │   │   ├── coin.png
+│   │   │   ├── defeat.png
+│   │   │   ├── manUnitLeft.png
+│   │   │   ├── manUnitRight.png
+│   │   │   ├── moonBackground.png
+│   │   │   ├── tower.png
+│   │   │   └── victory.png
+│   │   ├── mainPage.jpg
+│   │   ├── moonBackground.png
+│   │   ├── moonBackground_1440x824.png
 │   │   ├── nikita_boyarskikh.jpg
 │   │   ├── none.png
 │   │   ├── olga_surikova.jpg
+│   │   ├── shoot.png
+│   │   ├── stop_404.png
+│   │   ├── tower_round.svg
 │   │   └── vasiliy_dmitriev.jpg
-│   ├── index.js
-│   ├── main.js
+│   ├── index.htm
+│   ├── index.ts
+│   ├── locales
+│   │   ├── en-US.ftl
+│   │   └── ru-RU.ftl
+│   ├── main.ts
+│   ├── models
+│   │   ├── game
+│   │   │   ├── coords.ts
+│   │   │   ├── gameScene.ts
+│   │   │   ├── interfaces
+│   │   │   │   ├── collidable.ts
+│   │   │   │   ├── destructible.ts
+│   │   │   │   ├── movable.ts
+│   │   │   │   ├── oriented.ts
+│   │   │   │   ├── rect.ts
+│   │   │   │   ├── shootable.ts
+│   │   │   │   └── temporary.ts
+│   │   │   ├── mixins
+│   │   │   │   ├── movableMixin.ts
+│   │   │   │   └── subscriptableMixin.ts
+│   │   │   ├── player.ts
+│   │   │   ├── sprites
+│   │   │   │   ├── base.ts
+│   │   │   │   ├── bomb.ts
+│   │   │   │   ├── bot.ts
+│   │   │   │   ├── bullet.ts
+│   │   │   │   ├── coin.ts
+│   │   │   │   ├── mushroom.ts
+│   │   │   │   ├── sprite.ts
+│   │   │   │   ├── tower.ts
+│   │   │   │   └── unit.ts
+│   │   │   └── state.ts
+│   │   ├── game.ts
+│   │   └── user.ts
 │   ├── modules
-│   │   ├── emitter.js
-│   │   ├── httpModule.js
-│   │   ├── mediator.js
-│   │   └── router.js
-│   ├── pnotify.custom.min.js
+│   │   ├── emitter.ts
+│   │   ├── game
+│   │   │   ├── controllers
+│   │   │   │   ├── controllerInterface.ts
+│   │   │   │   ├── joystick.ts
+│   │   │   │   ├── keyboardController.ts
+│   │   │   │   └── mouseController.ts
+│   │   │   └── strateges
+│   │   │       ├── multiPlayerStrategy.ts
+│   │   │       ├── singlePlayerStrategy.ts
+│   │   │       ├── strategy.ts
+│   │   │       └── strategyInterface.ts
+│   │   ├── http.ts
+│   │   ├── navigator.ts
+│   │   ├── router.ts
+│   │   └── themes.ts
 │   ├── services
-│   │   └── userService.js
+│   │   ├── collisionService.ts
+│   │   ├── gameService.ts
+│   │   ├── userService.ts
+│   │   └── webSockets.ts
 │   ├── templates
-│   │   ├── index.pug
-│   │   ├── navbar.pug
-│   │   └── tests.pug
-│   ├── test
-│   │   └── unit
-│   │       └── userServiceTest.js
+│   │   ├── chooserace.pug
+│   │   └── navbar.pug
 │   └── utils
-│       ├── aboutAlertDialog.js
-│       ├── navbar.js
-│       └── validationRules.js
-├── semantic.json
+│       ├── aboutAlertDialog.ts
+│       ├── constants.ts
+│       ├── font.ts
+│       ├── imageResizer.ts
+│       ├── localisation.ts
+│       ├── notifications.ts
+│       ├── utils.ts
+│       └── validationRules.ts
+├── tests
+│   └── unit
+│       ├── simple.test.ts
+│       ├── user.test.ts
+│       ├── userService.test.ts
+│       └── utils.test.ts
+├── tsconfig.json
+├── tslint.json
 └── webpack.config.js
 ```
 
@@ -126,7 +232,7 @@ Have a bug or a feature request? Please first read the [issue guidelines](https:
 
 ## Contributing
 
-Please read through our [contributing guidelines](https://github.com/twbs/bootstrap/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
+Please read through our [contributing guidelines](https://github.com/java-park-mail-ru/SpaceInvasion-09-2017/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
 
 ## Mentor
@@ -139,12 +245,14 @@ Please read through our [contributing guidelines](https://github.com/twbs/bootst
 
 ## Creators
 
-### Backend
+### Fullstack
 
 **Boyarskikh Nikita**
 
 - <https://t.me/Nikita_Boyarskikh>
 - <https://github.com/Nikita-Boyarskikh>
+
+# Backend
 
 **Egor Kurakov**
 
