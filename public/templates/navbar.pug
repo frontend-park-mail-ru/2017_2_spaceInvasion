@@ -1,22 +1,12 @@
-html
-body
-    .ui.huge.menu
-        a#homeBtn.active.item
-            | Home
-        a#leaderboardBtn.item
-            | Leaderboard
-        a#aboutBtn.item
-            | About
-        .right.menu
-            .ui.simple.dropdown.item
-                | Language 
-                i.dropdown.icon
-                .menu
-                    a.item
-                        i.us.flag
-                        | English
-                    a.item
-                        i.ru.flag
-                        | Русский
-            .item#signUpBtn
-                #signUpBtn.ui.primary.button Sign Up
+.ui.huge.stackable.menu.navbar
+    a#homeBtn.item(data-l10n-id='Home')
+    a#leaderboardBtn.item(data-l10n-id='Leaderboard')
+    a#aboutBtn.item(data-l10n-id='About')
+    .right.menu
+        include chooserace.pug
+        .ui.simple.dropdown.item
+            span(data-l10n-id='Language')
+            i.dropdown.icon
+            .menu.languages
+        .item#signupBtn
+            #signupBtn.ui.primary.button(data-l10n-id='Signup')

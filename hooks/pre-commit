@@ -8,3 +8,5 @@ do
     exit 1 # exit with failure status
   fi
 done
+
+node_modules/.bin/jest

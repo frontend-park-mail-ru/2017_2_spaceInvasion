@@ -1,0 +1,1 @@
+43 6 * * * /usr/bin/certbot renew --post-hook "systemctl reload nginx"

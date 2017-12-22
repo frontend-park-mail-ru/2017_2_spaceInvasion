@@ -1,67 +1,221 @@
-body{
-    background: url(/images/background2.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+section .ui.card.login {
+    width: 600px;
+    margin-top: 50px;
 }
 
-.ui.card.login{
-    width: 400px;
-    margin-top: 100px;
-}
-
-.ui.card.registration{
-    margin-top: 100px;
+section .ui.card.login.container {
     width: 400px;
 }
 
-.table.ui.leaderboard{
-    margin-top: 40px;
+.unit_logo {
+    border-radius: 50%;
+    width: 350px;
+    height: 350px;
 }
 
-.ui.grid.about{
+.playerPage{
+    margin-top: 50px;
+}
+
+section .ui.card.registration {
+    margin-top: 50px;
+    width: 600px;
+}
+
+.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard {
+    margin-top: -80px;
+    width: 800px;
+    font-size: 35px;
+    color: white;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
+    font-style: normal;
+    font-variant: small-caps;
+    text-align: center;
+}
+
+.ui.one.column.centered.grid.ui__one__column__centered__grid__about {
     margin-top: 100px;
 }
 
-.ui.grid.leaderboard{
+.ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard {
     margin-top: 100px;
 }
 
-.ui.circular.image{
+.ui.circular.ui__circular__image {
+    filter: drop-shadow(16px 16px 10px #4a4a49);
     width: 280px;
     height: 280px;
 }
 
-.users.online.count, .users.online.title{
-    color: #FFF;
-    /* margin-left: 100px; */
-}
-
-.login.container{
-    width: 400px;
-}
-
-.one.column.login.grid{
+.one.column.login.grid.one__column__login__grid {
     margin: 0px;
     width: 400px;
-}
-
-.ui.container.labeled.button.user.likes{
-    margin-bottom: 20px;
 }
 
 .errorBorder {
     border-color: red !important;
 }
-.message {
+
+.message.message__error_message {
+    font-size: 20px;
     color: red;
+    text-shadow: 1px 1px 2px black, 0 0 1em red;
+    padding-bottom: 100px;
+
 }
 
-.displayClass {
-    display: block;
+.ui.dropdown.ui__dropdown {
+    font-size: initial;
 }
 
-.table.ui.selectable.celled.table{
-    width: 300px;
+canvas#game {
+    width: 100%;
+    /* margin-top: -14px; */
+    overflow: hidden;
+}
+
+.stopmessage {
+    color: white;
+    text-align: center;
+}
+
+.stopimg {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.stopimgsrc {
+    width: 290px;
+    height: 290px;
+}
+
+.developertitle {
+    color: white;
+}
+
+.matchdetailsmessage {
+    margin-top: 0;
+    text-align: center;
+    color: white;
+}
+
+.winloseimg {
+    width: 550px;
+    height: 550px;
+}
+
+.matchresult {
+    text-align: center;
+}
+
+.controls {
+    text-align: center;
+}
+
+.ui.playagain {
+    width: 150px;
+    height: 50px;
+}
+
+.ui.leave {
+    width: 150px;
+    height: 50px;
+}
+
+.nipple.collection_0 {
+    visibility: hidden !important;
+}
+
+.header_shadow {
+    filter: drop-shadow(16px 16px 10px #4a4a49);
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
+    font-style: normal;
+    font-variant: small-caps;
+    color: black;
+    font-size: 60px;
+}
+
+.animated_btn {
+    transition-property: transform;
+}
+
+.animated_btn:hover {
+    transform: scale(1.05)
+}
+
+.registration_form_style {
+    background: #7180cd !important;
+    font-size: 28px !important;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
+    font-weight: 700 !important;
+    font-variant: small-caps;
+}
+
+.formHeader {
+    text-align: center;
+    font-size: 40px !important;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
+}
+
+
+.testButton {
+    background: #495385 !important;
+}
+
+
+.formText {
+    font-size: 28px !important;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif !important;
+}
+
+.testWidth {
+    width: 100%;
+}
+
+.create_tower_btn {
+    width:130px;
+    display: none;
+    height:130px;
+    outline: none;
+    position: absolute;
+    left: 60%;
+    top:77%;
+    border: none;
+    background: rgb(0, 181, 173) url('/images/tower_round.svg');
+    border-radius: 65px;
+}
+
+.create_tower_btn:active {
+    background-color: #83b29e;
+    transform: translateY(4px);
+}
+
+.shoot_btn {
+    width:130px;
+    display: none;
+    height:130px;
+    outline: none;
+    position: absolute;
+    left: 85%;
+    top:77%;
+    border: none;
+    background: rgb(0, 181, 173) url('/images/shoot.png');
+    border-radius: 65px;
+}
+
+.shoot_btn:active {
+    background-color: #83b29e;
+    transform: translateY(4px);
+}
+
+.user_logo {
+    border-radius: 50%
+}
+
+.ui.pagination.menu {
+    margin-bottom: 60px;
+}
+
+.ui.text.container {
+    width: auto;
 }

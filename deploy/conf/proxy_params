@@ -1,0 +1,13 @@
+proxy_redirect          off;
+proxy_set_header        Host            $host;
+proxy_set_header        X-Real-IP       $remote_addr;
+proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+client_max_body_size    %max_body_size%;
+client_body_buffer_size %max_body_buffer_size%;
+proxy_connect_timeout   %proxy_timeout%;
+proxy_send_timeout      %proxy_timeout%;
+proxy_read_timeout      %proxy_timeout%;
+proxy_buffers           %proxy_buffers% %proxy_buffer_size%;
+proxy_cache             cache;
+proxy_cache_valid       %proxy_cache_time%;
+proxy_cache_valid       404 %proxy_cache_404_time%;

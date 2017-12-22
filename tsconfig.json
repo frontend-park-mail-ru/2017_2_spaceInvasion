@@ -1,0 +1,31 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "baseUrl": "./public",
+    "outDir": "./public/dist/",
+    "diagnostics": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": false,
+    "downlevelIteration": true,
+    "lib": [
+      "es6",
+      "dom",
+      "dom.iterable"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
+}

@@ -1,0 +1,225 @@
+@media only screen and (max-width: 440px) {
+    /* .ui.huge.menu{
+        font-size: 10px !important;
+        width: 100% !important;
+        /* font-size: small !important; */
+        /* height: 50px !important; */
+    /* } */
+
+    .lb.left.aligned{
+        width: 500px !important;
+    }
+
+    .header_shadow.lbtitle{
+        font-size: 40px !important;
+    }
+
+    .unit_logo {
+        border-radius: 50%;
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .playerPage{
+        margin-right: 40% !important;
+        margin-top: 50px !important;
+    }
+
+    .developertitle{
+        font-size: 50px !important;
+        color: white;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__about{
+        width: 394px !important;
+    }
+
+    .ui.one.column.centered.grid.one__column__login__grid{
+        padding: 30px !important;
+        width: 394px !important;
+    }
+
+    .ui.card.ui__card__login {
+        width: 100% !important;
+        font-size: x-large !important;
+        margin-left: 15px !important;
+    }
+    .field{
+        font-size: x-large !important;
+    }
+
+    .ui.submit.ui__submit__login.ui__submit__login__button.button{
+        font-size: x-large !important;
+    }
+
+    .ui.one.column.centered.grid.registration {
+        padding: 30px !important;
+        margin-left: 15px !important;
+
+    }
+
+    .ui.positive.button.ui__button__register{
+        font-size: x-large !important;
+    }
+
+    .description{
+        padding-top: 25px !important;
+    }
+
+    .header{
+        font-size: x-large !important;
+    }
+
+    .winloseimg{
+        width: 100%;
+    }
+
+    .matchdetailsmessage{
+        color: white;
+        font-size: 45px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .controls{
+        width: 100%;
+    }
+
+    /* .ui.primary.button{
+        padding: 5px !important;
+    } */
+
+    .ui.playagain{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+
+    .ui.leave{
+        width: 300px;
+        height: 100px;
+        margin-right: 50px;
+    }
+
+    .front{
+        background: white !important;
+        opacity: 1 !important;
+    }
+    
+    .front{
+background: white;
+opacity: 1;
+    }
+    .nipple.collection_0{
+        top:125% !important;
+        left: 15% !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+@media only screen and (max-width:736px){
+
+    .nipple.collection_0{
+        left: 10% !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+/* .ui.huge.menu{
+    display: none !important;
+} */
+
+    .back{
+        width:80px !important;
+        height: 80px !important;
+        opacity: 1 !important;
+    }
+    .front{
+        width: 50px !important;
+        background: white !important;
+        opacity: 1 !important;
+        height: 50px !important;
+    }
+
+.nipple.collection_0{
+    top:94% !important;
+}
+
+    .game-section{
+        width: 684px;
+    }
+    canvas#game{
+        padding: 14px !important;
+        /* height: 100% !important; */
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width:1024px){
+    .nipple.collection_0{
+        opacity: 1 !important;
+        visibility: visible !important;
+        top:63% !important;
+        left: 10% !important;
+    }
+
+    .ui.selectable.celled.table.ui__selectable__celled__table__leaderboard {
+        width:500px !important;
+    }
+
+    div.joystick-area{
+        width: 130px;
+        height: 130px;
+        position: absolute;
+        left: 10%;
+        top: 77%;
+        border-radius: 65px;
+    }
+
+    .create_tower_btn{
+        display: inline-block;
+      }
+
+      .shoot_btn{
+        display: inline-block;
+      }
+
+    .back{
+        width:120px !important;
+        height: 120px !important;
+        opacity: 1 !important;
+    }
+    .front{
+        width: 60px !important;
+        background: white !important;
+        opacity: 1 !important;
+        height: 60px !important;
+    }
+
+    .lbtitle{
+        font-size: 61px !important;
+    }
+
+    .developertitle{
+        font-size: 61px !important;
+    }
+
+    .lbheader{
+        font-size: 32px;
+    }
+
+    .ui.card.ui__card__login{
+        font-size: 32px;
+    }
+
+    .lbbody{
+        font-size: 32px;
+    }
+
+    .content.lb.left.aligned{
+        width: 548px !important;
+    }
+
+}

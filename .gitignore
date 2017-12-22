@@ -60,8 +60,34 @@ typings/
 # dotenv environment variables file
 .env
 
-# Secret data
-secrets.json
+### MacOS specific
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 # IDE's specials
 .idea
@@ -69,23 +95,13 @@ secrets.json
 .brackets.json
 
 # pug auto-generated files
-about.pug.js
-login.pug.js
-registration.pug.js
-leaderboard.pug.js
-
-playerPage.pug.js
-playerStats.pug.js
-friendList.pug.js
-matchesTable.pug.js
-
+*.pug.js
 *.html
 
-# Semantic cache
-**/semantic/**
-
-# PNotify
-**/pnotify*
-
 # Bundle
-**/dist/**
+public/dist/**
+tests/**/*.js
+public/**/*.js
+
+# TypeScript compiler cache
+.awcache

@@ -1,0 +1,19 @@
+{
+  "extends": "../.eslintrc.json",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "no-param-reassign": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "tests/**",
+          "mocks/**"
+        ]
+      }
+    ]
+  }
+}

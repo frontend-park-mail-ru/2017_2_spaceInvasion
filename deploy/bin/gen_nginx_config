@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+import re
+from configparser import ConfigParser, NoSectionError, NoOptionError
+from argparse import ArgumentParser
+from sys import stderr, exit
+
+REGEXP = '%(\w+)%'
+
+def parse_args():
+    parser = ArgumentParser(description='Write configs based' +
+        'on template and ini files.')
+
+    parser.add_argument(
+        '-c', '--config', type=str, required=True,
+        help='This ini file will be used for finding keys'
+    )
+
+    parser.add_argument(
+        '-t', '--template', type=str, required=True,
+        help='This file will be rewrited in out file' +
+            'with change %%...%% values on same values' +
+            'in ini file in section [section]'
+    )
+
+    parser.add_argument(
+        '-s', '--section', type=str, required=True,
+        help='This section will be used for' +
+            'finding keys in ini file'
+    )
+
+    parser.add_argument(
+        '-o', '--out', type=str, required=True,
+        help='In this file the result will be writed'
+    )
+
+    return parser.parse_args()
+
+def die(err_str):
+    print(err_str + "\n", file=stderr)
+    exit(1)
+
+def open_or_die(filename, mode, err_str):
+    try:
+        result = open(filename, mode)
+    except FileNotFoundError:
+        die(err_str)
+    return result
+
+def get_replacement(args, conf):
+    def replacement(m):
+        try:
+            value = conf.get(args.section, m.group()[1:-1])
+        except NoSectionError:
+            die("Not found section '" +
+                    args.section + "' in " +
+                    args.config + " file")
+        except NoOptionError:
+            die("Not found option '" +
+                    m.group() + "' in " +
+                    args.config + " file\n" +
+                    "check your ini file")
+        return value
+    return replacement
+
+def main():
+    args = parse_args()
+    conf = ConfigParser()
+    conf.read(args.config)
+
+    infile = open_or_die(args.template, 'r',
+            "Template file is not found")
+    outfile = open_or_die(args.out, 'w+',
+            "Result file is not found")
+
+    regexp = re.compile(REGEXP)
+    replacement = get_replacement(args, conf)
+    text = re.sub(regexp, replacement, infile.read())
+
+    outfile.write(text)
+
+    infile.close()
+    outfile.close()
+
+if __name__ == '__main__':
+    main()

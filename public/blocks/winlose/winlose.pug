@@ -1,0 +1,6 @@
+div.matchresult
+    img.winloseimg(src='/images/game/' + (victory ? 'victory.png' : 'defeat.png'))
+h1.matchdetailsmessage #{victory ? 'You win!' : 'You lose!'}
+div.controls
+    button.ui.button.playagain Play Again
+    button.ui.button.leave Leave

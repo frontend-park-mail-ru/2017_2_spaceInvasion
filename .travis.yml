@@ -1,26 +1,26 @@
-dist: trusty
-sudo: required
 language: node_js
 node_js:
-  - "node"
-  - "8"
+- node
+- '8'
 addons:
-  apt:
-    packages:
-      - nginx
-install:
-  - "npm install"
+  ssh_known_hosts:
+    secure: "$BACKEND_HOST"
 script:
-  - "npm test"
-cache:
-  directories:
-    - node_modules
-    - public/semantic
+- npm run webpack
+- NODE_ENV=test npm test
+before_install:
+- openssl aes-256-cbc -K $encrypted_ab75807b7d15_key -iv $encrypted_ab75807b7d15_iv
+  -in deploy/deploy_rsa.enc -out /tmp/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/deploy_rsa
+- ssh-add /tmp/deploy_rsa
 deploy:
-  provider: heroku
-  api_key:
-    secure: X1Ub6Kn8tFzxn+pPNnGSh5CraVl3H5Qy2UHFaYLKYgPtMnMBOPA34ua/6MvzUPDkRCaV/7ytp8owKbcztYsqBfJvbrKBXG3cSz+rTy0vX+ce9Ls0tH+po3Gx/i/T30D/7nKOrzDy7+meHufYaQqExjQwkJ9NFF+nNoVHQTTNlnQpoOTw23e+YtiM2JM18IqMq3CncGspWqgy019lC/K/ytbckzHyvX2pzpPrFaABSq7B/FhJ2XuzLgFuY5DfhUSsmEzgwozR8GOFL7podZhE8O7k59oz2n2hxpnnoVlJlc1cdHvrMyXlfJOa0qCYoVQcFq35r5eCvQU70zbyWld9xNoFl6vswFqK7txOrC0AoCKmXdV3Xw/xGqMgPhzUzG1y4GzHb9+u2Aa2zWdRLiqBIrICWIb7xiaFAOaec9QG5vANpr0NAfD8Al3caJu6lqp+FvGTZS7GDyoIwFMPfM9tG7sdfGRkoGBqYq5/TQBEQnyZTUWUGyzzVY+ewSu7RGe6kgeFKTkzUQmnkNdwpq4OmkJcdPMt6rfeczyDIVq171SbU+zoFIStehEqUfVSikoBTrMPBL3r8tJIov7pLozLltx99kWT90OV81ZBegIsejQ08W52DX/92NYy+earvcTuheRbW6FYAsbxk4nc/7roCOebWoR5j/+/404go77R2AI=
-  app: space-invasion-frontend
+  provider: script
+  script: ./deploy/bin/deploy.sh
   on:
     tags: true
+    all_branches: true
     repo: Nikita-Boyarskikh/SpaceInvasionFrontend
+notifications:
+  slack:
+    secure: ri5anqydfDPSp6v9q+eDoQeMfyJu89TNyhSMuJ/tptif6MQMwOcwNzLfpq0kfMi80TP/5kRMRu8d1U+ofJxZT+TK3T+/qblEO4X581XEaOZjAUiBTfnxusk2TuO8jc+dHeC1gk8L4X64YwOr3+hKmKx/bNXXpN3hCTh3fOf30i8GbFekIC8cy2N4A3Q/xZu7YlscVzv2L9IkNQNXVzeN64nw8Dt9QR3pTUe6GczaaiYf2u+2VuwDY5KytT9z0cgm9dQxfzsPmoaApe+TyQxbAcVdIZpo3x4r6fAUKaF9Dkjm9M3QvCA2/rELHymlub4m4a9uCBcEkbTxFIEWWvV/W1HIoZ+Hf0zV5Q0gwcLLUm2UZHsF1VXtPz6vntcrJAMr3FiBQE+UozBY72ESLGfsnxjZgLVPgHTVGjznDByD2ZTVfaYCxuM8fTBUD/2otVzgzGZqk/WblcdaxN+j6REU9L72l4NADIQbQ6uBt/HvpktJebBcQoUjHko6Ei7eqCv+x7k0xXZgHs7twb8VRL8jpTB3JQ0zc3BgJbULct59PMi2OT6dfMu/Nogi2PJars6+FqXx/dsrBjovUJAus7hOIsBIcsgoDX3LkaU6Qs3HuB0xiqaJ6Ol13V+vCxpdjLQrG2N2JDAcQyo7gW3qnAwFqcyx7Dm1EPH6VksscKFUji4=

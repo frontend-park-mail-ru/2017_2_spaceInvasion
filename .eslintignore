@@ -7,8 +7,5 @@ node_modules
 # Bundle
 **/dist/**
 
-# Semantic
-**/semantic/**
-
-# PNotify
-**/pnotify*
+# Coverage
+**/coverage/**

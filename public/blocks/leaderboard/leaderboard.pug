@@ -1,15 +1,20 @@
-.ui.one.column.centered.grid.leaderboard
-  h2(style="color: #FFF") Leaderboard
-.ui.one.column.centered.grid
-    .content.left.aligned
-      table.ui.selectable.celled.table.leaderboard
-        thead
-          tr
-            th Player
-            th Rating
-        tbody
+.ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard
+  h2.header_shadow.lbtitle(style='color: #FFF;') Leaderboard
+.ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard
+  .content.lb.left.aligned
+    table.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard
+      thead
+        tr.lbheader
+          th Player
+          th Rating
+      tbody
         - var index = 0
-        each player in data
-          tr
-            td #{++index}. #{player.username}
-            td #{player.score}
+            each player in data
+                tr.lbbody
+                    td #{++index}. #{player.username}
+                    td #{player.score}
+            else
+                tr.lbbody
+                    td There are no users yet
+                    td
+    include pagination.pug

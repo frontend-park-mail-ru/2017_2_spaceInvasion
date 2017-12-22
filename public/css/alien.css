@@ -1,0 +1,29 @@
+body.alien {
+    background: url(/images/cartoon-moon_green.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ui.button.alien {
+    background-color: #1e4229;
+    color: white;
+}
+
+.ui.button.alien:hover {
+    background-color: #214a2e;
+    color: white;
+}
+
+.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard.alien {
+    background-color: #214a2e;
+}
+
+.navbar.alien {
+    background: #42b880 !important;
+}
+
+.registration_form_style.alien {
+    background: #42b880 !important;
+}

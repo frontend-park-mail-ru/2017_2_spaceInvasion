@@ -1,0 +1,29 @@
+body.man {
+    background: url(/images/cartoon-moon_blue.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ui.button.man {
+    background-color: #260058;
+    color: white;
+}
+
+.ui.button.man:hover {
+    background-color: #330570;
+    color: white;
+}
+
+.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard.man {
+    background-color: #260058;
+}
+
+.navbar.man {
+    background: #7180cd !important;
+}
+
+.registration_form_style.man {
+    background: #7180cd !important;
+}
