@@ -98,14 +98,14 @@ abstract class Form extends Block {
 
   reset(): void {
     const form = <HTMLFormElement> this.el.querySelector('.formWithValidation');
-    const elements = form.elements;
-    for (let i = 0; i < elements.length; i += 1) {
-      const name = (elements[i] as HTMLInputElement).name;
+    const elements = Array.from(form.elements);
+    elements.forEach(el => {
+      const name = (el as HTMLInputElement).name;
       if (name && name !== 'ValidateBtn') {
-        (elements[i] as HTMLInputElement).value = '';
-        this.resetErrors();
+        (el as HTMLInputElement).value = '';
       }
-    }
+    });
+    this.resetErrors();
   }
 
   resetErrors(): void {

@@ -16,15 +16,8 @@ body.man {
     color: white;
 }
 
-.ui.table.ui__selectable__celled__table__leaderboard.man {
-    margin-top: -80px;
-    width: 800px;
-    font-size: 35px;
+.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard.man {
     background-color: #260058;
-    color: white;
-    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
-    font-style: normal;
-    font-variant: small-caps;
 }
 
 .navbar.man {

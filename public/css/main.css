@@ -22,8 +22,15 @@ section .ui.card.registration {
     width: 600px;
 }
 
-.ui.selectable.called.table.ui__selectable__celled__table__leaderboard {
-    margin-top: 40px;
+.ui.selectable.celled.table.ui__selectable__celled__table__leaderboard {
+    margin-top: -80px;
+    width: 800px;
+    font-size: 35px;
+    color: white;
+    font-family: Arial Black,Arial Bold,Gadget,sans-serif;
+    font-style: normal;
+    font-variant: small-caps;
+    text-align: center;
 }
 
 .ui.one.column.centered.grid.ui__one__column__centered__grid__about {
@@ -174,7 +181,7 @@ canvas#game {
     left: 60%;
     top:77%;
     border: none;
-    background: rgb(0, 181, 173) url('../images/tower_round.svg');
+    background: rgb(0, 181, 173) url('/images/tower_round.svg');
     border-radius: 65px;
 }
 
@@ -192,7 +199,7 @@ canvas#game {
     left: 85%;
     top:77%;
     border: none;
-    background: rgb(0, 181, 173) url('../images/shoot.png');
+    background: rgb(0, 181, 173) url('/images/shoot.png');
     border-radius: 65px;
 }
 

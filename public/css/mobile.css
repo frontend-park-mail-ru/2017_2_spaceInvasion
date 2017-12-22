@@ -1,4 +1,4 @@
-@media only screen and (max-width: 440px) and (min-width:375px){
+@media only screen and (max-width: 440px) {
     /* .ui.huge.menu{
         font-size: 10px !important;
         width: 100% !important;
@@ -14,10 +14,6 @@
         font-size: 40px !important;
     }
 
-    .ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard{
-        width:450px !important;
-    }
-
     .unit_logo {
         border-radius: 50%;
         width: 150px !important;
@@ -29,12 +25,6 @@
         margin-top: 50px !important;
     }
 
-    .stopimg{
-        width: 750px;
-    }
-    .stopmessage{
-        width: 750px;
-    }
     .developertitle{
         font-size: 50px !important;
         color: white;
@@ -81,19 +71,18 @@
     }
 
     .winloseimg{
-        width: 750px;
-        height: 750px;
+        width: 100%;
     }
 
     .matchdetailsmessage{
         color: white;
         font-size: 45px;
-        width: 750px;
+        width: 100%;
         text-align: center;
     }
 
     .controls{
-        width: 750px;
+        width: 100%;
     }
 
     /* .ui.primary.button{
@@ -128,29 +117,9 @@ opacity: 1;
         opacity: 1 !important;
         visibility: visible !important;
     }
-
-.canvas#game{
-    width: 753px;
-    height: 500px;
 }
 
-.leaderboard-section{
-    width: 750px;
-}
-.playerpage-section{
-    width: 750px;
-}
-.game-section{
-    width: 752px;
-}
-
-.registration-section{
-    width: 366px !important;
-}
-
-}
-
-@media only screen and (orientation:landscape) and (max-width:736px){
+@media only screen and (max-width:736px){
 
     .nipple.collection_0{
         left: 10% !important;
@@ -188,8 +157,7 @@ opacity: 1;
     }
 }
 
-@media only screen and (orientation:landscape) and (max-width:1024px){
-
+@media only screen and (max-width:1024px){
     .nipple.collection_0{
         opacity: 1 !important;
         visibility: visible !important;
@@ -197,7 +165,7 @@ opacity: 1;
         left: 10% !important;
     }
 
-    .ui.selectable.celled.table.ui__selectable__celled__table__leaderboard.man{
+    .ui.selectable.celled.table.ui__selectable__celled__table__leaderboard {
         width:500px !important;
     }
 

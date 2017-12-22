@@ -34,15 +34,14 @@ class PlayerPageBlock extends Block {
     const element = throwIfNull(el.querySelector('.ui.button__logout'));
     const listener = () => {
       Navigator.sections.hide();
-      element.removeEventListener('click', listener);
       userService.logout().then(() => {
         Navigator.sections.hide();
         router.route('/');
-        element.addEventListener('click', listener);
+        element.addEventListener('click', listener, {once: true});
       });
     };
 
-    element.addEventListener('click', listener);
+    element.addEventListener('click', listener, {once: true});
   }
 
   private onPlayBtnClick(el: HTMLElement): void {

@@ -9,6 +9,8 @@ import emitter from '../modules/emitter';
 import SubscriptableMixin from '../models/game/mixins/subscriptableMixin';
 import userService from '../services/userService';
 import {throwIfNull} from '../utils/utils';
+import Bot from '../models/game/sprites/bot';
+import Player from "../models/game/player";
 
 const swal = require('sweetalert2');
 
@@ -56,20 +58,30 @@ class GameService extends SubscriptableMixin {
     this.strategy.join(user, side);
   }
 
-  shoot(): void {
+  private shoot(): void {
     const shootBtn: any = document.querySelector(".shoot_btn");
     shootBtn.addEventListener("click", () => {
-      const me = this.strategy.getState().players.filter(p => p.user.id === throwIfNull(userService.user).id)[0].unit;
-      emitter.emit("Player.shout." + me.id);
+      emitter.emit("Player.shout." + this.getMe().unit.id);
     });
   }
 
-  buildTowerBtnInit(): void {
+  private buildTowerBtnInit(): void {
     const buildTowerBtn: any = document.querySelector(".create_tower_btn");
     buildTowerBtn.addEventListener('click', () => {
-      const me = this.strategy.getState().players.filter(p => p.user.id === throwIfNull(userService.user).id)[0].unit;
-      emitter.emit("Player.setTower." + me.id);
+      emitter.emit("Player.setTower." + this.getMe().unit.id);
     });
+  }
+
+  private getMe(): Player {
+    return this.strategy.getState().players.filter(p => {
+      if (userService.user) {
+        // Multiplayer
+        return p.user.id === userService.user.id;
+      } else {
+        // Singleplayer
+        return !(p.unit instanceof Bot);
+      }
+    })[0];
   }
 
   gameLoop(): void {
