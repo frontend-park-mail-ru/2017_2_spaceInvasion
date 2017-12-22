@@ -31,7 +31,7 @@ abstract class GameBlock extends Block {
     }
 
     gameService.bind();
-    router.setPath('/game');
+    router.setPath('/play');
     super.show();
   }
 

@@ -139,7 +139,7 @@ const PATH_MAP = new Map<string, string>();
   ['/signup', 'signup'],
   ['/profile', 'profile'],
   ['/leaderboard', 'leaderboard'],
-  ['/game', 'game'],
+  ['/play', 'game'],
 ].forEach(value => PATH_MAP.set(value[0], value[1]));
 
 export {
