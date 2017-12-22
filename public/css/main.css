@@ -204,3 +204,7 @@ canvas#game {
 .user_logo {
     border-radius: 50%
 }
+
+.ui.pagination.menu {
+    margin-bottom: 60px;
+}

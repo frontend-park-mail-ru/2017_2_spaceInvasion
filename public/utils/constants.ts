@@ -2,6 +2,7 @@ const BASE_URL = 'https://space-invasion.ru/v1';
 const WEB_SOCKETS_BASE_URL = 'wss://space-invasion.ru/game';
 const MAX_EVENTS = 100;
 const RESPAWN_DAMAGE = 1;
+const ROWS_BY_PAGE = 10;
 
 const enum SIDE {
   MAN,
@@ -134,5 +135,5 @@ const PATH_MAP = new Map<string, string>();
 export {
   BASE_URL, SIDE, TEAM, AREA, WEB_SOCKETS_BASE_URL, MAX_EVENTS, RESPAWN_DAMAGE,
   TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE, HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT,
-  ACTION_MAPPER, PATH_MAP, EVENT, FPS, SMOOTH_COEF, RPS,
+  ACTION_MAPPER, PATH_MAP, EVENT, FPS, SMOOTH_COEF, RPS, ROWS_BY_PAGE
 }
