@@ -1,6 +1,7 @@
 // ===Stylesheets===
+import 'semantic-ui-css/semantic.min.css';
+
 require('./css/main.css');
-require('./common/semantic/dist/semantic.min.css');
 require('./css/man.css');
 require('./css/alien.css');
 require('./css/mobile.css');

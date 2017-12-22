@@ -1,10 +1,14 @@
-import {AREA, DEFAULT_FONT, HALF_LINE_COLOR, HALF_LINE_WIDTH, SIDE, TOWER} from '../../utils/constants';
+import {AREA, DEFAULT_FONT, HALF_LINE_COLOR, HALF_LINE_WIDTH, SIDE, TOWER, UNIT} from '../../utils/constants';
 import GameState from './state';
 import {throwIfNull} from '../../utils/utils';
 import Tower from './sprites/tower';
+import Destructible from './interfaces/destructible';
 import resize from '../../utils/imageResizer';
 import emitter from '../../modules/emitter';
 import SubscriptableMixin from './mixins/subscriptableMixin';
+import Mushroom from './sprites/mushroom';
+import Coords from './coords';
+import Sprite from "./sprites/sprite";
 
 class GameScene extends SubscriptableMixin {
   protected aspectRatio = 1;
@@ -61,6 +65,7 @@ class GameScene extends SubscriptableMixin {
     this.renderBullets(state);
     this.renderBombs(state);
     this.renderText(state);
+    // this.renderMushroom(state);
 
     // this.ctx.scale(1 / this.aspectRatio, 1 / this.aspectRatio);
   }
@@ -112,13 +117,14 @@ class GameScene extends SubscriptableMixin {
   }
 
   private renderUnits(state: GameState): void {
-    state.units.forEach(unit => unit.render(this.ctx));
+    state.units.forEach(unit => {unit.render(this.ctx);
+    this.renderHealth(unit);})
   }
 
   private renderTowers(state: GameState): void {
     state.towers.forEach(tower => {
       tower.render(this.ctx);
-      this.renderHealthOfTower(tower);
+      this.renderHealth(tower);
     });
   }
 
@@ -164,6 +170,8 @@ class GameScene extends SubscriptableMixin {
     this.clearStyle();
   }
 
+
+
   private renderBombs(state: GameState) {
     state.bombs.forEach((bomb, i) => {
       const text = `Bomb ${i + 1}: ${bomb.getTime()}`;
@@ -173,29 +181,43 @@ class GameScene extends SubscriptableMixin {
     });
   }
 
+  // private renderMushroom(state: GameState) {
+  //
+  //     state.bombs.forEach((bomb, i) => {
+  //       console.log(bomb.getCoords());
+  //       let coords = bomb.getCoords();
+  //
+  //       if (bomb.getTime() === 3){
+  //         const m = new Mushroom(1, new Coords);
+  //         console.log(m);
+  //       }
+  //     });
+  //   this.ctx.globalAlpha = 1;
+  // }
+
   private renderCoins(state: GameState) {
     state.coins.forEach((coin) => {
       coin.render(this.ctx);
     });
   }
 
-  private renderHealthOfTower(tower: Tower) {
-    this.ctx.strokeStyle = 'red';
-    this.ctx.lineWidth = 4;
+  private renderHealth(sprite: Destructible & Sprite) {
+      this.ctx.strokeStyle = 'red';
+      this.ctx.lineWidth = 4;
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(
-      (tower.getCoords().x - tower.getWidth() / 2) * this.aspectRatio,
-      (tower.getCoords().y - tower.getHeight() / 2) * this.aspectRatio
-    );
-    this.ctx.lineTo(
-      (tower.getCoords().x - tower.getWidth() / 2 + tower.getWidth() * (tower.getHealth() / TOWER.HEALTH)) * this.aspectRatio,
-      (tower.getCoords().y - tower.getHeight() / 2) * this.aspectRatio,
-    );
-    this.ctx.stroke();
-
-    this.clearStyle();
+      this.ctx.beginPath();
+      this.ctx.moveTo(
+          (sprite.getCoords().x - sprite.getWidth() / 2) * this.aspectRatio,
+          (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
+      );
+      this.ctx.lineTo(
+          (sprite.getCoords().x - sprite.getWidth() / 2 + sprite.getWidth() * (sprite.getHealth() / UNIT.HEALTH)) * this.aspectRatio,
+          (sprite.getCoords().y - sprite.getHeight() / 2) * this.aspectRatio,
+      );
+      this.ctx.stroke();
+      this.clearStyle();
   }
+
 }
 
 export default GameScene;

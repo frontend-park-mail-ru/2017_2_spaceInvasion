@@ -13,7 +13,7 @@ abstract class Sprite extends SubscriptableMixin implements Rect {
   protected width: number;
   protected height: number;
 
-  private readonly image: HTMLImageElement;
+  private image: HTMLImageElement;
 
   constructor(id: number, coords: Coords, srcOfImage: string, width: number, height: number) {
     super();
@@ -61,6 +61,11 @@ abstract class Sprite extends SubscriptableMixin implements Rect {
   getImage(): HTMLImageElement {
     return this.image;
   }
+
+  setImage(path: string): void {
+    this.image.src = path;
+  }
+
 }
 
 export default Sprite;

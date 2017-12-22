@@ -17,17 +17,26 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
   public readonly side: SIDE;
   protected health = UNIT.HEALTH;
   protected _damage = UNIT.DAMAGE;
+  private rightImagePath: string;
+  private leftImagePath: string;
 
   constructor(id: number, side: SIDE) {
     super(
       id,
       new Coords,
-      (side === SIDE.MAN ? UNIT.MAN_IMAGE_PATH : UNIT.ALIEN_IMAGE_PATH),
+      (side === SIDE.MAN ? UNIT.MAN_IMAGE_PATH_RIGHT : UNIT.ALIEN_IMAGE_PATH_LEFT),
       UNIT.WIDTH,
       UNIT.HEIGHT,
     );
 
     this.side = side;
+    if (side === SIDE.MAN) {
+      this.rightImagePath = UNIT.MAN_IMAGE_PATH_RIGHT;
+      this.leftImagePath = UNIT.MAN_IMAGE_PATH_LEFT;
+    } else {
+        this.rightImagePath = UNIT.ALIEN_IMAGE_PATH_RIGHT;
+        this.leftImagePath = UNIT.ALIEN_IMAGE_PATH_LEFT;
+    }
     this.spawn();
   }
 
@@ -120,6 +129,15 @@ class Unit extends MovableMixin implements SubscriptableMixin, Movable, Oriented
     } else {
       this.stop();
     }
+    this.changeImage(direction);
+  }
+
+  changeImage(direction: Coords): void {
+      if (this.direction.x < 0) {
+          this.setImage(this.leftImagePath);
+      } else if (this.direction.x > 0)  {
+          this.setImage(this.rightImagePath);
+      }
   }
 
   run(): void {

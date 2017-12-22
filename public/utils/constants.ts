@@ -45,8 +45,10 @@ const TOWER = {
 };
 
 const UNIT = {
-  MAN_IMAGE_PATH: '../../../images/game/alienUnit.png', // TODO: Other image for mans
-  ALIEN_IMAGE_PATH: '../../../images/game/alienUnit.png',
+  ALIEN_IMAGE_PATH_LEFT: '../../../images/game/alienUnitLeft.png',
+  ALIEN_IMAGE_PATH_RIGHT: '../../../images/game/alienUnitRight.png',
+  MAN_IMAGE_PATH_LEFT: '../../../images/game/manUnitLeft.png',
+  MAN_IMAGE_PATH_RIGHT: '../../../images/game/manUnitRight.png',
   HEALTH: 100,
   WIDTH: 50,
   HEIGHT: 50,
@@ -75,6 +77,14 @@ const COIN = {
   TICKS: 1,
   LIFE_TIME: 1000 * 3, // Монетка лежит 3 секунды
   DEFAULT: 10,
+};
+
+const MUSHROOM = {
+    IMAGE_PATH: '../../../images/game/bombMushroom.png',
+    WIDTH: 100,
+    HEIGHT: 50,
+    LIFE_TIME: 1000 * 3, // Гриб живет 3 секунды
+    TICKS: 10,
 };
 
 const BULLET = {
@@ -135,5 +145,5 @@ const PATH_MAP = new Map<string, string>();
 export {
   BASE_URL, SIDE, TEAM, AREA, WEB_SOCKETS_BASE_URL, MAX_EVENTS, RESPAWN_DAMAGE,
   TOWER, UNIT, BOT, COIN, BULLET, BOMB, BASE, HALF_LINE_COLOR, HALF_LINE_WIDTH, DEFAULT_FONT,
-  ACTION_MAPPER, PATH_MAP, EVENT, FPS, SMOOTH_COEF, RPS, ROWS_BY_PAGE
+  ACTION_MAPPER, PATH_MAP, EVENT, FPS, SMOOTH_COEF, RPS, ROWS_BY_PAGE, MUSHROOM,
 }
