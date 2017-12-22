@@ -44,7 +44,7 @@ class PlayerPageBlock extends Block {
       Navigator.sections.hide();
       if (userService.isLoggedIn()) {
         if (!this.initialized) {
-          Navigator.sections.game.append(new MultiPlayerGameBlock());
+          Navigator.sections.game.append(new SinglePlayerGameBlock());
           this.initialized = true;
         }
         Navigator.sections.game.show();
