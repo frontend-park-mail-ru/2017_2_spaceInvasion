@@ -27,24 +27,24 @@ function protect(img: HTMLImageElement): HTMLImageElement {
   return img;
 }
 
-function resize(img: HTMLImageElement, w: number,  h: number): HTMLImageElement {
-    img = protect(img);
+function resize(img: HTMLImageElement, w: number, h: number): HTMLImageElement {
+  img = protect(img);
 
-    let steps = Math.ceil(Math.log(img.width / w) / Math.LN2);
-    let sW = w * Math.pow(2, steps - 1);
-    let sH = h * Math.pow(2, steps - 1);
-    const x = 2;
+  let steps = Math.ceil(Math.log(img.width / w) / Math.LN2);
+  let sW = w * Math.pow(2, steps - 1);
+  let sH = h * Math.pow(2, steps - 1);
+  const x = 2;
 
-    while (steps--) {
-        const canvas = document.createElement('canvas');
-        canvas.width = sW;
-        canvas.height = sH;
-        throwIfNull(canvas.getContext('2d')).drawImage(img, 0, 0, sW, sH);
-        img.src = canvas.toDataURL();
+  while (steps--) {
+    const canvas = document.createElement('canvas');
+    canvas.width = sW;
+    canvas.height = sH;
+    throwIfNull(canvas.getContext('2d')).drawImage(img, 0, 0, sW, sH);
+    img.src = canvas.toDataURL();
 
-        sW = Math.round(sW / x);
-        sH = Math.round(sH / x);
-    }
+    sW = Math.round(sW / x);
+    sH = Math.round(sH / x);
+  }
 
   return img;
 }

@@ -3,17 +3,18 @@ import userService from '../services/userService';
 import {throwIfNull} from '../utils/utils';
 import {refreshTheme} from './themes';
 import {PATH_MAP} from '../utils/constants';
-import LoginBlock from '../blocks/login/index';
 import NotFoundBlock from '../blocks/notFound/index';
 
 class Router {
   protected path: string;
   protected tabs: Array<string> = [];
 
-  static route(path ?: string): void {
+  route(path ?: string): void {
     refreshTheme();
+    Navigator.sections.hide();
 
     path = path || window.location.pathname;
+    this.setPath(path);
 
     const menu = throwIfNull(document.querySelector('div.ui.huge.menu'));
     const btnClass = (PATH_MAP.get(path) || '').toLowerCase();
@@ -24,9 +25,6 @@ class Router {
       case 'signup':
         throwIfNull(menu.querySelector(`#${btnClass}Btn`)).setAttribute('class', 'active item');
         break;
-      case 'login':  // TODO: Сверстать homepage
-        throwIfNull(menu.querySelector(`#homeBtn`)).setAttribute('class', 'active item');
-        break;
       case 'game':
       case 'profile':
         break;
@@ -36,7 +34,7 @@ class Router {
 
     switch (PATH_MAP.get(path)) {
       case 'home':
-        (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+        Navigator.sections.home.show();
         break;
       case 'login':
       case 'profile':
@@ -50,7 +48,7 @@ class Router {
         if (userService.isLoggedIn()) {
           Navigator.sections.game.show();
         } else {
-          (Navigator.sections.home as LoginBlock).show(); // TODO: Сверстать homepage
+          Navigator.sections.home.show();
         }
         break;
       case 'about':
@@ -64,7 +62,7 @@ class Router {
         break;
       default:
         // 404
-        (Navigator.sections.notFound as NotFoundBlock).show(); // TODO: Сверстать homepage
+        (Navigator.sections.notFound as NotFoundBlock).show();
         break;
     }
   }
@@ -80,7 +78,7 @@ class Router {
   }
 
   start(): void {
-    Router.route();
+    this.route();
 
     window.onpopstate = () => {
       let path = '';
@@ -103,7 +101,7 @@ class Router {
       }
 
       path = path || '/';
-      Router.route(path);
+      this.route(path);
     };
   }
 }

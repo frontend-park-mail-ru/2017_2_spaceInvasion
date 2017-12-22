@@ -6,7 +6,6 @@ import {throwIfNull} from '../../utils/utils';
 import userService from '../../services/userService';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
-import {refreshTheme} from '../../modules/themes'
 
 class RegistrationBlock extends Form {
   constructor(el: HTMLElement) {
@@ -15,11 +14,17 @@ class RegistrationBlock extends Form {
 
   show(): void {
     this.el.innerHTML = registrationTemplate();
-    refreshTheme();
     if (!Navigator.sections.registration.ready) {
       Navigator.sections.registration.onSubmitOnce(this.onSubmitRegistrationForm.bind(this));
       Navigator.sections.registration.ready = true;
     }
+
+    throwIfNull(document.querySelector('#loginLink'))
+      .addEventListener('click', () => {
+        Navigator.sections.hide();
+        Navigator.sections.login.show();
+      });
+
     router.setPath('/signup');
     super.show();
   }
@@ -31,16 +36,18 @@ class RegistrationBlock extends Form {
     userService.register(formdata.email, formdata.login, formdata.password)
       .then((data: any) => {
         switch (data.status) {
-          case 400:
-            if (data.result === 'Username already used') {
-              showError('Username already used');
-            } else {
-              showError(data.description);
-            }
+          case 'conflict':
+            showError('Username already used');
             break;
-          case 200:
+          case 'forbidden':
+            showError('Wrong user data');
+            break;
+          case 'bad request':
+            showError('Already authorized as ' + (userService.user || {username: 'Guest'}).username);
+            break;
+          case undefined:
             Navigator.sections.registration.reset();
-            Navigator.sections.registration.hide();
+            Navigator.sections.hide();
             Navigator.sections.playerPage.show();
             break;
           default:

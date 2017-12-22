@@ -1,18 +1,19 @@
-import {SIDE, WEB_SOCKETS_BASE_URL, MAX_EVENTS} from '../utils/constants';
+import {MAX_EVENTS, SIDE, WEB_SOCKETS_BASE_URL} from '../utils/constants';
 import emitter from '../modules/emitter';
 import userService from './userService';
 import {getTheme} from '../modules/themes';
 import Strategy from '../modules/game/strateges/strategy';
 import {isNumber} from '../utils/utils';
+
 const swal = require('sweetalert2');
 
 class WebSocketsService {
   public static readonly BaseUrl = WEB_SOCKETS_BASE_URL;
-  protected handlers = new Map< number, Array<(...data: any[]) => void> >();
-  protected wsEvents: Map< string, (event: Event) => any > = new Map();
+  private static instance: WebSocketsService;
+  protected handlers = new Map<number, Array<(...data: any[]) => void>>();
+  protected wsEvents: Map<string, (event: Event) => any> = new Map();
   protected socket: WebSocket;
   protected eventStack: any[] = [];
-  private static instance: WebSocketsService;
 
   constructor() {
     if (WebSocketsService.instance) {
@@ -26,10 +27,12 @@ class WebSocketsService {
     return (data instanceof Array) && data.every((el: any) => isNumber(el)); // && data.data.length >= 1;
   }
 
-  private addEventListener(name: string, handler: (event: Event) => any): void {
-    const bindedHandler = handler.bind(this);
-    this.wsEvents.set(name, bindedHandler);
-    this.socket.addEventListener(name, bindedHandler);
+  private static error(): void {
+    swal({
+      titleText: 'Error occurred',
+      type: 'error',
+      text: 'Protocol Error'
+    });
   }
 
   destroy(): void {
@@ -64,16 +67,14 @@ class WebSocketsService {
 
     this.addEventListener('message', e => {
       const event = e as MessageEvent;
-      console.log('<-', event.data);
       const data = JSON.parse(event.data);
       if (~[1, 4, 5, 6, 10].indexOf(data[1]))
-      console.log(data);
 
       // Rollback
-      if (data.data[1] === 1) {
-        this.rollback(data.data[0]);
-        return;
-      }
+        if (data.data[1] === 1) {
+          this.rollback(data.data[0]);
+          return;
+        }
 
       const handlers = this.handlers.get(data.data[1]);
       if (handlers === undefined || !WebSocketsService.dataIsValid(data.data)) {
@@ -106,7 +107,6 @@ class WebSocketsService {
   }
 
   send(data: any): void {
-    console.log('->', data);
     if (this.eventStack.length <= MAX_EVENTS) {
       this.eventStack.push(data);
       this.socket.send(JSON.stringify(data));
@@ -132,12 +132,10 @@ class WebSocketsService {
     });
   }
 
-  private static error(): void {
-    swal({
-      titleText: 'Error occurred',
-      type: 'error',
-      text: 'Protocol Error'
-    });
+  private addEventListener(name: string, handler: (event: Event) => any): void {
+    const bindedHandler = handler.bind(this);
+    this.wsEvents.set(name, bindedHandler);
+    this.socket.addEventListener(name, bindedHandler);
   }
 }
 

@@ -3,13 +3,13 @@ import GameBlock from './index';
 import userService from '../../services/userService';
 import {getTheme} from '../../modules/themes';
 import {SIDE} from '../../utils/constants';
-import {throwIfNull} from '../../utils/utils';
+import User from '../../models/user';
 
 class SinglePlayerGameBlock extends GameBlock {
   protected strategy = SinglePlayerStrategy;
 
   init(): void {
-    const user = throwIfNull(userService.user);
+    const user = userService.user || new User(0, 'Guest', '', '');
     this.game.join(user, getTheme() === 'man' ? SIDE.MAN : SIDE.ALIEN);
   }
 }

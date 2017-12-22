@@ -1,24 +1,27 @@
 import Navigator from '../modules/navigator';
+
 const swal = require('sweetalert2');
 
 function showError(message: string): void {
   swal({
-    position: 'top-right',
     type: 'error',
     titleText: 'Error',
     text: message,
-    showConfirmButton: false
+    showConfirmButton: false,
+    showCloseButton: true,
+    backdrop: false,
+    timer: 2000
   });
 }
 
 function dismissAllMessages(): void {
-  Array.from(document.getElementsByClassName('swal2-container'))
-    .forEach(el => el.setAttribute('hidden', 'hidden'));
+  swal.close();
 }
 
 function showLeaveGameNotification(): void {
   const backToGameID = 'backToGame';
   swal({
+    backdrop: false,
     position: 'top-right',
     width: 200,
     type: 'info',

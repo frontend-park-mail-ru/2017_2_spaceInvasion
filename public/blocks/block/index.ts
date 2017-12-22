@@ -1,9 +1,12 @@
+import {refreshTheme} from '../../modules/themes';
+
 /**
  * Базовый класс блока
  * @module Block
  */
 class Block {
   public ready: boolean;
+  public initialized = false;
   protected el: HTMLElement;
   protected childrens: Block[] = [];
 
@@ -74,6 +77,7 @@ class Block {
   show(): void {
     this.el.removeAttribute('hidden');
     this.childrens.forEach(ch => ch.show());
+    refreshTheme();
   }
 
   /**

@@ -11,9 +11,8 @@ import Movable from '../interfaces/movable';
 import SubscriptableMixin from '../mixins/subscriptableMixin';
 import Oriented from '../interfaces/oriented';
 
-export default class Bullet extends MovableMixin implements Movable, Oriented, SubscriptableMixin, Collidable/*, Temporary*/, Rect {
+export default class Bullet extends MovableMixin implements Movable, Oriented, SubscriptableMixin, Collidable, Rect {
   protected damage = BULLET.DAMAGE;
-  // protected timer: number;
   protected time = BULLET.TICKS;
   protected countDownTimer: number;
 
@@ -28,7 +27,6 @@ export default class Bullet extends MovableMixin implements Movable, Oriented, S
 
     this.speed = BULLET.SPEED;
     this.direction = direction;
-    // this.timer = window.setTimeout(this.destroy.bind(this), BULLET.LIFE_TIME);
     this.countDownTimer = window.setInterval(this.countDown.bind(this), Math.ceil(BULLET.LIFE_TIME / BULLET.TICKS));
   }
 
@@ -40,7 +38,6 @@ export default class Bullet extends MovableMixin implements Movable, Oriented, S
     newBullet.damage = bullet.damage;
     newBullet.time = bullet.time;
     newBullet.cancel();
-    // newBullet.timer = bullet.timer;
     newBullet.countDownTimer = bullet.countDownTimer;
     return newBullet;
   }
@@ -53,7 +50,6 @@ export default class Bullet extends MovableMixin implements Movable, Oriented, S
   }
 
   cancel(): void {
-    // clearTimeout(this.timer);
     clearInterval(this.countDownTimer);
   }
 

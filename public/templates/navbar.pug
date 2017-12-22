@@ -1,11 +1,12 @@
-.ui.huge.menu.navbar
-    a#homeBtn.item.testButton
-        | Home
-    a#leaderboardBtn.item
-        | Leaderboard
-    a#aboutBtn.item
-        | About
+.ui.huge.stackable.menu.navbar
+    a#homeBtn.item(data-l10n-id='Home')
+    a#leaderboardBtn.item(data-l10n-id='Leaderboard')
+    a#aboutBtn.item(data-l10n-id='About')
     .right.menu
         include chooserace.pug
+        .ui.simple.dropdown.item
+            span(data-l10n-id='Language')
+            i.dropdown.icon
+            .menu.languages
         .item#signupBtn
-            #signupBtn.ui.primary.button Sign Up
+            #signupBtn.ui.primary.button(data-l10n-id='Signup')

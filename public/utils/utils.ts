@@ -25,7 +25,7 @@ function getOtherSide(side: SIDE): SIDE {
 }
 
 function mapEventDirection(event: EVENT): Coords {
-  let direction: undefined|Coords = eventMapper.get(event);
+  let direction: undefined | Coords = eventMapper.get(event);
   if (direction === undefined) {
     throw Error('Wrong direction event: ' + event);
   }
@@ -46,16 +46,16 @@ function subDirs(dir1: Coords, dir2: Coords): Coords {
 }
 
 function normalizeDir(x: number, y: number): Coords {
-  return new Coords(x/Math.abs(x || 1), y/Math.abs(y || 1));
+  return new Coords(x / Math.abs(x || 1), y / Math.abs(y || 1));
 }
 
-function getBulletCoords(shootable: Shootable&Rect&Oriented): Coords {
+function getBulletCoords(shootable: Shootable & Rect & Oriented): Coords {
   const coords = shootable.getCoords();
   const dir = shootable.getDirection();
   const width = shootable.getWidth();
   const height = shootable.getHeight();
 
-  return new Coords(coords.x + dir.x * (width/2 + BULLET.OFFSET), coords.y + dir.y * (height/2 + BULLET.OFFSET));
+  return new Coords(coords.x + dir.x * (width / 2 + BULLET.OFFSET), coords.y + dir.y * (height / 2 + BULLET.OFFSET));
 }
 
 function isNumber(n: any): boolean {
@@ -146,4 +146,40 @@ function getEventsByDir(dir: Coords): EVENT[] {
   return getEventsByCode(getCodeByDir(dir));
 }
 
-export {throwIfNull, mapEventDirection, getCodeByDir, sumDirs, subDirs, getBulletCoords, isNumber, getOtherSide, getDirByCode, getEventsByCode, getEventsByDir};
+function whenUserTochedScreen(): Promise<boolean> {
+  const promises: Promise<boolean>[] = [];
+  if ((/(iphone|ipod|ipad|android|iemobile|blackberry|bada)/).test(navigator.userAgent.toLowerCase())) {
+    promises.push(new Promise(resolve => resolve(true)));
+  }
+
+  promises.push(new Promise(resolve => {
+    window.addEventListener('touchstart', function onFirstTouch() {
+      window.removeEventListener('touchstart', onFirstTouch, false);
+      resolve(true);
+    }, false);
+  }));
+
+  promises.push(new Promise(resolve => {
+    window.addEventListener('pointerdown', function onFirstTouch() {
+      window.removeEventListener('pointerdown', onFirstTouch, false);
+      resolve(true);
+    }, false);
+  }));
+
+  return new Promise(resolve => Promise.race(promises).then(val => resolve(val)));
+}
+
+export {
+  whenUserTochedScreen,
+  throwIfNull,
+  mapEventDirection,
+  getCodeByDir,
+  sumDirs,
+  subDirs,
+  getBulletCoords,
+  isNumber,
+  getOtherSide,
+  getDirByCode,
+  getEventsByCode,
+  getEventsByDir
+};

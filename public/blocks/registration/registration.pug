@@ -1,25 +1,24 @@
-html
-body
-    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration
-        .ui.card.ui__card__registration.registration_form_style
-            .content.left.aligned
-                .header.formHeader Registration
-                .description
-                    form.ui.form.formWithValidation.formText
-                        .field(name = "emailField")
-                            label Email
-                            input(type="text", name="email", placeholder="Email",autocapitalize="off")
-                            span(class = "message message__error_message", hidden=true)
-                        .field(name = "loginField")
-                            label Login
-                            input(type="text", name="login", placeholder="Login",autocapitalize="off")
-                            span(class = "message message__error_message", hidden=true)
-                        .field(name = "passwordField")
-                            label Password
-                            input(type="password", name="password", placeholder="Password")
-                            span(class = "message message__error_message", hidden=true)
-                        .field(name = "repeatedPasswordField")
-                            label Repeat password
-                            input(type="password", name="repeatedPassword", placeholder="Repeat password")
-                            span(class = "message message__error_message", hidden=true)
-                        button.ui.positive.button.ui__button__register.man.validateBtn.registerBtn.formText(type="submit", name="ValidateBtn") Register
+.ui.one.column.centered.grid
+    .ui.card.registration.registration_form_style
+        .content.left.aligned
+            .header.formHeader Registration
+            .description
+                form.ui.form.formWithValidation.formText
+                    .field(name = "emailField")
+                        label Email
+                        input(type="text", name="email", placeholder="Email")
+                        span(class = "message message__error_message", hidden=true)
+                    .field(name = "loginField")
+                        label Login
+                        input(type="text", name="login", placeholder="Login")
+                        span(class = "message message__error_message", hidden=true)
+                    .field(name = "passwordField")
+                        label Password
+                        input(type="password", name="password", placeholder="Password")
+                        span(class = "message message__error_message", hidden=true)
+                    .field(name = "repeatedPasswordField")
+                        label Repeat password
+                        input(type="password", name="repeatedPassword", placeholder="Repeat password")
+                        span(class = "message message__error_message", hidden=true)
+                    button.ui.button.ui__button__register.man.validateBtn.registerBtn.formText(type="submit", name="ValidateBtn") Register
+                button.ui.button.small#loginLink Already have account

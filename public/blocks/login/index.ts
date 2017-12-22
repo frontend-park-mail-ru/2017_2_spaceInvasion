@@ -6,7 +6,6 @@ import userService from '../../services/userService';
 import {showError} from '../../utils/notifications';
 import Navigator from '../../modules/navigator';
 import router from '../../modules/router';
-const swal = require('sweetalert2');
 
 class LoginBlock extends Form {
   constructor(el: HTMLElement) {
@@ -18,8 +17,15 @@ class LoginBlock extends Form {
     if (!Navigator.sections.login.ready) {
       this.el.innerHTML = loginTemplate();
       Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
+
       Navigator.sections.login.ready = true;
     }
+
+    throwIfNull(document.querySelector('#register'))
+      .addEventListener('click', () => {
+        Navigator.sections.hide();
+        Navigator.sections.registration.show();
+      });
 
     router.setPath('/login');
     super.show();
@@ -32,34 +38,25 @@ class LoginBlock extends Form {
     userService.login(formdata.login, formdata.password)
       .then((data: any) => {
         switch (data.status) {
-          case 400:
-            if (data.result && data.result === 'Bad request') {
-              showError(data.description);
-            } else {
-              showError('Already authorized as ' + data.username || 'Guest')
-            }
+          case 'forbidden':
+            showError('Wrong login or password');
             break;
-          case 200:
+          case 'bad request':
+            showError('Already authorized as ' + (userService.user || {username: 'Guest'}).username);
+            break;
+          case undefined:
             Navigator.sections.login.reset();
-            Navigator.sections.registration.hide();
+            Navigator.sections.hide();
             Navigator.sections.playerPage.show();
             break;
           default:
-            loginBtn.classList.remove('loading');
-            showError('Internal Error');
+            showError('Sorry, something went wrong...');
             break;
         }
         Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
         loginBtn.classList.remove('loading');
       }).catch(() => {
-      swal({
-        position: 'top-right',
-        type: 'error',
-        titleText: "Can't login",
-        showCloseButton: true,
-        showConfirmButton: false,
-        timer: 1500
-      });
+      showError('Sorry, something went wrong...');
       Navigator.sections.login.onSubmitOnce(this.onSubmitLoginForm.bind(this));
       loginBtn.classList.remove('loading');
     });

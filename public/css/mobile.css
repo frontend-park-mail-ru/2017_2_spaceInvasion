@@ -1,9 +1,32 @@
-@media only screen and (max-width: 440px){
-    .ui.huge.menu{
+@media only screen and (max-width: 440px) and (min-width:375px){
+    /* .ui.huge.menu{
         font-size: 10px !important;
         width: 100% !important;
         /* font-size: small !important; */
-        height: 50px !important;
+        /* height: 50px !important; */
+    /* } */
+
+    .lb.left.aligned{
+        width: 500px !important;
+    }
+
+    .header_shadow.lbtitle{
+        font-size: 40px !important;
+    }
+
+    .ui.one.column.centered.grid.ui__one__column__centered__grid__leaderboard{
+        width:450px !important;
+    }
+
+    .unit_logo {
+        border-radius: 50%;
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .playerPage{
+        margin-right: 40% !important;
+        margin-top: 50px !important;
     }
 
     .stopimg{
@@ -39,7 +62,7 @@
         font-size: x-large !important;
     }
 
-    .ui.one.column.centered.grid.ui__one__column__centered__grid__registration{
+    .ui.one.column.centered.grid.registration {
         padding: 30px !important;
         margin-left: 15px !important;
 
@@ -73,9 +96,9 @@
         width: 750px;
     }
 
-    .ui.primary.button{
+    /* .ui.primary.button{
         padding: 5px !important;
-    }
+    } */
 
     .ui.playagain{
         width: 300px;

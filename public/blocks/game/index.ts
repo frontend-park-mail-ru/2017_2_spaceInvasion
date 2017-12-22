@@ -12,21 +12,22 @@ import Navigator from '../../modules/navigator';
 abstract class GameBlock extends Block {
   protected game: Game;
   protected strategy: ConstructableStrategy;
-  protected abstract init(): void;
 
   show(): void {
     dismissAllMessages();
     if (!Navigator.sections.game.ready) {
       this.el.innerHTML = gameTemplate();
+
       if (!this.game) {
         this.game = new Game(
           this.strategy,
           KeyboardController,
           <HTMLCanvasElement>throwIfNull(document.querySelector('canvas#game'))
         );
-        this.init();
-        Navigator.sections.game.ready = true;
       }
+
+      this.init();
+      Navigator.sections.game.ready = true;
     }
 
     gameService.bind();
@@ -34,10 +35,7 @@ abstract class GameBlock extends Block {
     super.show();
   }
 
-  hide(): void {
-    gameService.unbind();
-    super.hide();
-  }
+  protected abstract init(): void;
 }
 
 export default GameBlock;
